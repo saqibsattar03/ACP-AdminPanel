@@ -72,28 +72,20 @@
           </v-badge>
         </template>
         <v-list>
-          <v-list-item>
+          <v-list-item href="/setting/">
             <v-list-item-icon>
-              <v-icon>mdi-account</v-icon>
+              <v-icon dense color="#03a9f3">menu-icon fa fa-cogs</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>{{
+            <v-list-item-title style="color: #03a9f3">{{
               dropDownMenuItems[0].title
             }}</v-list-item-title>
           </v-list-item>
-          <v-list-item>
+          <v-list-item style="color: #03a9f3" @click="logout">
             <v-list-item-icon>
-              <v-icon>mdi-setting</v-icon>
+              <v-icon dense color="#03a9f3">mdi-logout</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>{{
+            <v-list-item-title style="color: #03a9f3">{{
               dropDownMenuItems[1].title
-            }}</v-list-item-title>
-          </v-list-item>
-          <v-list-item @click="logout">
-            <v-list-item-icon>
-              <v-icon>mdi-logout</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>{{
-              dropDownMenuItems[2].title
             }}</v-list-item-title>
           </v-list-item>
         </v-list>
@@ -110,11 +102,7 @@ export default {
   data() {
     return {
       drawer: true,
-      dropDownMenuItems: [
-        { title: 'My profile' },
-        { title: 'Settings' },
-        { title: 'LogOut' }
-      ],
+      dropDownMenuItems: [{ title: 'Settings' }, { title: 'LogOut' }],
       items: [
         {
           icon: 'menu-icon fa fa-dashboard',
@@ -138,6 +126,7 @@ export default {
           icon: 'menu-icon fa fa-cogs',
           title: 'Settings',
           to: '/setting',
+          subItems: [{ title: 'Settings Sub' }],
           show: true
         },
         {
