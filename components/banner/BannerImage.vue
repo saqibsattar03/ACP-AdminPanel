@@ -7,6 +7,10 @@
       create
       create-route="/banner/form"
       remove
+      remove-route="ads/$id"
+      change
+      change-route=""
+      endpoint="ads"
     ></data-viewer>
   </v-container>
 </template>
@@ -25,9 +29,8 @@ export default {
   data() {
     return {
       headers: [
-        { text: '#', value: 'no' },
-        { text: 'BANNER', value: 'banner' },
-        { text: 'NAME', value: 'name' }
+        { text: 'NAME', value: 'title' },
+        { text: 'BANNER', value: 'image.name' }
       ]
     }
   }

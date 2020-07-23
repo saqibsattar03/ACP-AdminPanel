@@ -1,40 +1,42 @@
 <template>
   <div style="display: flex;justify-content: center">
-    <SimpleForm>
-      <template v-slot:header>
-        <v-row>
-          <v-col
-            style="display: flex; align-items: center; justify-content: center"
-            cols="12"
-            md="1"
-            sm="1"
-          >
-          </v-col>
-          <v-col cols="12" md="11" sm="11">
-            <v-card-title>New Master Category</v-card-title>
-          </v-col>
-        </v-row>
-      </template>
+    <SimpleForm
+      :method="isUpdate ? 'patch' : 'post'"
+      :data="masterCategory"
+      endpoint="/master-categories"
+      title="Create new Master Category"
+      return
+    >
       <div class="span-2">
-        <!--        <v-text-field label="Name" outlined dense></v-text-field>-->
-        <v-text-field label="Title" outlined dense></v-text-field>
+        <v-text-field
+          v-model="masterCategory.name"
+          label="Title"
+          outlined
+          dense
+        />
       </div>
-      <v-checkbox label="Active"></v-checkbox>
+      <v-checkbox v-model="masterCategory.status" label="Active" />
     </SimpleForm>
   </div>
 </template>
 
 <script>
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
+import { MasterCategory } from '../../models/master-category'
+
 export default {
   name: 'MainCategoryForm',
   components: { SimpleForm },
-  data() {
-    return {
-      row: null
+
+  props: {
+    masterCategory: {
+      type: Object,
+      default: () => new MasterCategory()
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false
     }
   }
 }
 </script>
-
-<style scoped></style>

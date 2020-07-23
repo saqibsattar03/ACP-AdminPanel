@@ -1,11 +1,17 @@
 <template>
-  <category-form />
+  <category-form :master-categories="masterCategories" />
 </template>
 
 <script>
 import CategoryForm from '../../components/category/CategoryForm'
 export default {
-  components: { CategoryForm }
+  components: { CategoryForm },
+  async asyncData({ $axios }) {
+    console.log(await $axios.$get('/master-categories'))
+    return {
+      masterCategories: await $axios.$get('/master-categories')
+    }
+  }
 }
 </script>
 

@@ -1,11 +1,17 @@
 <template>
-  <sub-category-form />
+  <sub-category-form :main-categories="mainCategories" />
 </template>
 
 <script>
 import SubCategoryForm from '../../components/subcategory/SubCategoryForm'
 export default {
-  components: { SubCategoryForm }
+  components: { SubCategoryForm },
+
+  async asyncData({ $axios }) {
+    return {
+      mainCategories: await $axios.$get('/master-categories')
+    }
+  }
 }
 </script>
 

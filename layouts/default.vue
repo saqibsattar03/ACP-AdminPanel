@@ -46,11 +46,6 @@
         />
       </div>
       <v-spacer />
-      <!--      <v-text-field-->
-      <!--        append-icon="mdi-magnify"-->
-      <!--        dense-->
-      <!--        style="margin-top: 25px"-->
-      <!--      ></v-text-field>-->
       <v-menu offset-y bottom
         ><template v-slot:activator="{ on, attrs }">
           <v-badge
@@ -103,7 +98,27 @@ export default {
     return {
       drawer: true,
       dropDownMenuItems: [{ title: 'Settings' }, { title: 'LogOut' }],
-      items: [
+      items: []
+    }
+  },
+  created() {
+    if (this.$auth.hasScope('supplier')) {
+      this.items = [
+        {
+          icon: 'menu-icon fa fa-shopping-cart',
+          title: 'Orders',
+          to: '/order',
+          show: true
+        },
+        {
+          icon: 'menu-icon fa fa-tags',
+          title: 'Ads',
+          to: '/ad',
+          show: true
+        }
+      ]
+    } else {
+      this.items = [
         {
           icon: 'menu-icon fa fa-dashboard',
           title: 'Dashboard',
@@ -142,6 +157,12 @@ export default {
           show: true
         },
         {
+          icon: 'menu-icon fa fa-photo',
+          title: 'Shipping Charges',
+          to: '/shippingcharges',
+          show: true
+        },
+        {
           icon: 'menu-icon fa fa-users',
           title: 'Suppliers',
           to: '/supplier',
@@ -154,6 +175,12 @@ export default {
           show: true
         },
         {
+          icon: 'menu-icon fa fa-tags',
+          title: 'Supplier Request',
+          to: '/supplierregistration',
+          show: true
+        },
+        {
           icon: 'menu-icon ti-direction',
           title: 'Master Categories',
           to: '/maincategory',
@@ -161,7 +188,7 @@ export default {
         },
         {
           icon: 'menu-icon ti-direction',
-          title: 'Categories',
+          title: 'Main Categories',
           to: '/category',
           show: true
         },

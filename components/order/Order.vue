@@ -1,6 +1,14 @@
 <template>
   <v-container>
-    <data-viewer :columns="headers" detail remove :title="title"></data-viewer>
+    <data-viewer
+      :columns="headers"
+      :title="title"
+      detail
+      detail-route="order/detail/$id"
+      remove
+      remove-route="orders/$id"
+      endpoint="orders"
+    ></data-viewer>
   </v-container>
 </template>
 
@@ -18,7 +26,6 @@ export default {
   data() {
     return {
       headers: [
-        { text: '#', value: 'no' },
         { text: 'USER', value: 'user' },
         { text: 'MOBILE', value: 'mobile' },
         { text: 'TOTAL AMOUNT', value: 'total_amount' },

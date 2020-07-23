@@ -1,41 +1,42 @@
 <template>
   <div style="display: flex;justify-content: center">
-    <SimpleForm>
-      <template v-slot:header>
-        <v-row>
-          <v-col
-            style="display: flex; align-items: center; justify-content: center"
-            cols="12"
-            md="1"
-            sm="1"
-          >
-          </v-col>
-          <v-col cols="12" md="11" sm="11">
-            <v-card-title>New Supplier</v-card-title>
-          </v-col>
-        </v-row>
-      </template>
+    <SimpleForm
+      :method="isUpdate ? 'patch' : 'post'"
+      title="Add New Supplier"
+      :data="formData"
+      endpoint="/suppliers"
+      return
+    >
       <div class="span-2">
-        <v-text-field outlined dense label="Company Name"></v-text-field>
-        <v-text-field outlined dense label="Supplier Name"></v-text-field>
         <v-text-field
+          v-model="suppliers.companyName"
+          outlined
+          dense
+          label="Company Name"
+        ></v-text-field>
+        <v-text-field
+          v-model="suppliers.person.name"
+          outlined
+          dense
+          label="Supplier Name"
+        ></v-text-field>
+        <v-text-field
+          v-model="suppliers.person.phone"
           outlined
           dense
           label="Mobile"
           hint="ex(XXX)XXX-XXXXX"
         ></v-text-field>
         <v-text-field
+          v-model="suppliers.person.username"
           outlined
           dense
           label="Email"
           hint="Please Enter Your Email here"
         ></v-text-field>
-        <!--        <v-radio-group v-model="row" row>-->
-        <!--          <v-radio label="Active" value="radio-1"></v-radio>-->
-        <!--          <v-radio label="Not Active" value="radio-2"></v-radio>-->
-        <!--        </v-radio-group>-->
-        <v-checkbox label="Active"></v-checkbox>
+        <v-checkbox v-model="suppliers.status" label="Active"></v-checkbox>
         <v-text-field
+          v-model="suppliers.password"
           outlined
           dense
           label="Password"
@@ -47,254 +48,128 @@
         <div
           style="display: flex;flex-direction: row;justify-content: space-between"
         >
-          <v-file-input outlined dense label="CR Paper"></v-file-input>
+          <v-file-input
+            v-model="document1"
+            outlined
+            dense
+            label="CR Paper"
+          ></v-file-input>
           <v-spacer></v-spacer>
-          <v-menu
-            ref="modal"
-            v-model="modal1"
-            :close-on-content-click="false"
-            :return-value.sync="date"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                label="Starting Date"
-                readonly
-                v-bind="attrs"
-                outlined
-                dense
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="date" no-title scrollable>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="modal1 = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(date)"
-                >OK</v-btn
-              >
-            </v-date-picker>
-          </v-menu>
-        </div>
-        <div
-          style="display: flex;flex-direction: row;justify-content: space-between"
-        >
-          <v-file-input outlined dense label="Chamber Card"></v-file-input>
-          <v-spacer></v-spacer>
-          <v-menu
-            ref="modal"
-            v-model="modal2"
-            :close-on-content-click="false"
-            :return-value.sync="date"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                label="Expiry Date"
-                readonly
-                v-bind="attrs"
-                outlined
-                dense
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="date" no-title scrollable>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="modal2 = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(date)"
-                >OK</v-btn
-              >
-            </v-date-picker>
-          </v-menu>
-        </div>
-        <div
-          style="display: flex;flex-direction: row;justify-content: space-between"
-        >
-          <v-file-input outlined dense label="Tharkees Baladi"></v-file-input>
-          <v-spacer></v-spacer>
-          <v-menu
-            ref="modal"
-            v-model="modal3"
-            :close-on-content-click="false"
-            :return-value.sync="date"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                label="Expiry Date"
-                readonly
-                v-bind="attrs"
-                outlined
-                dense
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="date" no-title scrollable>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="modal3 = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(date)"
-                >OK</v-btn
-              >
-            </v-date-picker>
-          </v-menu>
+          <v-text-field
+            v-model="expiryDate1"
+            label="Expiry Date"
+            type="date"
+            outlined
+            dense
+          ></v-text-field>
         </div>
         <div
           style="display: flex;flex-direction: row;justify-content: space-between"
         >
           <v-file-input
+            v-model="document2"
+            outlined
+            dense
+            label="Chamber Card"
+          ></v-file-input>
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="expiryDate2"
+            label="Expiry Date"
+            type="date"
+            outlined
+            dense
+          ></v-text-field>
+        </div>
+        <div
+          style="display: flex;flex-direction: row;justify-content: space-between"
+        >
+          <v-file-input
+            v-model="document3"
+            outlined
+            dense
+            label="Tharkees Baladi"
+          ></v-file-input>
+          <v-spacer></v-spacer>
+          <v-text-field
+            v-model="expiryDate3"
+            label="Expiry Date"
+            type="date"
+            outlined
+            dense
+          ></v-text-field>
+        </div>
+        <div
+          style="display: flex;flex-direction: row;justify-content: space-between"
+        >
+          <v-file-input
+            v-model="document4"
             outlined
             dense
             label="ID Card of Sponsor"
           ></v-file-input>
           <v-spacer></v-spacer>
-          <v-menu
-            ref="modal"
-            v-model="modal4"
-            :close-on-content-click="false"
-            :return-value.sync="date"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                label="Expiry Date"
-                readonly
-                v-bind="attrs"
-                outlined
-                dense
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="date" no-title scrollable>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="modal4 = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(date)"
-                >OK</v-btn
-              >
-            </v-date-picker>
-          </v-menu>
+          <v-text-field
+            v-model="expiryDate4"
+            label="Expiry Date"
+            type="date"
+            outlined
+            dense
+          ></v-text-field>
         </div>
         <div
           style="display: flex;flex-direction: row;justify-content: space-between"
         >
           <v-file-input
+            v-model="document5"
             outlined
             dense
             label="ID/Passport of Salesman"
           ></v-file-input>
           <v-spacer></v-spacer>
-          <v-menu
-            ref="modal"
-            v-model="modal5"
-            :close-on-content-click="false"
-            :return-value.sync="date"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                label="Expiry Date"
-                readonly
-                v-bind="attrs"
-                outlined
-                dense
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="date" no-title scrollable>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="modal5 = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(date)"
-                >OK</v-btn
-              >
-            </v-date-picker>
-          </v-menu>
+          <v-text-field
+            v-model="expiryDate5"
+            label="Expiry Date"
+            type="date"
+            outlined
+            dense
+          ></v-text-field>
         </div>
         <div
           style="display: flex;flex-direction: row;justify-content: space-between"
         >
           <v-file-input
+            v-model="document6"
             outlined
             dense
             label="Any Other legal Document"
           ></v-file-input>
           <v-spacer></v-spacer>
-          <v-menu
-            ref="modal"
-            v-model="modal6"
-            :close-on-content-click="false"
-            :return-value.sync="date"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                label="Expiry Date"
-                readonly
-                v-bind="attrs"
-                outlined
-                dense
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="date" no-title scrollable>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="modal6 = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(date)"
-                >OK</v-btn
-              >
-            </v-date-picker>
-          </v-menu>
+          <v-text-field
+            v-model="expiryDate6"
+            label="Expiry Date"
+            type="date"
+            outlined
+            dense
+          ></v-text-field>
         </div>
         <div
           style="display: flex;flex-direction: row;justify-content: space-between"
         >
           <v-file-input
+            v-model="document7"
             outlined
             dense
             label="Any other legal document"
           ></v-file-input>
           <v-spacer></v-spacer>
-          <v-menu
-            ref="modal"
-            v-model="modal7"
-            :close-on-content-click="false"
-            :return-value.sync="date"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-text-field
-                v-model="date"
-                label="Expiry Date"
-                readonly
-                v-bind="attrs"
-                outlined
-                dense
-                v-on="on"
-              ></v-text-field>
-            </template>
-            <v-date-picker v-model="date" no-title scrollable>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="modal7 = false">Cancel</v-btn>
-              <v-btn text color="primary">OK</v-btn>
-            </v-date-picker>
-          </v-menu>
+          <v-text-field
+            v-model="expiryDate7"
+            label="Expiry Date"
+            type="date"
+            outlined
+            dense
+          ></v-text-field>
         </div>
       </div>
     </SimpleForm>
@@ -303,20 +178,72 @@
 
 <script>
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
+import { Supplier } from '../../models/supplier'
 export default {
-  name: 'Form',
+  name: 'SupplierForm',
   components: { SimpleForm },
+  props: {
+    suppliers: {
+      type: Object,
+      default: () => new Supplier()
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
-      row: null,
-      date: new Date().toISOString().substr(0, 10),
-      modal1: false,
-      modal2: false,
-      modal3: false,
-      modal4: false,
-      modal5: false,
-      modal6: false,
-      modal7: false
+      document1: '',
+      document2: '',
+      document3: '',
+      document4: '',
+      document5: '',
+      document6: '',
+      document7: '',
+      expiryDate1: '',
+      expiryDate2: '',
+      expiryDate3: '',
+      expiryDate4: '',
+      expiryDate5: '',
+      expiryDate6: '',
+      expiryDate7: ''
+      // documents: ['', '', '', '', '', '', ''],
+      // expiryDates: ['', '', '', '', '', '', '']
+    }
+  },
+  methods: {
+    formData() {
+      const formData = new FormData()
+
+      // for (let i = 0; i < this.documents.length; ++i) {
+      //   if (this.documents[i]) {
+      //     formData.append('documents', this.documents[i])
+      //     formData.append('expiryDate', this.expiryDates[i])
+      //   }
+      // }
+      formData.append('crPaper', this.document1)
+      formData.append('expiryDate', this.expiryDate1)
+      formData.append('chamberCard', this.document2)
+      formData.append('expiryDate', this.expiryDate2)
+      formData.append('tharkeesBaladi', this.document3)
+      formData.append('expiryDate', this.expiryDate3)
+      formData.append('idCardOfSponsor', this.document4)
+      formData.append('expiryDate', this.expiryDate4)
+      formData.append('salesmanId', this.document5)
+      formData.append('expiryDate', this.expiryDate5)
+      formData.append('legal1', this.document6)
+      formData.append('expiryDate', this.expiryDate6)
+      formData.append('legal2', this.document7)
+      formData.append('expiryDate', this.expiryDate7)
+      formData.append('name', this.suppliers.personName)
+      formData.append('companyName', this.suppliers.companyName)
+      formData.append('phone', this.suppliers.mobile)
+      formData.append('username', this.suppliers.email)
+      formData.append('password', this.suppliers.password)
+      formData.append('status', this.suppliers.status)
+
+      return formData
     }
   }
 }

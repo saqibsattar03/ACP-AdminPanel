@@ -1,107 +1,87 @@
 <template>
   <div style="display: flex;justify-content: center">
-    <SimpleForm>
-      <template v-slot:header>
-        <v-row>
-          <v-col
-            style="display: flex; align-items: center; justify-content: center"
-            cols="12"
-            md="1"
-            sm="1"
-          >
-          </v-col>
-          <v-col cols="12" md="11" sm="11">
-            <v-card-title>New Coupon</v-card-title>
-          </v-col>
-        </v-row>
-      </template>
+    <SimpleForm
+      :method="isUpdate ? 'patch' : 'post'"
+      title="Create New Coupon"
+      :data="coupons"
+      endpoint="/coupons"
+      return
+    >
       <div class="span-2">
-        <v-text-field outlined dense label="Name"></v-text-field>
         <v-text-field
+          v-model="coupons.name"
+          outlined
+          dense
+          label="Name"
+        ></v-text-field>
+        <v-text-field
+          v-model="coupons.discount"
           outlined
           dense
           type="number"
           label="Percentage"
           hint=" Write Discount in %age here"
         ></v-text-field>
-        <v-checkbox label="One time use"></v-checkbox>
-        <!--        <v-checkbox label="Status"></v-checkbox>-->
-
-        <!--        <v-radio-group v-model="row" row>-->
-        <!--          <v-radio label="More than one" value="radio-1"></v-radio>-->
-        <!--          <v-radio label="One time use" value="radio-2"></v-radio>-->
-        <!--        </v-radio-group>-->
-        <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          :return-value.sync="date"
-          transition="scale-transition"
-          offset-y
-          min-width="290px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="date"
-              label="Starting Date"
-              readonly
-              v-bind="attrs"
-              outlined
-              dense
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="date" no-title scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.menu.save(date)"
-              >OK</v-btn
-            >
-          </v-date-picker>
-        </v-menu>
-        <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          :return-value.sync="date"
-          transition="scale-transition"
-          offset-y
-          min-width="290px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="date"
-              label="End Date"
-              readonly
-              v-bind="attrs"
-              outlined
-              dense
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker v-model="date" no-title scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-            <v-btn text color="primary" @click="$refs.menu.save(date)"
-              >OK</v-btn
-            >
-          </v-date-picker>
-        </v-menu>
+        <v-checkbox
+          v-model="coupons.oneTimeUse"
+          label="One time use"
+        ></v-checkbox>
+        <v-text-field
+          v-model="coupons.startDate"
+          type="date"
+          outlined
+          dense
+        ></v-text-field>
+        <v-text-field
+          v-model="coupons.endDate"
+          type="date"
+          outlined
+          dense
+        ></v-text-field>
       </div>
     </SimpleForm>
   </div>
 </template>
 
 <script>
+import * as moment from 'moment'
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
+import { Coupon } from '../../models/coupon'
 export default {
   name: 'Form',
   components: { SimpleForm },
+
+  props: {
+    coupons: {
+      type: Object,
+      default: () => new Coupon()
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
-      row: null,
-      date: new Date().toISOString().substr(0, 10),
-      menu: false
+      date: null,
+      toMeun: false,
+      toDateText: ''
+    }
+  },
+  mounted() {
+    this.coupons.date = new Date(this.coupons.date)
+  },
+  computed: {
+    toDatePicker: {
+      get() {
+        if (this.toDateText === '') {
+          return null
+        }
+        return moment(this.toDateText, 'DD-MM-YYYY').format('YYYY-MM-DD')
+      },
+      set(value) {
+        this.toDateText = moment(value, 'YYYY-MM-DD').format('DD-MM-YYYY')
+      }
     }
   }
 }

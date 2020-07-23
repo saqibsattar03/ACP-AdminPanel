@@ -1,32 +1,31 @@
 <template>
   <div>
     <div style="padding: 25px">
-      <SimpleForm>
-        <template v-slot:header>
-          <v-row>
-            <v-col
-              style="display: flex; align-items: center; justify-content: center"
-              cols="12"
-              md="1"
-              sm="1"
-            >
-            </v-col>
-            <v-col cols="12" md="11" sm="11">
-              <v-card-title>Sed New Notification</v-card-title>
-            </v-col>
-          </v-row>
-        </template>
+      <SimpleForm
+        title="Send New Notification"
+        :data="notification"
+        endpoint="notifications"
+      >
         <div class="span-2">
           <v-select
-            :items="headers"
+            v-model="notification.user"
+            :items="items"
             outlined
             dense
-            label="--Select Type--"
+            label="-- Select Type --"
           ></v-select>
-          <v-textarea outlined label="Notification"></v-textarea>
+          <v-textarea
+            v-model="notification.title"
+            outlined
+            label="Notification"
+          ></v-textarea>
         </div>
       </SimpleForm>
-      <data-viewer :columns="headers" remove></data-viewer>
+      <data-viewer
+        :columns="headers"
+        remove
+        endpoint="notifications"
+      ></data-viewer>
     </div>
   </div>
 </template>
@@ -34,17 +33,22 @@
 <script>
 import DataViewer from '../../common/ui/widgets/DataViewer'
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
+import { Notification } from '../../models/notification'
+
 export default {
   name: 'Notification',
   components: { DataViewer, SimpleForm },
+  props: {
+    notification: {
+      type: Object,
+      default: () => new Notification()
+    }
+  },
   data() {
     return {
-      items: ['all', 'user', 'supply'],
-      headers: [
-        { text: 'Supplier', value: 'supplier' },
-        { text: 'Send Date', value: 'send_date' },
-        { text: 'Notification', value: 'notification' }
-      ]
+      items: ['all', 'Supplier', 'Customer'],
+      selected: null,
+      headers: [{ text: 'TITLE', value: 'title' }]
     }
   }
 }

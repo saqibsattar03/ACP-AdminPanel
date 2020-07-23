@@ -1,42 +1,48 @@
 <template>
   <div style="display: flex;justify-content: center">
-    <SimpleForm>
-      <template v-slot:header>
-        <v-row>
-          <v-col
-            style="display: flex; align-items: center; justify-content: center"
-            cols="12"
-            md="1"
-            sm="1"
-          >
-          </v-col>
-          <v-col cols="12" md="11" sm="11">
-            <v-card-title>New Sub Category</v-card-title>
-          </v-col>
-        </v-row>
-      </template>
+    <SimpleForm
+      :method="isUpdate ? 'patch' : 'post'"
+      title="Create New Sub Category"
+      :data="subCategory"
+      endpoint="sub-categories"
+      return
+    >
       <div class="span-2">
         <v-select
-          :items="items"
-          label="Category"
+          v-model="selectedMaster"
+          :items="mainCategories"
+          label="-- Master Category --"
+          outlined
+          :rules="[(_) => !!selectedMaster || 'Select a Master Category']"
+          dense
+        >
+          <template #item="{ item }">{{ item.name }}</template>
+          <template #selection="{ item }">{{ item.name }}</template>
+        </v-select>
+
+        <v-select
+          v-model="subCategory.parents"
+          :items="selectedMaster ? selectedMaster.mainCategories : []"
+          label="-- Main Category --"
+          :disabled="!selectedMaster"
           outlined
           multiple
+          item-value="_id"
+          item-text="name"
+          :rules="[
+            (_) => subCategory.parents.length > 0 || 'Select a Main Category'
+          ]"
           dense
-        ></v-select>
-        <v-text-field label="Title" outlined dense></v-text-field>
-        <!--        <v-text-field-->
-        <!--          label="Name"-->
-        <!--          hint="Write Name Here"-->
-        <!--          outlined-->
-        <!--          dense-->
-        <!--        ></v-text-field>-->
+        />
 
-        <!--        <v-textarea outlined label="Detail..."></v-textarea>-->
-        <!--        <v-radio-group v-model="row" row>-->
-        <!--          <v-radio label="Active" value="active"></v-radio>-->
-        <!--          <v-radio label="Not Active" value="not active"></v-radio>-->
-        <!--        </v-radio-group>-->
-        <v-checkbox label="Active"></v-checkbox>
+        <v-text-field
+          v-model="subCategory.name"
+          :rules="[(v) => !!v || 'Please Provide a value']"
+          label="Title"
+          outlined
+          dense
+        />
+        <v-checkbox v-model="subCategory.status" label="Active" />
       </div>
     </SimpleForm>
   </div>
@@ -44,16 +50,32 @@
 
 <script>
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
+import { SubCategory } from '../../models/sub-category'
+
 export default {
   name: 'SubCategoryForm',
   components: { SimpleForm },
-  data() {
-    return {
-      row: null,
-      items: ['lol', 'national', 'shezan', 'volka']
+
+  props: {
+    mainCategories: {
+      type: Array,
+      default: () => []
+    },
+
+    subCategory: {
+      type: Object,
+      default: () => new SubCategory()
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false
     }
-  }
+  },
+
+  data: () => ({
+    items: [],
+    selectedMain: null,
+    selectedMaster: null
+  })
 }
 </script>
-
-<style scoped></style>

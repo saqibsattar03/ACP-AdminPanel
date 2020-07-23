@@ -1,51 +1,32 @@
 <template>
   <div style="display: flex;justify-content: center">
-    <SimpleForm>
-      <template v-slot:header>
-        <v-row>
-          <v-col
-            style="display: flex; align-items: center; justify-content: center"
-            cols="12"
-            md="1"
-            sm="1"
-          >
-          </v-col>
-          <v-col cols="12" md="11" sm="11">
-            <v-card-title>New Category</v-card-title>
-          </v-col>
-        </v-row>
-      </template>
+    <SimpleForm
+      method="patch"
+      title="Add New Category"
+      :data="parseData"
+      endpoint="master-categories"
+      return
+    >
       <div class="span-2">
         <v-select
+          v-model="selectedMaster"
+          :items="masterCategories"
+          :rules="[(_) => !!selectedMaster || 'Select a Master Category']"
           outlined
           dense
-          :items="items"
-          label="--Master Category--"
-        ></v-select>
-        <v-text-field label="Title" outlined dense></v-text-field>
-        <!--        <v-text-field-->
-        <!--          label="Name"-->
-        <!--          hint="Write Name Here"-->
-        <!--          outlined-->
-        <!--          dense-->
-        <!--        ></v-text-field>-->
-        <!--        <v-text-field-->
-        <!--          label="Title"-->
-        <!--          hint="Write Title Here"-->
-        <!--          outlined-->
-        <!--          dense-->
-        <!--        ></v-text-field>-->
-        <!--        <v-radio-group v-model="row" row>-->
-        <!--          <v-radio label="Active" value="active"></v-radio>-->
-        <!--          <v-radio label="Not Active" value="not active"></v-radio>-->
-        <!--        </v-radio-group>-->
-        <v-checkbox label="Active"></v-checkbox>
-        <!--        <v-text-field-->
-        <!--          label="Icon Name"-->
-        <!--          hint="Write Icon Name Here"-->
-        <!--          outlined-->
-        <!--          dense-->
-        <!--        ></v-text-field>-->
+          label="-- Master Category --"
+        >
+          <template #item="{ item }">{{ item.name }}</template>
+          <template #selection="{ item }">{{ item.name }}</template>
+        </v-select>
+        <v-text-field
+          v-model="mainCategory.name"
+          :rules="[(v) => !!v || 'Please Provide a value']"
+          label="Title"
+          outlined
+          dense
+        ></v-text-field>
+        <v-checkbox v-model="mainCategory.status" label="Active"></v-checkbox>
       </div>
     </SimpleForm>
   </div>
@@ -53,13 +34,46 @@
 
 <script>
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
+import { MainCategory } from '../../models/main-category'
+
 export default {
   name: 'Form',
   components: { SimpleForm },
-  data() {
-    return {
-      row: null,
-      items: ['pakistan', 'india', 'abc', 'xyz']
+  props: {
+    masterCategories: {
+      type: Array,
+      default: () => []
+    },
+    mainCategory: {
+      type: Object,
+      default: () => new MainCategory()
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false
+    }
+  },
+  data: () => ({
+    items: [],
+    selectedMaster: null
+  }),
+
+  methods: {
+    parseData() {
+      if (
+        this.selectedMaster.mainCategories &&
+        this.selectedMaster.mainCategories.length > 0
+      ) {
+        this.selectedMaster.mainCategories.push(
+          Object.assign({}, this.mainCategory)
+        )
+      } else {
+        this.selectedMaster.mainCategories = [
+          Object.assign({}, this.mainCategory)
+        ]
+      }
+
+      return this.selectedMaster
     }
   }
 }

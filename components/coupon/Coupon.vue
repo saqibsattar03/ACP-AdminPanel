@@ -7,6 +7,10 @@
       create
       create-route="/coupon/form"
       remove
+      remove-route="/coupons/$id"
+      change
+      change-route="/coupon/edit/$id"
+      endpoint="coupons"
     ></data-viewer>
   </v-container>
 </template>
@@ -25,11 +29,10 @@ export default {
   data() {
     return {
       headers: [
-        { text: '#', value: 'no' },
         { text: 'NAME', value: 'name' },
-        { text: 'PERCENTAGE', value: 'product' },
-        { text: 'START DATE', value: 'quantity' },
-        { text: 'END DATE', value: 'status' }
+        { text: 'PERCENTAGE', value: 'discount' },
+        { text: 'START DATE', value: 'startDate' },
+        { text: 'END DATE', value: 'endDate' }
       ]
     }
   }

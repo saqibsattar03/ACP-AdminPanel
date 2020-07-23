@@ -7,6 +7,10 @@
       create
       create-route="/subcategory/form"
       remove
+      remove-route="/subscategory/$id"
+      change
+      change-route="/subcategory/edit/$id"
+      endpoint="sub-categories"
     ></data-viewer>
   </v-container>
 </template>
@@ -25,13 +29,8 @@ export default {
   data() {
     return {
       headers: [
-        { text: '#', value: 'no' },
         { text: 'NAME', value: 'name' },
-        { text: 'MOBILE', value: 'mobile' },
-        { text: 'EMAIL', value: 'email' },
-        { text: 'WALLET', value: 'wallet' },
-        { text: 'STATUS', value: 'status' },
-        { text: 'ROLE', value: 'wallet' }
+        { text: 'STATUS', value: 'status' }
       ]
     }
   }

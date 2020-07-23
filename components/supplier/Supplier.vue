@@ -7,6 +7,10 @@
       create
       create-route="/supplier/form"
       remove
+      remove-route="suppliers/$id"
+      change
+      change-route="/supplier/edit/$id"
+      endpoint="suppliers"
     ></data-viewer>
   </v-container>
 </template>
@@ -25,11 +29,10 @@ export default {
   data() {
     return {
       headers: [
-        { text: '#', value: 'no' },
-        { text: 'COMPANY NAME', value: 'company_name' },
-        { text: 'SUPPLIER NAME', value: 'supplier_name' },
-        { text: 'MOBILE', value: 'mobile' },
-        { text: 'EMAIL', value: 'email' },
+        { text: 'COMPANY NAME', value: 'companyName' },
+        { text: 'SUPPLIER NAME', value: 'person.name' },
+        { text: 'MOBILE', value: 'person.phone' },
+        { text: 'EMAIL', value: 'person.username' },
         { text: 'STATUS', value: 'status' }
       ]
     }

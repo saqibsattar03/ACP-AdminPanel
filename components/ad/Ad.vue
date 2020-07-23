@@ -36,7 +36,7 @@
         <div style="width: 100%">
           <v-data-table
             :headers="headers"
-            :items="items"
+            :items="products"
             height="100%"
             :items-per-page="5"
           >
@@ -55,107 +55,26 @@
 <script>
 export default {
   name: 'Ad',
+  props: {
+    products: Array
+  },
+
   data() {
     return {
       headers: [
-        { text: '#', value: 'no' },
-        { text: 'SUB CATEGORY', value: 'subcategory' },
+        { text: 'NAME', value: 'name' },
         { text: 'DESCRIPTION', value: 'description' },
         { text: 'STATUS', value: 'status' },
         { text: 'PRICE', value: 'price' },
-        { text: 'ADMIN COM', value: 'admincom' },
-        { text: 'CONTROL', value: 'control' },
-        { text: 'STATE', value: 'state' }
-      ],
-      items: [
-        {
-          no: '1',
-          subcategory: 'abc',
-          description: 'national',
-          status: 'not active',
-          price: '12',
-          admincom: '0',
-          control: 'Make Feature',
-          state: 'cancel'
-        },
-        {
-          no: '2',
-          subcategory: 'abc',
-          description: 'national',
-          status: 'active',
-          price: '12',
-          admincom: '0',
-          control: 'Make Feature',
-          state: 'cancel'
-        },
-        {
-          no: '3',
-          subcategory: 'abc',
-          description: 'national',
-          status: 'not active',
-          price: '12',
-          admincom: '0',
-          control: 'Make Feature',
-          state: 'cancel'
-        },
-        {
-          no: '4',
-          subcategory: 'abc',
-          description: 'national',
-          status: 'rejected',
-          price: '12',
-          admincom: '0',
-          control: 'Featured',
-          state: 'cancel'
-        },
-        {
-          no: '5',
-          subcategory: 'abc',
-          description: 'national',
-          status: 'active',
-          price: '12',
-          admincom: '0',
-          control: 'Make Feature',
-          state: 'cancel'
-        },
-        {
-          no: '6',
-          subcategory: 'abc',
-          description: 'national',
-          status: 'not active',
-          price: '12',
-          admincom: '0',
-          control: 'Make Feature',
-          state: 'cancel'
-        },
-        {
-          no: '7',
-          subcategory: 'abc',
-          description: 'national',
-          status: 'not active',
-          price: '12',
-          admincom: '0',
-          control: 'Make Feature',
-          state: 'cancel'
-        },
-        {
-          no: '8',
-          subcategory: 'abc',
-          description: 'national',
-          status: 'active',
-          price: '12',
-          admincom: '0',
-          control: 'Make Feature',
-          state: 'cancel'
-        }
+        { text: 'ADMIN COM', value: 'adminCommission' }
       ]
     }
   },
   methods: {
     getColor(status) {
-      if (status === 'active') return 'green'
-      else if (status === 'not active') return 'blue'
-      else return 'red'
+      if (status === 'true') {
+        return 'green'
+      } else return 'red'
     }
   }
 }

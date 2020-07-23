@@ -7,6 +7,10 @@
       create
       create-route="/category/form"
       remove
+      remove-route="master-categories/main-categories/$id"
+      change
+      change-route="/category/edit/$id"
+      endpoint="master-categories/main-categories"
     ></data-viewer>
   </v-container>
 </template>
@@ -25,10 +29,7 @@ export default {
   data() {
     return {
       headers: [
-        { text: '#', value: 'no' },
-        { text: 'PARENT', value: 'parent' },
         { text: 'NAME', value: 'name' },
-        { text: 'TITLE', value: 'title' },
         { text: 'STATUS', value: 'status' }
       ]
     }

@@ -1,22 +1,22 @@
 <template>
   <div style="display: flex;justify-content: center">
-    <SimpleForm>
-      <template v-slot:header>
-        <v-row>
-          <v-col
-            style="display: flex; align-items: center; justify-content: center"
-            cols="12"
-            md="1"
-            sm="1"
-          >
-          </v-col>
-          <v-col cols="12" md="11" sm="11">
-            <v-card-title>New Banner</v-card-title>
-          </v-col>
-        </v-row>
-      </template>
+    <SimpleForm title="Add New Banner" :data="formData" endpoint="/ads" return>
       <div>
-        <v-file-input outlined dense label="Select Banner"></v-file-input>
+        <v-text-field
+          v-model="banner.title"
+          outlined
+          dense
+          label="Title"
+        ></v-text-field>
+        <v-file-input
+          v-model="banner.image"
+          outlined
+          :rules="[required]"
+          dense
+          multiple
+          label="Select Banner"
+        ></v-file-input>
+        <v-checkbox v-model="banner.status" label="Active" />
       </div>
     </SimpleForm>
   </div>
@@ -24,9 +24,36 @@
 
 <script>
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
+import { Banner } from '../../models/banner'
+import { required } from '../../common/lib/validator'
+
 export default {
   name: 'BannerForm',
-  components: { SimpleForm }
+  components: { SimpleForm },
+
+  props: {
+    banner: {
+      type: Object,
+      default: () => new Banner()
+    }
+  },
+  methods: {
+    required,
+    formData() {
+      const formData = new FormData()
+      for (const key of Object.keys(this.banner)) {
+        if (key === 'image') {
+          for (const item of this.banner[key]) {
+            formData.append(key, item)
+          }
+        } else {
+          formData.append(key, this.banner[key])
+        }
+      }
+      formData.forEach((item) => window.console.log(item))
+      return formData
+    }
+  }
 }
 </script>
 
