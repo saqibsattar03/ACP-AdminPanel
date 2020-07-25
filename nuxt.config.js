@@ -39,6 +39,14 @@ export default {
         href:
           'https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css'
       }
+    ],
+    scripts: [
+      {
+        src: 'node_modules/@ckeditor/ckeditor5-build-classic/build/ckeditor.js'
+      },
+      {
+        src: 'node_modules/@ckeditor/ckeditor5-vue/dist/ckeditor.js'
+      }
     ]
   },
   /*
@@ -75,7 +83,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://zainpc:3000'
+    baseURL: 'http://haroon-pc.local:3000'
   },
   /*
    ** vuetify module configuration

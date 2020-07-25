@@ -24,7 +24,7 @@
       <data-viewer
         :columns="headers"
         remove
-        endpoint="notifications"
+        endpoint="/notifications"
       ></data-viewer>
     </div>
   </div>

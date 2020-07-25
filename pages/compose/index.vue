@@ -1,23 +1,10 @@
 <template>
   <div style="display: flex;justify-content: center" app>
-    <SimpleForm>
-      <template v-slot:header>
-        <v-row>
-          <v-col
-            style="display: flex; align-items: center; justify-content: center"
-            cols="12"
-            md="1"
-            sm="1"
-          >
-          </v-col>
-          <v-col cols="12" md="11" sm="11">
-            <v-card-title>Compose</v-card-title>
-          </v-col>
-        </v-row>
-      </template>
+    <SimpleForm title="Compose" endpoint="/mailing" :data="compose">
       <div class="span-2" style="margin-bottom: 30px">
         <ckeditor
-          v-model="data"
+          id="editor"
+          v-model="compose.data"
           :editor="editor"
           contenteditable="true"
           style="height: 500px; width: 100%"
@@ -30,16 +17,33 @@
 <script>
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
+import { Compose } from '../../models/compose'
 
 export default {
   name: 'Index',
   components: { SimpleForm },
+  props: {
+    compose: {
+      type: Object,
+      default: () => new Compose()
+    }
+  },
   data() {
     return {
       editor: ClassicEditor,
       editorData: '<p>Content of the editor.</p>',
       editorConfig: {
-        // The configuration of the editor.
+        extraPlugins: [
+          (editor) => {
+            editor.plugins.get('FileRepository').createUploadAdapter = (
+              loader
+            ) => ({
+              upload() {
+                console.log('uploading....')
+              }
+            })
+          }
+        ]
       }
     }
   },

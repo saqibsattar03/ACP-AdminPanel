@@ -3,13 +3,12 @@
     <data-viewer
       :columns="headers"
       :title="title"
-      detail
       create
       create-route="/banner/form"
       remove
       remove-route="ads/$id"
       change
-      change-route=""
+      change-route="banner/edit/$id"
       endpoint="ads"
     ></data-viewer>
   </v-container>

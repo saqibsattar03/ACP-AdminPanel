@@ -1,6 +1,12 @@
 <template>
   <div style="display: flex;justify-content: center">
-    <SimpleForm title="Add New Banner" :data="formData" endpoint="/ads" return>
+    <SimpleForm
+      :method="isUpdate ? 'patch' : 'post'"
+      title="Add New Banner"
+      :data="formData"
+      endpoint="/ads"
+      return
+    >
       <div>
         <v-text-field
           v-model="banner.title"
@@ -35,6 +41,10 @@ export default {
     banner: {
       type: Object,
       default: () => new Banner()
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {

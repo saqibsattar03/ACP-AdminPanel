@@ -26,12 +26,11 @@ export default {
   data() {
     return {
       headers: [
-        { text: 'USER', value: 'user' },
-        { text: 'MOBILE', value: 'mobile' },
-        { text: 'TOTAL AMOUNT', value: 'total_amount' },
+        { text: 'USER', value: 'person.name' },
+        { text: 'MOBILE', value: 'contact' },
+        { text: 'TOTAL AMOUNT', value: 'orderAmount' },
         { text: 'ADDRESS', value: 'address' },
-        { text: 'STATUS', value: 'status' },
-        { text: 'CM', value: 'company' }
+        { text: 'STATUS', value: 'status' }
       ]
     }
   }

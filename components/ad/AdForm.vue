@@ -18,6 +18,7 @@
           v-model="product.subCategoryId"
           :items="subCategories"
           outlined
+          item-value="_id"
           dense
           :rules="[(_) => !!product.subCategoryId || 'Select a Sub Category']"
           label="-- Sub Category --"
@@ -59,26 +60,19 @@
               <v-btn
                 color="#FF974D"
                 style="color:#ffffff"
-                @click="
-                  variant.push({
-                    Color: '',
-                    Ram: '',
-                    Storage: '',
-                    Version: ''
-                  })
-                "
+                @click="product.variants.push({})"
                 >Add Variant
               </v-btn>
             </v-col>
           </v-row>
           <v-row
-            v-for="(variant, i) of variant"
+            v-for="(variant, i) of product.variants"
             :key="i"
             style="display: grid;grid-template-columns: auto auto auto auto auto 50px"
           >
             <v-col>
               <v-text-field
-                v-model="product.color"
+                v-model="variant.color"
                 color="#313F53"
                 outlined
                 label="Color"
@@ -87,7 +81,7 @@
             </v-col>
             <v-col>
               <v-text-field
-                v-model="product.ram"
+                v-model="variant.ram"
                 color="#313F53"
                 outlined
                 label="Ram"
@@ -96,7 +90,7 @@
             </v-col>
             <v-col>
               <v-text-field
-                v-model="product.storage"
+                v-model="variant.storage"
                 color="#313F53"
                 outlined
                 label="Storage"
@@ -105,7 +99,7 @@
             </v-col>
             <v-col>
               <v-text-field
-                v-model="product.version"
+                v-model="variant.version"
                 color="#313F53"
                 outlined
                 label="Version"
@@ -114,7 +108,7 @@
             </v-col>
             <v-col>
               <v-text-field
-                v-model="product.price"
+                v-model="variant.price"
                 color="#313F53"
                 outlined
                 type="number"
@@ -208,17 +202,31 @@ export default {
     required,
     formData() {
       const formData = new FormData()
-      for (const key of Object.keys(this.product)) {
-        if (key === 'images') {
-          for (const item of this.product[key]) {
-            formData.append(key, item)
-          }
-        } else if (this.product[key]) {
-          if (key === 'subCategoryId') {
-            formData.append(key, this.product[key]._id)
-          } else formData.append(key, this.product[key])
-        }
+
+      formData.append('mainCategoryId', this.product.mainCategoryId)
+      formData.append('subCategoryId', this.product.subCategoryId)
+      formData.append('name', this.product.name)
+      formData.append('description', this.product.description)
+      formData.append('price', this.product.price)
+      formData.append('adminCommission', this.product.adminCommission)
+      formData.append('warrantyMonths', this.product.warrantyMonths)
+      formData.append('status', this.product.status || false)
+      formData.append('hideWarranty', this.product.hideWarranty || false)
+      formData.append('featured', this.product.isFeatured || false)
+      formData.append('killerDeals', this.product.isKillerDeal || false)
+
+      for (const variant of this.product.variants) {
+        formData.append('color', variant.color)
+        formData.append('ram', variant.ram)
+        formData.append('storage', variant.storage)
+        formData.append('version', variant.version)
+        formData.append('_price', variant.price)
       }
+
+      for (const image of this.product.images) {
+        formData.append('images', image)
+      }
+
       return formData
     },
     removeVariant(i) {

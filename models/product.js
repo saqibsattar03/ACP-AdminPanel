@@ -33,7 +33,7 @@ export class Product {
   price = undefined
 
   /** @type {string} */
-  images = undefined
+  images = []
 
   /** @type { number} */
   adminCommission = undefined
@@ -55,4 +55,6 @@ export class Product {
 
   /** @type {int} */
   price = undefined
+
+  variants = [{}]
 }

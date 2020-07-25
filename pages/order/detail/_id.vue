@@ -10,7 +10,7 @@ export default {
   async asyncData({ $axios, route }) {
     console.log(await $axios.$get('orders'))
     return {
-      detail: await $axios.$get('orders/' + route.params.id)
+      detail: [await $axios.$get('orders/' + route.params.id)]
     }
   }
 }
