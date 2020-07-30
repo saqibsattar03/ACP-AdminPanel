@@ -1,8 +1,6 @@
 <template>
   <v-container>
     <v-row>
-      {{ $auth.user }}
-      {{ $auth.hasScope('Admin') }}
       <v-col cols="12" md="3" sm="12">
         <div class="my-card status-card">
           <i class="pe-7s-cash" style="font-size: 50px;color: #00c292"></i>

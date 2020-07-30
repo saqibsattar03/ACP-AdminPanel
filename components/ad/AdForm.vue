@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex;justify-content: center">
     <SimpleForm
-      title="Add New Ad"
+      :title="isUpdate ? 'Edit Product' : 'Add New Product'"
       :method="isUpdate ? 'patch' : 'post'"
       endpoint="products"
       :data="formData"

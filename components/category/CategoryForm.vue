@@ -2,7 +2,7 @@
   <div style="display: flex;justify-content: center">
     <SimpleForm
       :method="isUpdate ? 'patch' : 'post'"
-      title="Add New Category"
+      :title="isUpdate ? 'Edit Category' : 'Add New Category'"
       :data="parseData"
       endpoint="master-categories"
       return

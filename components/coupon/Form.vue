@@ -2,7 +2,7 @@
   <div style="display: flex;justify-content: center">
     <SimpleForm
       :method="isUpdate ? 'patch' : 'post'"
-      title="Create New Coupon"
+      :title="isUpdate ? 'Edit Coupon' : 'Add New Coupon'"
       :data="coupons"
       endpoint="/coupons"
       return
@@ -30,12 +30,14 @@
         <v-text-field
           v-model="coupons.startDate"
           type="date"
+          label="Start Date"
           outlined
           dense
         ></v-text-field>
         <v-text-field
           v-model="coupons.endDate"
           type="date"
+          label="End Date"
           outlined
           dense
         ></v-text-field>

@@ -2,7 +2,7 @@
   <div style="display: flex;justify-content: center">
     <SimpleForm
       :method="isUpdate ? 'patch' : 'post'"
-      title="Create New Sub Category"
+      :title="isUpdate ? 'Edit Sub Category' : 'Add New Sub Category'"
       :data="subCategory"
       endpoint="sub-categories"
       return

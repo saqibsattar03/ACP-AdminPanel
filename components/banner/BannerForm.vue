@@ -2,7 +2,7 @@
   <div style="display: flex;justify-content: center">
     <SimpleForm
       :method="isUpdate ? 'patch' : 'post'"
-      title="Add New Banner"
+      :title="isUpdate ? 'Edit Banner' : 'Add New Banner'"
       :data="formData"
       endpoint="/ads"
       return

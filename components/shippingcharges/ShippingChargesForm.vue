@@ -2,7 +2,7 @@
   <div style="display: flex;justify-content: center">
     <SimpleForm
       :method="isUpdate ? 'patch' : 'post'"
-      title="Add Shipping Charges"
+      :title="isUpdate ? 'Edit Shipping Charges' : 'Add Shipping Chrages'"
       :data="shippingCharges"
       endpoint="shipping-charges"
       return

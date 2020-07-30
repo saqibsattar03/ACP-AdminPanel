@@ -2,7 +2,7 @@
   <div style="display: flex;justify-content: center">
     <SimpleForm
       :method="isUpdate ? 'patch' : 'post'"
-      title="Add New Supplier"
+      :title="isUpdate ? 'Edit Supplier' : 'Add New Supplier '"
       :data="formData"
       endpoint="/suppliers"
       return
