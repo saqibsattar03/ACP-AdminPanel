@@ -8,37 +8,38 @@
         <div
           style="display: flex;align-items: center;flex-direction: column;justify-content: center"
         >
+          {{ orders }}
           <v-avatar
             ><img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="john"
           /></v-avatar>
           <p>
             <v-icon color="black"> fa fa-user</v-icon><strong>Name:</strong>
-            {{ orders[0].person.name }}
+            {{ orders.person.name }}
           </p>
           <p>
             <v-icon color="black"> fa fa-tag</v-icon><strong>Address:</strong>
-            {{ orders[0].address }}
+            {{ orders.address }}
           </p>
           <p>
             <v-icon color="black">fa fa-calendar</v-icon>
             <strong>
               Order Date :
             </strong>
-            {{ orders[0].createdAt }}
+            {{ orders.createdAt }}
           </p>
           <p>
             <v-icon color="black"> fa fa-phone</v-icon>
             <strong>
               Contact:
             </strong>
-            {{ orders[0].contact }}
+            {{ orders.contact }}
           </p>
           <p>
             <v-icon color="black">fa fa-tag</v-icon>
             <strong>
               Shipping Location:
             </strong>
-            {{ orders[0].shipping.location }}
+            {{ orders.shipping.location }}
           </p>
           <p>
             <v-icon color="black">fa fa-tag</v-icon>
@@ -46,14 +47,14 @@
               Shipping Charges:
             </strong>
 
-            {{ orders[0].shipping.charges }}
+            {{ orders.shipping.charges }}
           </p>
           <p>
             <v-icon color="black">fa fa-money</v-icon>
             <strong>
               Total Amount:
             </strong>
-            {{ orders[0].total }}
+            {{ orders.total }}
           </p>
         </div>
         <div>
@@ -68,7 +69,7 @@
 export default {
   name: 'OrderDetail',
   props: {
-    orders: Array
+    orders: Object
   },
   data() {
     return {

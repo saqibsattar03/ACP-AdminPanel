@@ -23,13 +23,25 @@
           width="100%"
           height="50px"
           color="#F9610C"
-          dark
+          style="color: white"
+          :disabled="disable"
           to="/"
           @click.prevent="userLogin"
           >Sign in</v-btn
         >
       </v-card>
     </v-form>
+    <v-snackbar
+      v-model="snackbar"
+      bottom
+      color="red"
+      :timeout="1500"
+      height="200"
+      rounded="pill"
+      dark
+    >
+      {{ snackbarText }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -38,23 +50,54 @@ export default {
   name: 'LogIn',
   data() {
     return {
+      snackbar: false,
+      snackbarColor: 'red',
       login: {
         username: '',
         password: ''
-      }
+      },
+      disable: false
     }
   },
   methods: {
     async userLogin() {
       if (this.$refs.form.validate()) {
         try {
+          this.disable = true
+
+          if (this.$auth.loggedIn) return
           await this.$auth.loginWith('local', {
             data: this.login
           })
 
+          if (this.$auth.hasScope('customer')) {
+            this.snackbar = true
+            this.snackbarText = "Customer can't login to Admin Panel"
+            await this.$auth.logout()
+            this.disable = false
+            return
+          } else if (this.$auth.hasScope('supplier')) {
+            const supplierId = this.$auth.user._id
+            const supplier = await this.$axios.$get(
+              'suppliers/getbyperson/' + supplierId
+            )
+            if (!supplier.status) {
+              this.snackbar = true
+              this.snackbarText = 'Your Account has been disabled by admin'
+              await this.$auth.logout()
+              return
+            }
+
+            this.disable = false
+          }
+
           await this.$router.push('/')
+          this.disable = false
         } catch (err) {
-          console.log(err)
+          this.disable = false
+          this.snackbar = true
+          this.snackbarText = 'User name or Password is incorrect'
+          console.log('user name and password is incorrect ')
         }
       }
     }

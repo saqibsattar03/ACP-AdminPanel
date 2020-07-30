@@ -9,11 +9,13 @@
     >
       <div class="span-2">
         <v-select
-          v-model="selectedMaster"
-          :items="mainCategories"
+          v-model="masterCategories"
+          :items="masterCategories"
           label="-- Master Category --"
           outlined
-          :rules="[(_) => !!selectedMaster || 'Select a Master Category']"
+          :rules="[
+            (_) => !!subCategory.selectedMaster || 'Select a Master Category'
+          ]"
           dense
         >
           <template #item="{ item }">{{ item.name }}</template>
@@ -69,6 +71,9 @@ export default {
     isUpdate: {
       type: Boolean,
       default: false
+    },
+    masterCategories: {
+      type: Array
     }
   },
 
@@ -76,6 +81,10 @@ export default {
     items: [],
     selectedMain: null,
     selectedMaster: null
-  })
+  }),
+
+  mounted() {
+    console.log(this.subCategory)
+  }
 }
 </script>

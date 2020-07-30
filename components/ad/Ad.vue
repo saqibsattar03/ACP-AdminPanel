@@ -1,62 +1,31 @@
 <template>
   <v-container>
-    <div style="margin-top: 30px">
-      <div class="my-card" style="padding: 0">
-        <p style="padding-top: 15px;padding-left: 15px">Ads</p>
-        <div style="display: flex;margin: 10px">
-          <v-btn-toggle dense>
-            <v-btn>All Ads </v-btn>
-            <v-btn>New Ads </v-btn>
-
-            <v-btn>
-              Featured Ads
-            </v-btn>
-
-            <v-btn>
-              Killer Deals
-            </v-btn>
-            <v-btn>Featured Ads </v-btn>
-          </v-btn-toggle>
-          <v-spacer />
-          <v-btn href="/ad/form" style="background-color: #17A2B8" dark
-            >+Add New</v-btn
-          >
-        </div>
-        <div style="display: flex">
-          <v-spacer />
-          <div>
-            <v-text-field
-              style="margin-right: 10px; width: 200px"
-              outlined
-              dense
-              label="Search..."
-            ></v-text-field>
-          </div>
-        </div>
-        <div style="width: 100%">
-          <v-data-table
-            :headers="headers"
-            :items="products"
-            height="100%"
-            :items-per-page="5"
-          >
-            <template v-slot:item.status="{ item }">
-              <v-btn :color="getColor(item.status)" small depressed dark>{{
-                item.status
-              }}</v-btn>
-            </template>
-          </v-data-table>
-        </div>
-      </div>
-    </div>
+    <data-viewer
+      :columns="headers"
+      :title="title"
+      create
+      create-route="/ad/form"
+      remove
+      remove-route="products/$id"
+      change
+      change-route="/ad/edit/$id"
+      endpoint="products"
+    >
+    </data-viewer>
   </v-container>
 </template>
 
 <script>
+import DataViewer from '../../common/ui/widgets/DataViewer'
+
 export default {
   name: 'Ad',
+  components: { DataViewer },
   props: {
-    products: Array
+    title: {
+      type: String,
+      default: 'title'
+    }
   },
 
   data() {

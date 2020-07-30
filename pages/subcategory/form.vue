@@ -1,5 +1,5 @@
 <template>
-  <sub-category-form :main-categories="mainCategories" />
+  <sub-category-form :master-categories="mainCategories" />
 </template>
 
 <script>
@@ -9,7 +9,7 @@ export default {
 
   async asyncData({ $axios }) {
     return {
-      mainCategories: await $axios.$get('/master-categories')
+      mainCategories: await $axios.$get('master-categories/')
     }
   }
 }

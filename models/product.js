@@ -18,7 +18,7 @@ export class Product {
   approved = undefined
 
   /** @type {boolean} */
-  status = undefined
+  status = true
 
   /** @type {boolean} */
   hideWarranty = undefined

@@ -3,7 +3,7 @@ export class SubCategory {
   name = undefined
 
   /** @type {boolean} */
-  status = undefined
+  status = true
 
   /** @type {string[]|MainCategory[]} */
   parents = []

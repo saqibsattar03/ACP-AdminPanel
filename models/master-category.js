@@ -7,7 +7,7 @@ export class MasterCategory {
   /**
    * @type {boolean}
    */
-  status = undefined
+  status = true
 
   // eslint-disable-next-line camelcase
   mainCategories = []

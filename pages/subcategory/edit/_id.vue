@@ -1,5 +1,9 @@
 <template>
-  <sub-category-form :sub-category="sub" is-update="true" />
+  <sub-category-form
+    :master-categories="masterCategories"
+    :sub-category="subCategories"
+    :is-update="true"
+  />
 </template>
 
 <script>
@@ -8,8 +12,10 @@ export default {
   name: 'Id',
   components: { SubCategoryForm },
   async asyncData({ $axios, route }) {
+    console.log(await $axios.$get('/master-categories'))
     return {
-      sub: await $axios.$get('sub-categories/' + route.params.id)
+      masterCategories: await $axios.$get('/master-categories'),
+      subCategories: await $axios.$get('sub-categories/' + route.params.id)
     }
   }
 }

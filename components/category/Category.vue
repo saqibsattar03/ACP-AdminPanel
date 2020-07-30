@@ -3,14 +3,13 @@
     <data-viewer
       :columns="headers"
       :title="title"
-      detail
       create
       create-route="/category/form"
       remove
-      remove-route="master-categories/main-categories/$id"
+      remove-route="/master-categories/main-categories/$id"
       change
       change-route="/category/edit/$id"
-      endpoint="master-categories/main-categories"
+      endpoint="/master-categories/main-categories"
     ></data-viewer>
   </v-container>
 </template>

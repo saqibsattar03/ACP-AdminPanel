@@ -1,12 +1,17 @@
 <template>
-  <notification />
+  <notification :notify="notification" />
 </template>
 
 <script>
 import Notification from '../../components/notification/Notification'
 export default {
   name: 'Index',
-  components: { Notification }
+  components: { Notification },
+  async asyncData({ $axios }) {
+    return {
+      notification: await $axios.$get('/notifications')
+    }
+  }
 }
 </script>
 

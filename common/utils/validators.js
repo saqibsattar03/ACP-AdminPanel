@@ -19,3 +19,10 @@ export function phoneValidator(value) {
     return 'Enter valid phone'
   }
 }
+
+export function maxNumber(value) {
+  if (value > 100) {
+    return 'Discount can not exceed 100  '
+  } else {
+  }
+}

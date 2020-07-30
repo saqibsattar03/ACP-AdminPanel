@@ -3,5 +3,5 @@ export class MainCategory {
   name = undefined
 
   /** @type {boolean} */
-  status = undefined
+  status = true
 }

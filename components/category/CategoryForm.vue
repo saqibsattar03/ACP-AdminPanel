@@ -1,7 +1,7 @@
 <template>
   <div style="display: flex;justify-content: center">
     <SimpleForm
-      method="patch"
+      :method="isUpdate ? 'patch' : 'post'"
       title="Add New Category"
       :data="parseData"
       endpoint="master-categories"

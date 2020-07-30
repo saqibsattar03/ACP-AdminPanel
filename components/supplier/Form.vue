@@ -236,10 +236,10 @@ export default {
       formData.append('expiryDate', this.expiryDate6)
       formData.append('legal2', this.document7)
       formData.append('expiryDate', this.expiryDate7)
-      formData.append('name', this.suppliers.personName)
+      formData.append('name', this.suppliers.person.name)
       formData.append('companyName', this.suppliers.companyName)
-      formData.append('phone', this.suppliers.mobile)
-      formData.append('username', this.suppliers.email)
+      formData.append('phone', this.suppliers.person.phone)
+      formData.append('username', this.suppliers.person.username)
       formData.append('password', this.suppliers.password)
       formData.append('status', this.suppliers.status)
 

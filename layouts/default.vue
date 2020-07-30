@@ -180,12 +180,12 @@ export default {
           to: '/supplierregistration',
           show: true
         },
-        {
-          icon: 'menu-icon ti-direction',
-          title: 'Master Categories',
-          to: '/maincategory',
-          show: true
-        },
+        // {
+        //   icon: 'menu-icon ti-direction',
+        //   title: 'Master Categories',
+        //   to: '/maincategory',
+        //   show: true
+        // },
         {
           icon: 'menu-icon ti-direction',
           title: 'Main Categories',

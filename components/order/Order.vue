@@ -4,7 +4,7 @@
       :columns="headers"
       :title="title"
       detail
-      detail-route="order/detail/$id"
+      detail-route="/order/detail/$id"
       remove
       remove-route="orders/$id"
       endpoint="orders"

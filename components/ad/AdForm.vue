@@ -1,6 +1,12 @@
 <template>
   <div style="display: flex;justify-content: center">
-    <SimpleForm title="Add New Ad" endpoint="products" :data="formData" return>
+    <SimpleForm
+      title="Add New Ad"
+      :method="isUpdate ? 'patch' : 'post'"
+      endpoint="products"
+      :data="formData"
+      return
+    >
       <div class="span-2">
         <v-select
           v-model="product.mainCategoryId"
@@ -39,6 +45,7 @@
         ></v-textarea>
         <v-text-field
           v-model="product.price"
+          :rules="[(_) => !!product.price || 'Please Enter Price']"
           type="number"
           outlined
           dense
@@ -126,6 +133,7 @@
         <v-text-field
           v-model="product.adminCommission"
           type="number"
+          :rules="[(_) => !!product.price || 'Please Enter Admin Commission']"
           outlined
           dense
           label="Admin Commission"
@@ -147,26 +155,33 @@
           v-model="product.isKillerDeal"
           label="Killer Deals"
         ></v-checkbox>
-        <v-file-input
-          v-model="product.images"
-          multiple
-          outlined
-          dense
-          label="Upload Files"
-        ></v-file-input>
+        <vue-upload-multiple-image
+          :data-images="imagesData"
+          @upload-success="uploadImageSuccess"
+          @before-remove="beforeRemove"
+          @edit-image="editImage"
+        ></vue-upload-multiple-image>
+        <!--        <v-file-input-->
+        <!--          v-model="product.images"-->
+        <!--          multiple-->
+        <!--          outlined-->
+        <!--          dense-->
+        <!--          label="Upload Files"-->
+        <!--        ></v-file-input>-->
       </div>
     </SimpleForm>
   </div>
 </template>
 
 <script>
+import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
 import { Product } from '../../models/product'
 import { required } from '../../common/lib/validator'
 
 export default {
   name: 'AdForm',
-  components: { SimpleForm },
+  components: { SimpleForm, VueUploadMultipleImage },
   props: {
     mainCategories: {
       type: Array,
@@ -183,6 +198,10 @@ export default {
     variant: {
       type: Array,
       default: () => [new Product()]
+    },
+    isUpdate: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -192,7 +211,9 @@ export default {
       items: [],
       selectedMain: null,
       selectedSub: null,
-      variants: []
+      variants: [],
+      images: [],
+      imagesData: []
     }
   },
   mounted() {
@@ -201,42 +222,115 @@ export default {
   methods: {
     required,
     formData() {
+      console.log(this.product)
       const formData = new FormData()
 
-      formData.append('mainCategoryId', this.product.mainCategoryId)
-      formData.append('subCategoryId', this.product.subCategoryId)
-      formData.append('name', this.product.name)
-      formData.append('description', this.product.description)
-      formData.append('price', this.product.price)
-      formData.append('adminCommission', this.product.adminCommission)
-      formData.append('warrantyMonths', this.product.warrantyMonths)
-      formData.append('status', this.product.status || false)
-      formData.append('hideWarranty', this.product.hideWarranty || false)
-      formData.append('featured', this.product.isFeatured || false)
-      formData.append('killerDeals', this.product.isKillerDeal || false)
+      if (this.$auth.hasScope('admin')) {
+        formData.append('mainCategoryId', this.product.mainCategoryId)
+        formData.append('subCategoryId', this.product.subCategoryId)
+        formData.append('name', this.product.name)
+        formData.append('description', this.product.description)
+        formData.append('price', this.product.price)
+        formData.append('adminCommission', this.product.adminCommission)
+        formData.append('warrantyMonths', this.product.warrantyMonths)
+        formData.append('status', 'approved')
+        formData.append('active', this.product.status || false)
+        formData.append('hideWarranty', this.product.hideWarranty || false)
+        formData.append('featured', this.product.isFeatured || false)
+        formData.append('killerDeals', this.product.isKillerDeal || false)
 
-      for (const variant of this.product.variants) {
-        formData.append('color', variant.color)
-        formData.append('ram', variant.ram)
-        formData.append('storage', variant.storage)
-        formData.append('version', variant.version)
-        formData.append('_price', variant.price)
+        for (const variant of this.product.variants) {
+          formData.append('color', variant.color)
+          formData.append('ram', variant.ram)
+          formData.append('storage', variant.storage)
+          formData.append('version', variant.version)
+          formData.append('_price', variant.price)
+        }
+        window.console.log(this.images)
+        for (const image of this.images) {
+          formData.append('images', image)
+          window.console.log(image)
+        }
+
+        formData.forEach((item) => window.console.log(item))
+
+        return formData
+      } else {
+        formData.append('mainCategoryId', this.product.mainCategoryId)
+        formData.append('subCategoryId', this.product.subCategoryId)
+        formData.append('name', this.product.name)
+        formData.append('description', this.product.description)
+        formData.append('price', this.product.price)
+        formData.append('adminCommission', this.product.adminCommission)
+        formData.append('warrantyMonths', this.product.warrantyMonths)
+        formData.append('status', 'Pending')
+        formData.append('active', this.product.status || false)
+        formData.append('hideWarranty', this.product.hideWarranty || false)
+        formData.append('featured', this.product.isFeatured || false)
+        formData.append('killerDeals', this.product.isKillerDeal || false)
+
+        for (const variant of this.product.variants) {
+          formData.append('color', variant.color)
+          formData.append('ram', variant.ram)
+          formData.append('storage', variant.storage)
+          formData.append('version', variant.version)
+          formData.append('_price', variant.price)
+        }
+
+        for (const image of this.product.images) {
+          formData.append('images', image)
+        }
+
+        return formData
       }
-
-      for (const image of this.product.images) {
-        formData.append('images', image)
-      }
-
-      return formData
     },
     removeVariant(i) {
       if (this.variant.length <= 1) {
         return
       }
       this.variant.splice(i, 1)
-    }
+    },
+    uploadImageSuccess(formData, index, fileList) {
+      formData.forEach((item) => this.images.push(item))
+    },
+    beforeRemove(index, done, fileList) {
+      const r = confirm('remove image')
+      if (r === true) {
+        done()
+      } else {
+      }
+    },
+    editImage(fileList) {}
   }
 }
 </script>
 
-<style scoped></style>
+<style>
+#my-strictly-unique-vue-upload-multiple-image {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+h1,
+h2 {
+  font-weight: normal;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  display: inline-block;
+  margin: 0 10px;
+}
+
+a {
+  color: #42b983;
+}
+</style>

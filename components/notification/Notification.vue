@@ -21,28 +21,28 @@
           ></v-textarea>
         </div>
       </SimpleForm>
-      <data-viewer
-        :columns="headers"
-        remove
+      <v-data-table
+        :headers="headers"
+        :items="notify"
         endpoint="/notifications"
-      ></data-viewer>
+      ></v-data-table>
     </div>
   </div>
 </template>
 
 <script>
-import DataViewer from '../../common/ui/widgets/DataViewer'
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
 import { Notification } from '../../models/notification'
 
 export default {
   name: 'Notification',
-  components: { DataViewer, SimpleForm },
+  components: { SimpleForm },
   props: {
     notification: {
       type: Object,
       default: () => new Notification()
-    }
+    },
+    notify: Array
   },
   data() {
     return {

@@ -3,7 +3,7 @@ export class Supplier {
   companyName = undefined
 
   /** @type {boolean} */
-  status = undefined
+  status = true
 
   /** @type {string[]|SupplierDocuments[]} */
   documents = ['', '', '', '', '', '', '']
@@ -20,8 +20,8 @@ export class Supplier {
   /** @type {string} */
   password = undefined
 
-  /** @type {date[]} */
-  expiryDate = ['', '', '', '', '', '', '']
+  // /** @type {date[]} */
+  // expiryDate = ['', '', '', '', '', '', '']
 
   /** @type {} */
   person = {}

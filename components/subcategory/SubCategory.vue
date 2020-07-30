@@ -3,11 +3,10 @@
     <data-viewer
       :columns="headers"
       :title="title"
-      detail
       create
       create-route="/subcategory/form"
       remove
-      remove-route="/subscategory/$id"
+      remove-route="/sub-categories/$id"
       change
       change-route="/subcategory/edit/$id"
       endpoint="sub-categories"

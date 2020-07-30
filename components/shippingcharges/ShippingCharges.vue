@@ -7,7 +7,6 @@
       create-route="shippingcharges/form"
       remove
       remove-route="shipping-charges/$id"
-      detail
       change
       change-route="shippingcharges/edit/$id"
       endpoint="/shipping-charges"

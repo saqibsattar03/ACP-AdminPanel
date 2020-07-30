@@ -1,5 +1,5 @@
 <template>
-  <ad :products="products" />
+  <ad title="Products" />
 </template>
 
 <script>
@@ -11,7 +11,7 @@ export default {
     console.log('here')
     console.log(await $axios.$get('/products'))
     return {
-      products: await $axios.$get('/products')
+      product: await $axios.$get('/products')
     }
   }
 }

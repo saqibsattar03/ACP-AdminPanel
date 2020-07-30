@@ -1,5 +1,9 @@
 <template>
-  <category-form :main-category="main" is-update="true" />
+  <category-form
+    :master-categories="masterCategories"
+    :main-category="mainCategories"
+    :is-update="true"
+  />
 </template>
 
 <script>
@@ -9,8 +13,11 @@ export default {
   name: 'Id',
   components: { CategoryForm },
   async asyncData({ $axios, route }) {
+    console.log(await $axios.$get('master-categories'))
+    console.log(await $axios.$get('master-categories/main-categories'))
     return {
-      main: await $axios.$get(
+      masterCategories: await $axios.$get('/master-categories'),
+      mainCategories: await $axios.$get(
         'master-categories/main-categories/' + route.params.id
       )
     }

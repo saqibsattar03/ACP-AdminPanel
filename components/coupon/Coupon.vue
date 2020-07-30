@@ -3,7 +3,6 @@
     <data-viewer
       :columns="headers"
       :title="title"
-      detail
       create
       create-route="/coupon/form"
       remove
