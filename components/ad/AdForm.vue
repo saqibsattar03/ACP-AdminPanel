@@ -242,7 +242,10 @@ export default {
     required,
     formData() {
       const formData = new FormData()
-
+      if (this.$auth.hasScope('supplier')) {
+        const supplierId = this.$auth.user._id
+        formData.append('supplierId', supplierId)
+      }
       if (this.isUpdate) {
         formData.append('_id', this.product._id)
       }

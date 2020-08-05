@@ -14,8 +14,14 @@
             dense
             label="-- Select Type --"
           ></v-select>
-          <v-textarea
+          <v-text-field
             v-model="notification.title"
+            label="Title"
+            outlined
+            dense
+          />
+          <v-textarea
+            v-model="notification.description"
             outlined
             label="Notification"
           ></v-textarea>
@@ -48,7 +54,10 @@ export default {
     return {
       items: ['all', 'Supplier', 'Customer'],
       selected: null,
-      headers: [{ text: 'TITLE', value: 'title' }]
+      headers: [
+        { text: 'TITLE', value: 'title' },
+        { text: 'DESCRIPTION', value: 'description' }
+      ]
     }
   }
 }

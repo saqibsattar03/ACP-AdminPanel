@@ -15,7 +15,7 @@ export default {
   async asyncData({ $axios, route }) {
     return {
       product: await $axios.$get('products/' + route.params.id),
-      mainCategory: await $axios.$get('master-categories/main-categories'),
+      mainCategory: await $axios.$get('/main-categories/'),
       subCategory: await $axios.$get('/sub-categories')
     }
   }

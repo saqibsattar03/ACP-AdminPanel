@@ -74,9 +74,9 @@
       </div>
     </div>
     <div class="my-card" style="height: 100px;margin-top: 35px;display: flex">
-      <p>Copyright 2019 ACP</p>
+      <p>@Copyright 2020</p>
       <v-spacer />
-      <p>XYZ</p>
+      <p>Designed and Developed by Sparco Tech</p>
     </div>
   </v-container>
 </template>

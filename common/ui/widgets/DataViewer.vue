@@ -1,7 +1,7 @@
 <template>
   <v-card class="data-viewer" elevation="8">
     <v-card-title class="data-viewer__title">
-      <v-btn icon @click="returnBack" v-if="back">
+      <v-btn v-if="back" icon @click="returnBack">
         <v-icon>mdi-keyboard-backspace</v-icon>
       </v-btn>
       <span>{{ title }}</span>
@@ -63,6 +63,12 @@
       :hide-default-footer="!pagination"
       class="data-table__content"
     >
+      <template v-slot:item.startDate="{ item }">
+        {{ parseDate(item.startDate) }}
+      </template>
+      <template v-slot:item.endDate="{ item }">{{
+        parseDate(item.endDate)
+      }}</template>
       <template v-slot:item.images="{ item }">
         <div v-if="item.images.length <= 0">
           {{ ' No Image ' }}
@@ -99,6 +105,7 @@
 
 <script>
 import { defineComponent, onMounted, ref } from '@vue/composition-api'
+import * as moment from 'moment'
 import { setupDataLoader } from '../../lib/data-loader'
 
 /**
@@ -283,6 +290,9 @@ export default defineComponent({
         )
       }
     }
+    function parseDate(item) {
+      return moment(item).format('DD-MM-YYYY')
+    }
 
     return {
       search,
@@ -292,7 +302,8 @@ export default defineComponent({
       returnBack,
       changeItem,
       detailItem,
-      handleCreateEvent
+      handleCreateEvent,
+      parseDate
     }
   }
 })

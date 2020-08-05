@@ -230,40 +230,49 @@ export default {
 }
 </script>
 
-<style>
-.v-list {
-  padding: 0;
-}
+<style lang="sass">
+.v-list
+  padding: 0
 
-.drawer {
-  overflow-y: visible;
-}
-.drawer-menu-item {
-  color: #607d8b;
+
+.drawer
+  overflow-y: visible
+
+.drawer-menu-item
+  color: #607d8b
   /*border: none;*/
-}
-.drawer-menu-item-icon {
-  color: #607d8b;
-}
-.drawer-menu-item-title {
-  color: #607d8b;
-}
-.drawer-menu-item-icon {
-  margin-left: 3px;
-}
-.drawer-menu-item:hover {
-  background-color: white;
-}
-.drawer-menu-item:hover .drawer-menu-item-icon {
-  color: #03a9f3;
-}
-.drawer-menu-item:hover .drawer-menu-item-title {
-  color: #03a9f3;
-}
-.drawer-menu-item-active .drawer-menu-item-icon {
-  color: #03a9f3;
-}
-.drawer-menu-item-active .drawer-menu-item-title {
-  color: #03a9f3;
-}
+
+.drawer-menu-item-icon
+  color: #607d8b
+
+.drawer-menu-item-title
+  color: #607d8b
+
+.drawer-menu-item-icon
+  margin-left: 3px
+
+.drawer-menu-item:hover
+  background-color: white
+
+.drawer-menu-item:hover .drawer-menu-item-icon
+  color: #03a9f3
+
+.drawer-menu-item:hover .drawer-menu-item-title
+  color: #03a9f3
+
+.drawer-menu-item-active .drawer-menu-item-icon
+  color: #03a9f3
+
+.drawer-menu-item-active .drawer-menu-item-title
+  color: #03a9f3
+.v-data-table-header
+  background: #eff0f5
+
+.status-card
+  display: flex
+
+  &__info
+    display: flex
+    padding-left: 25px
+    flex-direction: column
 </style>

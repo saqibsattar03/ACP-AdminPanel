@@ -13,6 +13,7 @@
         item-value="_id"
         item-text="name"
         outlined
+        dense
         :items="masterCategories"
         :rules="[(v) => !!v || 'Parent category is required']"
       />
@@ -20,6 +21,7 @@
         v-model="mainCategory.name"
         class="span-2"
         outlined
+        dense
         label="Name of Main Category"
         :rules="[(v) => !!v || 'Name is required']"
       />
