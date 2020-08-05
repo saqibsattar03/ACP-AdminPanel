@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="padding: 25px">
+    <div style="padding: 25px;">
       <SimpleForm
         title="Send New Notification"
         :data="notification"
