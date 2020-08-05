@@ -7,15 +7,15 @@
       title="Create new Master Category"
       return
     >
-      <div class="span-2">
-        <v-text-field
-          v-model="masterCategory.name"
-          label="Title"
-          outlined
-          dense
-        />
-      </div>
-      <v-checkbox v-model="masterCategory.status" label="Active" />
+      <v-text-field
+        v-model="masterCategory.name"
+        :rules="[(v) => !!v || 'Please Provide a value']"
+        class="span-2"
+        label="Title"
+        outlined
+        dense
+      ></v-text-field>
+      <v-checkbox v-model="masterCategory.status" label="Active"></v-checkbox>
     </SimpleForm>
   </div>
 </template>

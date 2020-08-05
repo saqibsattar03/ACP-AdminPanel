@@ -37,12 +37,12 @@
           outlined
           dense
           label="Product Name"
-        ></v-text-field>
+        />
         <v-textarea
           v-model="product.description"
           outlined
           label="Description"
-        ></v-textarea>
+        />
         <v-text-field
           v-model="product.price"
           :rules="[(_) => !!product.price || 'Please Enter Price']"
@@ -50,7 +50,7 @@
           outlined
           dense
           label="Price"
-        ></v-text-field>
+        />
         <v-card style="padding: 20px;margin-bottom: 20px">
           <v-card-title style="color: #313F53">Add Variants</v-card-title>
           <v-divider></v-divider>
@@ -73,55 +73,55 @@
             </v-col>
           </v-row>
           <v-row
-            v-for="(variant, i) of product.variants"
+            v-for="(_variant, i) of product.variants"
             :key="i"
             style="display: grid;grid-template-columns: auto auto auto auto auto 50px"
           >
             <v-col>
               <v-text-field
-                v-model="variant.color"
+                v-model="_variant.color"
                 color="#313F53"
                 outlined
                 label="Color"
                 dense
-              ></v-text-field>
+              />
             </v-col>
             <v-col>
               <v-text-field
-                v-model="variant.ram"
+                v-model="_variant.ram"
                 color="#313F53"
                 outlined
                 label="Ram"
                 dense
-              ></v-text-field>
+              />
             </v-col>
             <v-col>
               <v-text-field
-                v-model="variant.storage"
+                v-model="_variant.storage"
                 color="#313F53"
                 outlined
                 label="Storage"
                 dense
-              ></v-text-field>
+              />
             </v-col>
             <v-col>
               <v-text-field
-                v-model="variant.version"
+                v-model="_variant.version"
                 color="#313F53"
                 outlined
                 label="Version"
                 dense
-              ></v-text-field>
+              />
             </v-col>
             <v-col>
               <v-text-field
-                v-model="variant.price"
+                v-model="_variant.price"
                 color="#313F53"
                 outlined
                 type="number"
                 label="Price"
                 dense
-              ></v-text-field>
+              />
             </v-col>
             <v-col cols="12" md="1" sm="1">
               <v-btn icon @click="removeVariant(i)">
@@ -137,37 +137,51 @@
           outlined
           dense
           label="Admin Commission"
-        ></v-text-field>
+        />
+
         <v-text-field
           v-model="product.warrantyMonths"
           type="number"
           outlined
           dense
           label="Warranty Months"
-        ></v-text-field>
-        <v-checkbox v-model="product.status" label="Active"></v-checkbox>
-        <v-checkbox
-          v-model="product.hideWarranty"
-          label="Hide Warranty"
-        ></v-checkbox>
-        <v-checkbox v-model="product.isFeatured" label="Featured"></v-checkbox>
-        <v-checkbox
-          v-model="product.isKillerDeal"
-          label="Killer Deals"
-        ></v-checkbox>
+        />
+
+        <v-checkbox v-model="product.active" label="Active" />
+        <v-checkbox v-model="product.hideWarranty" label="Hide Warranty" />
+        <v-checkbox v-model="product.isFeatured" label="Featured" />
+        <v-checkbox v-model="product.isKillerDeal" label="Killer Deals" />
+
+        <div v-if="isUpdate">
+          <p>Uploaded Images</p>
+          <div class="image-carosel">
+            <div
+              v-for="(image, i) of product.images"
+              :key="i"
+              style="width: 180px; height: 180px"
+            >
+              <img
+                width="180"
+                height="180"
+                style="object-fit: cover;"
+                :src="$axios.defaults.baseURL + '/uploads/' + image.name"
+                alt=""
+              />
+              <div class="image-overlay">
+                <v-btn icon outlined color="white" @click="deleteImage(i)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <vue-upload-multiple-image
           :data-images="imagesData"
           @upload-success="uploadImageSuccess"
           @before-remove="beforeRemove"
           @edit-image="editImage"
-        ></vue-upload-multiple-image>
-        <!--        <v-file-input-->
-        <!--          v-model="product.images"-->
-        <!--          multiple-->
-        <!--          outlined-->
-        <!--          dense-->
-        <!--          label="Upload Files"-->
-        <!--        ></v-file-input>-->
+        />
       </div>
     </SimpleForm>
   </div>
@@ -176,8 +190,8 @@
 <script>
 import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
-import { Product } from '../../models/product'
-import { required } from '../../common/lib/validator'
+import { Product } from '~/models/product'
+import { required } from '~/common/lib/validator'
 
 export default {
   name: 'AdForm',
@@ -199,6 +213,10 @@ export default {
       type: Array,
       default: () => [new Product()]
     },
+    deletedImages: {
+      type: Array,
+      default: () => []
+    },
     isUpdate: {
       type: Boolean,
       default: false
@@ -216,103 +234,132 @@ export default {
       imagesData: []
     }
   },
+
   mounted() {
-    console.log(this.subCategories)
+    window.console.log(this.product)
   },
   methods: {
     required,
     formData() {
-      console.log(this.product)
       const formData = new FormData()
 
-      if (this.$auth.hasScope('admin')) {
-        formData.append('mainCategoryId', this.product.mainCategoryId)
-        formData.append('subCategoryId', this.product.subCategoryId)
-        formData.append('name', this.product.name)
-        formData.append('description', this.product.description)
-        formData.append('price', this.product.price)
-        formData.append('adminCommission', this.product.adminCommission)
-        formData.append('warrantyMonths', this.product.warrantyMonths)
-        formData.append('status', 'approved')
-        formData.append('active', this.product.status || false)
-        formData.append('hideWarranty', this.product.hideWarranty || false)
-        formData.append('featured', this.product.isFeatured || false)
-        formData.append('killerDeals', this.product.isKillerDeal || false)
-
-        for (const variant of this.product.variants) {
-          formData.append('color', variant.color)
-          formData.append('ram', variant.ram)
-          formData.append('storage', variant.storage)
-          formData.append('version', variant.version)
-          formData.append('_price', variant.price)
-        }
-        window.console.log(this.images)
-        for (const image of this.images) {
-          formData.append('images', image)
-          window.console.log(image)
-        }
-
-        formData.forEach((item) => window.console.log(item))
-
-        return formData
-      } else {
-        formData.append('mainCategoryId', this.product.mainCategoryId)
-        formData.append('subCategoryId', this.product.subCategoryId)
-        formData.append('name', this.product.name)
-        formData.append('description', this.product.description)
-        formData.append('price', this.product.price)
-        formData.append('adminCommission', this.product.adminCommission)
-        formData.append('warrantyMonths', this.product.warrantyMonths)
-        formData.append('status', 'Pending')
-        formData.append('active', this.product.status || false)
-        formData.append('hideWarranty', this.product.hideWarranty || false)
-        formData.append('featured', this.product.isFeatured || false)
-        formData.append('killerDeals', this.product.isKillerDeal || false)
-
-        for (const variant of this.product.variants) {
-          formData.append('color', variant.color)
-          formData.append('ram', variant.ram)
-          formData.append('storage', variant.storage)
-          formData.append('version', variant.version)
-          formData.append('_price', variant.price)
-        }
-
-        for (const image of this.product.images) {
-          formData.append('images', image)
-        }
-
-        return formData
+      if (this.isUpdate) {
+        formData.append('_id', this.product._id)
       }
+      formData.append('name', this.product.name)
+      formData.append('price', this.product.price)
+      formData.append('description', this.product.description)
+      formData.append('subCategoryId', this.product.subCategoryId)
+      formData.append('mainCategoryId', this.product.mainCategoryId)
+      formData.append('warrantyMonths', this.product.warrantyMonths)
+      formData.append('adminCommission', this.product.adminCommission)
+
+      formData.append('active', (this.product.active || false).toString())
+      formData.append(
+        'isFeatured',
+        (this.product.isFeatured || false).toString()
+      )
+      formData.append(
+        'hideWarranty',
+        (this.product.hideWarranty || false).toString()
+      )
+      formData.append(
+        'isKillerDeal',
+        (this.product.isKillerDeal || false).toString()
+      )
+
+      for (const image of this.deletedImages) {
+        formData.append('deletedImages', image.path)
+      }
+
+      for (const image of this.product.images) {
+        formData.append('uploadedImageNames', image.name)
+        formData.append('uploadedImagePaths', image.path)
+      }
+
+      for (const variant of this.product.variants) {
+        formData.append('ram', variant.ram)
+        formData.append('color', variant.color)
+        formData.append('_price', variant.price)
+        formData.append('storage', variant.storage)
+        formData.append('version', variant.version)
+      }
+
+      for (const image of this.images) {
+        formData.append('images', image)
+      }
+
+      if (this.$auth.hasScope('admin')) {
+        formData.append('status', 'approved')
+      }
+
+      return formData
     },
     removeVariant(i) {
-      if (this.variant.length <= 1) {
-        return
+      if (this.product.variants.length > 0) {
+        this.product.variants.splice(i, 1)
       }
-      this.variant.splice(i, 1)
     },
-    uploadImageSuccess(formData, index, fileList) {
+    uploadImageSuccess(formData) {
       formData.forEach((item) => this.images.push(item))
     },
     beforeRemove(index, done, fileList) {
-      const r = confirm('remove image')
-      if (r === true) {
-        done()
-      } else {
-      }
+      // const r = confirm('remove image')
+      // if (r === true) {
+      //   done()
+      // } else {
+      // }
     },
-    editImage(fileList) {}
+    editImage(fileList) {},
+
+    deleteImage(index) {
+      this.deletedImages.push(this.product.images[index])
+      this.product.images.splice(index, 1)
+    }
   }
 }
 </script>
 
 <style>
-#my-strictly-unique-vue-upload-multiple-image {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.image-overlay {
+  top: 0;
+  left: 0;
+  z-index: 5;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  border-right: 4px;
+  position: absolute;
+  transition: all 0.2s;
+  align-items: center;
+  margin: 0 !important;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.image-carosel {
+  padding: 10px 5px;
+  height: 200px;
+  display: flex;
+  overflow-x: auto;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.image-carosel div {
+  margin: 0 5px;
+  position: relative;
+}
+
+.image-carosel div img {
+  top: 0;
+  position: absolute;
+}
+
+.image-carosel div:hover .image-overlay {
+  transform: scale(1);
+  opacity: 1;
 }
 
 h1,

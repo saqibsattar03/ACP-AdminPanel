@@ -17,22 +17,22 @@ export class Purchase extends Model {
   expiryDate = undefined
 
   /**
-   * Price for people of Poor category
+   * Price for people of Poor main-categories
    */
   poor = 0
 
   /**
-   * Price for people of YCDO category
+   * Price for people of YCDO main-categories
    */
   ycdo = 0
 
   /**
-   * Price for people of General category
+   * Price for people of General main-categories
    */
   general = 0
 
   /**
-   * Price for people of Deserving category
+   * Price for people of Deserving main-categories
    */
   deserving = 0
 

@@ -5,7 +5,9 @@
         <div class="my-card status-card">
           <i class="pe-7s-cash" style="font-size: 50px;color: #00c292"></i>
           <div class="status-card__info" style="margin-left: 25px">
-            <h2 style="color: grey;font-size: 20px">OMR 7289</h2>
+            <h2 style="color: grey;font-size: 20px">
+              OMR {{ orderRevenue.revenue }}
+            </h2>
             <h3 style="color: grey;font-size: 15px">Revenue</h3>
           </div>
         </div>
@@ -14,7 +16,9 @@
         <div class="my-card status-card">
           <i class="pe-7s-cart" style="font-size: 50px;color: #ab8ce4"></i>
           <div class="status-card__info" style="margin-left: 25px">
-            <h2 style="color: grey;font-size: 20px">42</h2>
+            <h2 style="color: grey;font-size: 20px">
+              {{ orderRevenue.orders }}
+            </h2>
             <h3 style="color: grey;font-size: 15px">Sales</h3>
           </div>
         </div>
@@ -23,7 +27,7 @@
         <div class="my-card status-card">
           <i class="pe-7s-browser" style="font-size: 50px;color: #03a9f3"></i>
           <div class="status-card__info" style="margin-left: 25px">
-            <h2 style="color: grey;font-size: 20px">4400</h2>
+            <h2 style="color: grey;font-size: 20px">{{ adsCount }}</h2>
             <h3 style="color: grey;font-size: 15px">Ads</h3>
           </div>
         </div>
@@ -32,7 +36,7 @@
         <div class="my-card status-card">
           <i class="pe-7s-users" style="font-size: 50px;color: #fb9678"></i>
           <div class="status-card__info" style="margin-left: 25px">
-            <h2 style="color: grey;font-size: 20px">6</h2>
+            <h2 style="color: grey;font-size: 20px">{{ suppliersCount }}</h2>
             <h3 style="color: grey;font-size: 15px">Supplier(s)</h3>
           </div>
         </div>
@@ -45,7 +49,7 @@
           <v-data-table
             hide-default-footer
             :headers="headers"
-            :items="order"
+            :items="orders"
             height="100%"
           >
             <template v-slot:item.status="{ item }">
@@ -82,11 +86,10 @@ import moment from 'moment'
 
 export default {
   name: 'AdminHomeScreen',
-  async asyncData({ $axios }) {
-    return {
-      order: await $axios.$get('orders/')
-    }
-  },
+
+  // eslint-disable-next-line vue/require-prop-types
+  props: ['orders', 'adsCount', 'orderRevenue', 'suppliersCount'],
+
   data() {
     return {
       headers: [
@@ -96,8 +99,7 @@ export default {
         { text: 'QUANTITY', value: 'quantity' },
         { text: 'STATUS', value: 'status' }
       ],
-      date: moment(Date.now()).format('dddd MMM DD, YYYY'),
-      items: []
+      date: moment(Date.now()).format('dddd MMM DD, YYYY')
     }
   },
   methods: {

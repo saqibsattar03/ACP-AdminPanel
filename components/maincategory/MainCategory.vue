@@ -4,11 +4,11 @@
       :columns="headers"
       :title="title"
       create
-      create-route="/category/form"
+      create-route="/master-categories/form"
       remove
       remove-route="/master-categories/$id"
       change
-      change-route="/category/edit/$id"
+      change-route="/master-categories/edit/$id"
       endpoint="master-categories"
     ></data-viewer>
   </v-container>
@@ -17,7 +17,7 @@
 <script>
 import DataViewer from '../../common/ui/widgets/DataViewer'
 export default {
-  name: 'MainCategory',
+  name: 'MasterCategory',
   components: { DataViewer },
   props: {
     title: {

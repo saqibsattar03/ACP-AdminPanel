@@ -3,38 +3,33 @@
     <SimpleForm
       :method="isUpdate ? 'patch' : 'post'"
       :title="isUpdate ? 'Edit Category' : 'Add New Category'"
-      :data="parseData"
-      endpoint="master-categories"
+      :data="mainCategory"
+      endpoint="main-categories"
       return
     >
-      <div class="span-2">
-        <v-select
-          v-model="selectedMaster"
-          :items="masterCategories"
-          :rules="[(_) => !!selectedMaster || 'Select a Master Category']"
-          outlined
-          dense
-          label="-- Master Category --"
-        >
-          <template #item="{ item }">{{ item.name }}</template>
-          <template #selection="{ item }">{{ item.name }}</template>
-        </v-select>
-        <v-text-field
-          v-model="mainCategory.name"
-          :rules="[(v) => !!v || 'Please Provide a value']"
-          label="Title"
-          outlined
-          dense
-        ></v-text-field>
-        <v-checkbox v-model="mainCategory.status" label="Active"></v-checkbox>
-      </div>
+      <v-select
+        v-model="mainCategory.parent"
+        class="span-2"
+        item-value="_id"
+        item-text="name"
+        outlined
+        :items="masterCategories"
+        :rules="[(v) => !!v || 'Parent category is required']"
+      />
+      <v-text-field
+        v-model="mainCategory.name"
+        class="span-2"
+        outlined
+        label="Name of Main Category"
+        :rules="[(v) => !!v || 'Name is required']"
+      />
+      <v-checkbox v-model="mainCategory.status" label="Active" />
     </SimpleForm>
   </div>
 </template>
 
 <script>
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
-import { MainCategory } from '../../models/main-category'
 
 export default {
   name: 'Form',
@@ -44,39 +39,16 @@ export default {
       type: Array,
       default: () => []
     },
+
     mainCategory: {
       type: Object,
-      default: () => new MainCategory()
+      default: () => ({})
     },
+
     isUpdate: {
       type: Boolean,
       default: false
     }
-  },
-  data: () => ({
-    items: [],
-    selectedMaster: null
-  }),
-
-  methods: {
-    parseData() {
-      if (
-        this.selectedMaster.mainCategories &&
-        this.selectedMaster.mainCategories.length > 0
-      ) {
-        this.selectedMaster.mainCategories.push(
-          Object.assign({}, this.mainCategory)
-        )
-      } else {
-        this.selectedMaster.mainCategories = [
-          Object.assign({}, this.mainCategory)
-        ]
-      }
-
-      return this.selectedMaster
-    }
   }
 }
 </script>
-
-<style scoped></style>

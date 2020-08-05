@@ -9,7 +9,7 @@ export default {
   async asyncData({ $axios }) {
     console.log('here')
     return {
-      mainCategories: await $axios.$get('/master-categories/main-categories'),
+      mainCategories: await $axios.$get('/main-categories'),
       subCategories: await $axios.$get('/sub-categories')
     }
   }

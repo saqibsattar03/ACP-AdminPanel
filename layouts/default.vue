@@ -113,7 +113,7 @@ export default {
         {
           icon: 'menu-icon fa fa-tags',
           title: 'Ads',
-          to: '/ad',
+          to: '/products',
           show: true
         }
       ]
@@ -180,16 +180,16 @@ export default {
           to: '/supplierregistration',
           show: true
         },
-        // {
-        //   icon: 'menu-icon ti-direction',
-        //   title: 'Master Categories',
-        //   to: '/maincategory',
-        //   show: true
-        // },
+        {
+          icon: 'menu-icon ti-direction',
+          title: 'Master Categories',
+          to: '/master-categories',
+          show: true
+        },
         {
           icon: 'menu-icon ti-direction',
           title: 'Main Categories',
-          to: '/category',
+          to: '/main-categories',
           show: true
         },
         {
@@ -201,7 +201,7 @@ export default {
         {
           icon: 'menu-icon fa fa-tags',
           title: 'Ads',
-          to: '/ad',
+          to: '/products',
           show: true
         },
         {

@@ -4,12 +4,12 @@
       :columns="headers"
       :title="title"
       create
-      create-route="/category/form"
+      create-route="/main-categories/form"
       remove
       remove-route="/master-categories/main-categories/$id"
       change
-      change-route="/category/edit/$id"
-      endpoint="/master-categories/main-categories"
+      change-route="/main-categories/edit/$id"
+      endpoint="/main-categories"
     ></data-viewer>
   </v-container>
 </template>

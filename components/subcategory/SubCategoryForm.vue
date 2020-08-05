@@ -9,22 +9,20 @@
     >
       <div class="span-2">
         <v-select
-          v-model="masterCategories"
+          v-model="selectedMaster"
           :items="masterCategories"
+          item-text="name"
+          item-value="_id"
           label="-- Master Category --"
           outlined
-          :rules="[
-            (_) => !!subCategory.selectedMaster || 'Select a Master Category'
-          ]"
+          :rules="[(v) => !!v || 'Select a Master Category']"
           dense
-        >
-          <template #item="{ item }">{{ item.name }}</template>
-          <template #selection="{ item }">{{ item.name }}</template>
-        </v-select>
+          @change="masterChanged"
+        />
 
         <v-select
           v-model="subCategory.parents"
-          :items="selectedMaster ? selectedMaster.mainCategories : []"
+          :items="items"
           label="-- Main Category --"
           :disabled="!selectedMaster"
           outlined
@@ -44,6 +42,7 @@
           outlined
           dense
         />
+
         <v-checkbox v-model="subCategory.status" label="Active" />
       </div>
     </SimpleForm>
@@ -59,11 +58,6 @@ export default {
   components: { SimpleForm },
 
   props: {
-    mainCategories: {
-      type: Array,
-      default: () => []
-    },
-
     subCategory: {
       type: Object,
       default: () => new SubCategory()
@@ -73,18 +67,34 @@ export default {
       default: false
     },
     masterCategories: {
-      type: Array
+      type: Array,
+      required: true
+    },
+    mainCategories: {
+      type: Array,
+      required: true
     }
   },
 
   data: () => ({
     items: [],
-    selectedMain: null,
     selectedMaster: null
   }),
 
   mounted() {
-    console.log(this.subCategory)
+    if (this.isUpdate) {
+      this.items = this.mainCategories
+      this.selectedMaster = this.mainCategories[0].parent
+    }
+  },
+
+  methods: {
+    async masterChanged() {
+      this.subCategory.parents = []
+      this.items = await this.$axios.$get(
+        '/main-categories/getByParentId/' + this.selectedMaster
+      )
+    }
   }
 }
 </script>

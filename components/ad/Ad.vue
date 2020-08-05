@@ -4,11 +4,11 @@
       :columns="headers"
       :title="title"
       create
-      create-route="/ad/form"
+      create-route="/products/form"
       remove
       remove-route="products/$id"
       change
-      change-route="/ad/edit/$id"
+      change-route="/products/edit/$id"
       endpoint="products"
     >
     </data-viewer>

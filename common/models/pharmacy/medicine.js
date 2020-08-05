@@ -20,13 +20,13 @@ export class Medicine extends StockItem {
    * if a Medicines is parked as [paid] than each
    * Patient have to pay for it but if it is not
    * the case than the Patient might get the Medicines
-   * for free. mostly poor category persons get the
+   * for free. mostly poor main-categories persons get the
    * Medicines for free.
    */
   isPaid = false
 
   /**
-   * It is the category of Medicines.
+   * It is the main-categories of Medicines.
    *
    * Some of the common categories of Medicines
    * are. Tablet, Syrup, Bandage, Ointment etc...

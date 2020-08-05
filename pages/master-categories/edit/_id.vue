@@ -9,7 +9,11 @@ export default {
   components: { MainCategoryForm },
   async asyncData({ $axios, route }) {
     return {
-      master: await $axios.$get('master-categories/' + route.params.id)
+      mainCategory: await $axios.$get(
+        'master-categories/main-categories' + route.params.id
+      ),
+
+      masterCategories: await $axios.$get('master-categories')
     }
   }
 }

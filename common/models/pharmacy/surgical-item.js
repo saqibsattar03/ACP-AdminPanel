@@ -20,7 +20,7 @@ export class SurgicalItem extends StockItem {
    * if a medicine is parked as [paid] than each
    * Patient have to pay for it but if it is not
    * the case than the Patient might get the medicine
-   * for free. mostly poor category persons get the
+   * for free. mostly poor main-categories persons get the
    * Medicines for free.
    *
    * @type {boolean}

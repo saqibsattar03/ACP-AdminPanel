@@ -1,6 +1,7 @@
 <template>
   <sub-category-form
     :master-categories="masterCategories"
+    :main-categories="mainCategories"
     :sub-category="subCategories"
     :is-update="true"
   />
@@ -11,11 +12,21 @@ import SubCategoryForm from '../../../components/subcategory/SubCategoryForm'
 export default {
   name: 'Id',
   components: { SubCategoryForm },
+
   async asyncData({ $axios, route }) {
-    console.log(await $axios.$get('/master-categories'))
+    const subCategories = await $axios.$get('sub-categories/' + route.params.id)
+    const mainCategories = await Promise.all(
+      subCategories.parents.map((parent) =>
+        $axios.$get('main-categories/' + parent)
+      )
+    )
+
+    console.log('here', subCategories)
+
     return {
       masterCategories: await $axios.$get('/master-categories'),
-      subCategories: await $axios.$get('sub-categories/' + route.params.id)
+      mainCategories,
+      subCategories
     }
   }
 }
