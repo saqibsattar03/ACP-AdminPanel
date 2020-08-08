@@ -34,12 +34,13 @@
       <div
         style="display: flex; align-items: center; justify-content: space-between; width: 237px"
       >
-        <img
-          class="mx-2"
-          src="~/assets/acp_logo.png"
-          height="42px"
-          width="90px"
-        />
+        <a href="/">
+          <img
+            class="mx-2"
+            src="~/assets/acp_logo.png"
+            height="42px"
+            width="90px"
+        /></a>
         <v-app-bar-nav-icon
           style="color: grey;margin-left: 80px;width: 14px;height: 16px"
           @click.stop="drawer = !drawer"

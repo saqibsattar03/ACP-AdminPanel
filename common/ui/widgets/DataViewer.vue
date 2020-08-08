@@ -69,6 +69,12 @@
       <template v-slot:item.endDate="{ item }">{{
         parseDate(item.endDate)
       }}</template>
+      <template v-slot:item.status="{ item }">
+        <slot name="status" :item="item">{{ item.status }}</slot>
+      </template>
+      <template v-slot:item.remarks="{ item }">
+        <slot name="remarks" :item="item">{{ item.remarks }}</slot>
+      </template>
       <template v-slot:item.images="{ item }">
         <div v-if="item.images.length <= 0">
           {{ ' No Image ' }}
@@ -82,7 +88,10 @@
             sm="3"
           >
             <v-avatar style="margin: 2px">
-              <img src="https://cdn.vuetifyjs.com/images/john.jpg" />
+              <img
+                src="https://cdn.vuetifyjs.com/images/john.jpg"
+                alt="Image.jpg"
+              />
             </v-avatar>
           </v-col>
         </v-row>
@@ -294,6 +303,9 @@ export default defineComponent({
       return moment(item).format('DD-MM-YYYY')
     }
 
+    function orderStatus(item) {
+      return item
+    }
     return {
       search,
       filter,
@@ -303,7 +315,8 @@ export default defineComponent({
       changeItem,
       detailItem,
       handleCreateEvent,
-      parseDate
+      parseDate,
+      orderStatus
     }
   }
 })

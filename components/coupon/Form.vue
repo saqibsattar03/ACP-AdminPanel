@@ -49,7 +49,7 @@
 <script>
 import * as moment from 'moment'
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
-import { Coupon } from '../../models/coupon'
+import { Coupon } from '@/models/coupon'
 import { maxNumber } from '@/common/utils/validators'
 
 export default {
@@ -69,7 +69,6 @@ export default {
   data() {
     return {
       date: null,
-      toMeun: false,
       toDateText: '',
       rules: {
         max: [
@@ -82,26 +81,16 @@ export default {
       }
     }
   },
-  computed: {
-    toDatePicker: {
-      get() {
-        if (this.toDateText === '') {
-          return null
-        }
-        return moment(this.toDateText, 'DD-MM-YYYY').format('YYYY-MM-DD')
-      },
-      set(value) {
-        this.toDateText = moment(value, 'YYYY-MM-DD').format('DD-MM-YYYY')
-      }
-    }
-  },
   mounted() {
-    this.coupons.date = new Date(this.coupons.date)
-    this.coupons.startDate = new Date(this.coupons.startDate)
-    this.coupons.endDate = new Date(this.coupons.endDate)
+    this.coupons.date = moment(this.coupons.date).format('YYYY-MM-DD')
+    this.coupons.startDate = moment(this.coupons.startDate).format('YYYY-MM-DD')
+    this.coupons.endDate = moment(this.coupons.endDate).format('YYYY-MM-DD')
   },
   methods: {
-    maxNumber
+    maxNumber,
+    dateFormat() {
+      return moment()
+    }
   }
 }
 </script>

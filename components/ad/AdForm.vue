@@ -307,11 +307,11 @@ export default {
       formData.forEach((item) => this.images.push(item))
     },
     beforeRemove(index, done, fileList) {
-      // const r = confirm('remove image')
-      // if (r === true) {
-      //   done()
-      // } else {
-      // }
+      const r = confirm('remove image')
+      if (r === true) {
+        done()
+      } else {
+      }
     },
     editImage(fileList) {},
 

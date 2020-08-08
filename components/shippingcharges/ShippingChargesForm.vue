@@ -2,7 +2,7 @@
   <div style="display: flex;justify-content: center">
     <SimpleForm
       :method="isUpdate ? 'patch' : 'post'"
-      :title="isUpdate ? 'Edit Shipping Charges' : 'Add Shipping Chrages'"
+      :title="isUpdate ? 'Edit Shipping Charges' : 'Add Shipping Charges'"
       :data="shippingCharges"
       endpoint="shipping-charges"
       return
@@ -28,7 +28,7 @@
 
 <script>
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
-import { ShippingCharge } from '../../models/shipping-charge'
+import { ShippingCharge } from '@/models/shipping-charge'
 export default {
   name: 'ShippingChargesForm',
   components: { SimpleForm },

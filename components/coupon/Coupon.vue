@@ -31,7 +31,8 @@ export default {
         { text: 'NAME', value: 'name' },
         { text: 'PERCENTAGE', value: 'discount' },
         { text: 'START DATE', value: 'startDate' },
-        { text: 'END DATE', value: 'endDate' }
+        { text: 'END DATE', value: 'endDate' },
+        { text: 'USAGE', value: 'usage' }
       ]
     }
   }

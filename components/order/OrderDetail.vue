@@ -1,60 +1,65 @@
 <template>
   <div style="margin: 15px">
     <v-card>
-      <div style="background-color: #eff0f5;height: 50px">
-        <p>Order Number</p>
+      <div style="background-color: #eff0f5;height: 30px">
+        <div>
+          <p>Order # {{ orders[0].orderNo }}</p>
+        </div>
       </div>
       <div>
         <div
-          style="display: flex;align-items: center;flex-direction: column;justify-content: center"
+          style="display: flex;align-items: center;flex-direction: column;justify-content: center;margin-top: 25px"
         >
-          {{ orders }}
-          <v-avatar
+          <v-avatar size="100px"
             ><img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="john"
           /></v-avatar>
           <p>
-            <v-icon color="black"> fa fa-user</v-icon><strong>Name:</strong>
-            {{ orders.person.name }}
+            <v-icon color="black"> fa fa-user</v-icon
+            ><strong style="margin-right: 10px;margin-left: 10px">Name:</strong>
+            {{ orders[0].person.name }}
           </p>
           <p>
-            <v-icon color="black"> fa fa-tag</v-icon><strong>Address:</strong>
-            {{ orders.address }}
+            <v-icon color="black"> fa fa-tag</v-icon
+            ><strong style="margin-right: 10px;margin-left: 10px"
+              >Address:</strong
+            >
+            {{ orders[0].address }}
           </p>
           <p>
             <v-icon color="black">fa fa-calendar</v-icon>
-            <strong>
+            <strong style="margin-right: 10px;margin-left: 10px">
               Order Date :
             </strong>
-            {{ orders.createdAt }}
+            {{ orders[0].createdAt }}
           </p>
           <p>
             <v-icon color="black"> fa fa-phone</v-icon>
-            <strong>
+            <strong style="margin-right: 10px;margin-left: 10px">
               Contact:
             </strong>
-            {{ orders.contact }}
+            {{ orders[0].contact }}
           </p>
-          <p>
+          <p v-if="orders[0].shipping">
             <v-icon color="black">fa fa-tag</v-icon>
-            <strong>
+            <strong style="margin-right: 10px;margin-left: 10px">
               Shipping Location:
             </strong>
-            {{ orders.shipping.location }}
+            {{ orders[0].shipping.location }}
           </p>
-          <p>
+          <p v-if="orders[0].shipping">
             <v-icon color="black">fa fa-tag</v-icon>
-            <strong>
+            <strong style="margin-right: 10px;margin-left: 10px">
               Shipping Charges:
             </strong>
 
-            {{ orders.shipping.charges }}
+            {{ orders[0].shipping.charges }}
           </p>
           <p>
             <v-icon color="black">fa fa-money</v-icon>
-            <strong>
+            <strong style="margin-right: 10px;margin-left: 10px">
               Total Amount:
             </strong>
-            {{ orders.total }}
+            {{ orders[0].total }}
           </p>
         </div>
         <div>
@@ -69,7 +74,10 @@
 export default {
   name: 'OrderDetail',
   props: {
-    orders: Object
+    orders: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
     return {

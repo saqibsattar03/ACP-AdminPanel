@@ -2,9 +2,9 @@
   <div style="display: flex;justify-content: center">
     <SimpleForm
       :method="isUpdate ? 'patch' : 'post'"
+      :title="isUpdate ? 'Edit Master Categories' : 'Create Master Category'"
       :data="masterCategory"
       endpoint="/master-categories"
-      title="Create new Master Category"
       return
     >
       <v-text-field
@@ -22,7 +22,7 @@
 
 <script>
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
-import { MasterCategory } from '../../models/master-category'
+import { MasterCategory } from '@/models/master-category'
 
 export default {
   name: 'MainCategoryForm',

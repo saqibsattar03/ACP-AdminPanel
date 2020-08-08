@@ -49,11 +49,15 @@
           style="display: flex;flex-direction: row;justify-content: space-between"
         >
           <v-file-input
+            id="file1"
             v-model="document1"
             outlined
             dense
             label="CR Paper"
-          ></v-file-input>
+            ><template slot="append-outer"
+              ><v-icon @click="downloadImage">mdi-download</v-icon>
+            </template></v-file-input
+          >
           <v-spacer></v-spacer>
           <v-text-field
             v-model="expiryDate1"
@@ -66,12 +70,11 @@
         <div
           style="display: flex;flex-direction: row;justify-content: space-between"
         >
-          <v-file-input
-            v-model="document2"
-            outlined
-            dense
-            label="Chamber Card"
-          ></v-file-input>
+          <v-file-input v-model="document2" outlined dense label="Chamber Card"
+            ><template slot="append-outer"
+              ><v-icon @click="downloadImage">mdi-download</v-icon>
+            </template></v-file-input
+          >
           <v-spacer></v-spacer>
           <v-text-field
             v-model="expiryDate2"
@@ -89,7 +92,10 @@
             outlined
             dense
             label="Tharkees Baladi"
-          ></v-file-input>
+            ><template slot="append-outer"
+              ><v-icon @click="downloadImage">mdi-download</v-icon>
+            </template></v-file-input
+          >
           <v-spacer></v-spacer>
           <v-text-field
             v-model="expiryDate3"
@@ -107,7 +113,10 @@
             outlined
             dense
             label="ID Card of Sponsor"
-          ></v-file-input>
+            ><template slot="append-outer"
+              ><v-icon @click="downloadImage">mdi-download</v-icon>
+            </template></v-file-input
+          >
           <v-spacer></v-spacer>
           <v-text-field
             v-model="expiryDate4"
@@ -125,7 +134,10 @@
             outlined
             dense
             label="ID/Passport of Salesman"
-          ></v-file-input>
+            ><template slot="append-outer"
+              ><v-icon @click="downloadImage">mdi-download</v-icon>
+            </template></v-file-input
+          >
           <v-spacer></v-spacer>
           <v-text-field
             v-model="expiryDate5"
@@ -143,7 +155,10 @@
             outlined
             dense
             label="Any Other legal Document"
-          ></v-file-input>
+            ><template slot="append-outer"
+              ><v-icon @click="downloadImage">mdi-download</v-icon>
+            </template></v-file-input
+          >
           <v-spacer></v-spacer>
           <v-text-field
             v-model="expiryDate6"
@@ -161,7 +176,10 @@
             outlined
             dense
             label="Any other legal document"
-          ></v-file-input>
+            ><template slot="append-outer"
+              ><v-icon @click="downloadImage">mdi-download</v-icon>
+            </template></v-file-input
+          >
           <v-spacer></v-spacer>
           <v-text-field
             v-model="expiryDate7"
@@ -177,8 +195,9 @@
 </template>
 
 <script>
+import * as moment from 'moment'
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
-import { Supplier } from '../../models/supplier'
+import { Supplier } from '@/models/supplier'
 export default {
   name: 'SupplierForm',
   components: { SimpleForm },
@@ -194,6 +213,7 @@ export default {
   },
   data() {
     return {
+      date: null,
       document1: '',
       document2: '',
       document3: '',
@@ -211,6 +231,39 @@ export default {
       // documents: ['', '', '', '', '', '', ''],
       // expiryDates: ['', '', '', '', '', '', '']
     }
+  },
+  mounted() {
+    console.log(this.suppliers)
+
+    this.expiryDate1 = moment(this.suppliers.documents[0].expiry).format(
+      'YYYY-MM-DD'
+    )
+    this.expiryDate2 = moment(this.suppliers.documents[1].expiry).format(
+      'YYYY-MM-DD'
+    )
+    this.expiryDate3 = moment(this.suppliers.documents[2].expiry).format(
+      'YYYY-MM-DD'
+    )
+    this.expiryDate4 = moment(this.suppliers.documents[3].expiry).format(
+      'YYYY-MM-DD'
+    )
+    this.expiryDate5 = moment(this.suppliers.documents[4].expiry).format(
+      'YYYY-MM-DD'
+    )
+    this.expiryDate6 = moment(this.suppliers.documents[5].expiry).format(
+      'YYYY-MM-DD'
+    )
+    this.expiryDate7 = moment(this.suppliers.documents[6].expiry).format(
+      'YYYY-MM-DD'
+    )
+
+    this.document1 = this.suppliers.documents[0]
+    this.document2 = this.suppliers.documents[1]
+    this.document3 = this.suppliers.documents[2]
+    this.document4 = this.suppliers.documents[3]
+    this.document5 = this.suppliers.documents[4]
+    this.document6 = this.suppliers.documents[5]
+    this.document7 = this.suppliers.documents[6]
   },
   methods: {
     formData() {
@@ -244,6 +297,13 @@ export default {
       formData.append('status', this.suppliers.status)
 
       return formData
+    },
+    downloadImage() {
+      window.open(
+        this.$axios.defaults.baseURL +
+          '/uploads/' +
+          this.suppliers.documents[0].name
+      )
     }
   }
 }

@@ -1,21 +1,26 @@
 <template>
   <div class="main-container">
     <v-form ref="form">
-      <img src="~/assets/acp_logo.png" width="540" />
+      <img src="~/assets/acp_logo.png" width="540" alt="image.jpg" />
       <v-card class="login-container">
         <v-text-field v-model="login.username" outlined label="Email" />
         <v-text-field
           v-model="login.password"
           outlined
           label="Password"
-          type="password"
+          :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="show ? 'text' : 'password'"
+          @click:append="() => (show = !show)"
         />
 
-        <div
-          style="display: flex; justify-content: space-between; align-items: center"
-        >
-          <v-checkbox label="Remember Me" />
-          <p style="color: #F9610C;">Forgotten Password?</p>
+        <div style="display: flex; justify-content: flex-end">
+          <!--          <v-checkbox label="Remember Me" />-->
+
+          <div class="my-2">
+            <v-btn text color="error" @click="resetPassword"
+              >Forgotten Password?</v-btn
+            >
+          </div>
         </div>
 
         <v-btn
@@ -50,6 +55,7 @@ export default {
   name: 'LogIn',
   data() {
     return {
+      show: false,
       snackbar: false,
       snackbarColor: 'red',
       login: {
@@ -97,9 +103,11 @@ export default {
           this.disable = false
           this.snackbar = true
           this.snackbarText = 'User name or Password is incorrect'
-          console.log('user name and password is incorrect ')
         }
       }
+    },
+    resetPassword() {
+      this.$router.push('/reset-password')
     }
   }
 }

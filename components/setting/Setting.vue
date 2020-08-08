@@ -3,19 +3,22 @@
     <SimpleForm
       title="Change Password"
       method="patch"
-      :data="settings"
+      :data="sendID"
       endpoint="/persons/changepassword"
+      return
     >
       <div class="span-2">
         <v-text-field
           v-model="settings.old"
           label="Old Password"
+          type="password"
           outlined
           dense
         ></v-text-field>
         <v-text-field
           v-model="settings.new"
           label="New Password"
+          type="password"
           outlined
           dense
         ></v-text-field>
@@ -45,6 +48,12 @@ export default {
   methods: {
     getID() {
       this.settings.id = this.$auth.user._id
+    },
+    sendID() {
+      return {
+        id: this.$auth.user._id,
+        ...this.settings
+      }
     }
   }
 }

@@ -11,15 +11,6 @@
       @response="window.location.reload()"
     >
       <v-text-field
-        v-model="oldPassword"
-        label="Old password"
-        type="password"
-        :rules="[(v) => !!v || 'Old password is required']"
-        class="span-2"
-        outlined
-        dense
-      />
-      <v-text-field
         v-model="newPassword"
         type="password"
         label="New Password"
@@ -55,6 +46,7 @@ import SimpleForm from '@/common/ui/widgets/SimpleForm'
 
 export default {
   layout: 'none',
+  auth: false,
   components: { SimpleForm },
 
   async asyncData({ $axios, route }) {

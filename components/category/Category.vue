@@ -6,7 +6,7 @@
       create
       create-route="/main-categories/form"
       remove
-      remove-route="/master-categories/main-categories/$id"
+      remove-route="main-categories/$id"
       change
       change-route="/main-categories/edit/$id"
       endpoint="/main-categories"

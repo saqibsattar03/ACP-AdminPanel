@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import SimpleForm from '../../common/ui/widgets/SimpleForm'
-import { Notification } from '../../models/notification'
+import SimpleForm from '@/common/ui/widgets/SimpleForm'
+import { Notification } from '@/models/notification'
 
 export default {
   name: 'Notification',
@@ -48,7 +48,10 @@ export default {
       type: Object,
       default: () => new Notification()
     },
-    notify: Array
+    notify: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
     return {

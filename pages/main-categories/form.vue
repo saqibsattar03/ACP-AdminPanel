@@ -7,7 +7,6 @@ import CategoryForm from '../../components/category/CategoryForm'
 export default {
   components: { CategoryForm },
   async asyncData({ $axios }) {
-    console.log(await $axios.$get('/master-categories'))
     return {
       masterCategories: await $axios.$get('master-categories/')
     }

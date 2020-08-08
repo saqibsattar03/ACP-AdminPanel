@@ -93,10 +93,9 @@ export default {
   data() {
     return {
       headers: [
-        { text: '#', value: 'no' },
-        { text: 'NAME', value: 'name' },
-        { text: 'PRODUCT', value: 'product' },
-        { text: 'QUANTITY', value: 'quantity' },
+        { text: 'NAME', value: 'person.username' },
+        { text: 'CONTACT', value: 'contact' },
+        { text: 'ORDER AMOUNT', value: 'orderAmount' },
         { text: 'STATUS', value: 'status' }
       ],
       date: moment(Date.now()).format('dddd MMM DD, YYYY')

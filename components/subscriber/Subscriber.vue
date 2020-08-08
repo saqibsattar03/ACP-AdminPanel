@@ -10,7 +10,10 @@
 export default {
   name: 'Subscriber',
   props: {
-    subscribers: Array
+    subscribers: {
+      type: Array,
+      default: () => []
+    }
   },
   data() {
     return {

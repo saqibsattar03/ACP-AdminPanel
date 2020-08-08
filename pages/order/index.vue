@@ -8,7 +8,6 @@ export default {
   name: 'Index',
   components: { Order },
   async asyncData({ $axios }) {
-    console.log(await $axios.$get('/orders'))
     return {
       orders: await $axios.$get('/orders')
     }

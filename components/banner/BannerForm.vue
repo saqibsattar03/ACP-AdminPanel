@@ -30,8 +30,8 @@
 
 <script>
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
-import { Banner } from '../../models/banner'
-import { required } from '../../common/lib/validator'
+import { Banner } from '@/models/banner'
+import { required } from '@/common/lib/validator'
 
 export default {
   name: 'BannerForm',

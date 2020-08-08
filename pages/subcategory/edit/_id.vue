@@ -21,8 +21,6 @@ export default {
       )
     )
 
-    console.log('here', subCategories)
-
     return {
       masterCategories: await $axios.$get('/master-categories'),
       mainCategories,

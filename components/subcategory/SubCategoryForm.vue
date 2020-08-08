@@ -51,7 +51,7 @@
 
 <script>
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
-import { SubCategory } from '../../models/sub-category'
+import { SubCategory } from '@/models/sub-category'
 
 export default {
   name: 'SubCategoryForm',
