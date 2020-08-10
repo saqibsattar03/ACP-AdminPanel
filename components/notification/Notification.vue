@@ -1,19 +1,19 @@
 <template>
   <div>
-    <div style="padding: 25px;">
+    <div style="display: flex;justify-content: center">
       <SimpleForm
         title="Send New Notification"
         :data="notification"
-        endpoint="notifications"
+        endpoint="fcm/notification"
       >
         <div class="span-2">
-          <v-select
-            v-model="notification.user"
-            :items="items"
-            outlined
-            dense
-            label="-- Select Type --"
-          ></v-select>
+          <!--          <v-select-->
+          <!--            v-model="notification.user"-->
+          <!--            :items="items"-->
+          <!--            outlined-->
+          <!--            dense-->
+          <!--            label="&#45;&#45; Select Type &#45;&#45;"-->
+          <!--          ></v-select>-->
           <v-text-field
             v-model="notification.title"
             label="Title"
@@ -27,11 +27,11 @@
           ></v-textarea>
         </div>
       </SimpleForm>
-      <v-data-table
-        :headers="headers"
-        :items="notify"
-        endpoint="/notifications"
-      ></v-data-table>
+      <!--      <v-data-table-->
+      <!--        :headers="headers"-->
+      <!--        :items="notify"-->
+      <!--        endpoint="fcm/notification"-->
+      <!--      ></v-data-table>-->
     </div>
   </div>
 </template>

@@ -12,6 +12,7 @@
         class="span-2"
         item-value="_id"
         item-text="name"
+        label="Select Master Category"
         outlined
         dense
         :items="masterCategories"

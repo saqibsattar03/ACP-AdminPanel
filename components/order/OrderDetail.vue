@@ -18,7 +18,7 @@
             ><strong style="margin-right: 10px;margin-left: 10px">Name:</strong>
             {{ orders[0].person.name }}
           </p>
-          <p>
+          <p v-if="orders[0].address">
             <v-icon color="black"> fa fa-tag</v-icon
             ><strong style="margin-right: 10px;margin-left: 10px"
               >Address:</strong

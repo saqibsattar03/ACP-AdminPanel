@@ -6,7 +6,7 @@
       create
       create-route="/products/form"
       remove
-      remove-route="products/$id"
+      remove-route="/products/$id"
       change
       change-route="/products/edit/$id"
       endpoint="products"

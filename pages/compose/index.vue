@@ -1,6 +1,10 @@
 <template>
   <div style="display: flex;justify-content: center" app>
-    <SimpleForm title="Compose" endpoint="/mailing" :data="compose">
+    <SimpleForm
+      title="Compose"
+      endpoint="/subscribers/sendemail"
+      :data="compose"
+    >
       <div class="span-2" style="margin-bottom: 30px">
         <ckeditor
           id="editor"

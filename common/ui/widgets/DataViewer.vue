@@ -63,6 +63,9 @@
       :hide-default-footer="!pagination"
       class="data-table__content"
     >
+      <template v-slot:item.description="{ item }">
+        {{ item.description.substring(0, 100) }}
+      </template>
       <template v-slot:item.startDate="{ item }">
         {{ parseDate(item.startDate) }}
       </template>

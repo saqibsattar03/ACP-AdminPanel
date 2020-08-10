@@ -117,6 +117,7 @@
               <v-text-field
                 v-model="_variant.price"
                 color="#313F53"
+                :rules="[(_) => !!_variant.price || 'Please Enter Price']"
                 outlined
                 type="number"
                 label="Price"
