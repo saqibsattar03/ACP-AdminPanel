@@ -12,6 +12,7 @@ import AdForm from '@/components/ad/AdForm'
 export default {
   name: 'Id',
   components: { AdForm },
+
   async asyncData({ $axios, route }) {
     return {
       product: await $axios.$get('products/' + route.params.id),

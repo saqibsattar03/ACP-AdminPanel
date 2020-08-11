@@ -57,6 +57,7 @@ export default {
         { text: 'USER', value: 'person.name' },
         { text: 'MOBILE', value: 'contact' },
         { text: 'TOTAL AMOUNT', value: 'orderAmount' },
+        { text: 'PRODUCT', value: 'items[0].product.name' },
         { text: 'ADDRESS', value: 'address' },
         { text: 'STATUS', value: 'status' },
         { text: 'REMARKS', value: 'remarks' }

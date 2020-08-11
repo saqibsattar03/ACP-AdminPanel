@@ -63,7 +63,11 @@
           </p>
         </div>
         <div>
-          <v-data-table :headers="headers" :items="orders"></v-data-table>
+          <v-data-table :headers="headers" :items="orders[0].items">
+            <template v-slot:item.actions="{ item }">
+              <v-icon small @click="editItem(item)">mdi-pencil</v-icon>
+            </template>
+          </v-data-table>
         </div>
       </div>
     </v-card>
@@ -81,13 +85,25 @@ export default {
   },
   data() {
     return {
+      desserts: [],
       headers: [
-        { text: 'USER', value: 'person.name' },
-        { text: 'MOBILE', value: 'contact' },
-        { text: 'TOTAL AMOUNT', value: 'orderAmount' },
-        { text: 'ADDRESS', value: 'address' },
-        { text: 'STATUS', value: 'status' }
+        { text: 'NAME', value: 'product.name' },
+        { text: 'ADMIN COM', value: 'product.adminCommission' },
+        { text: 'DESCRIPTION', value: 'product.description' },
+        { text: 'PRICE', value: 'product.price' },
+        { text: 'ADDRESS', value: 'product.address' },
+        { text: 'STATUS', value: 'product.status' },
+        { text: 'ACTION', value: 'actions' }
       ]
+    }
+  },
+  mounted() {
+    console.log(this.orders)
+  },
+  methods: {
+    editItem(item) {
+      console.log(item)
+      this.$router.push('/products/edit/' + item.product._id)
     }
   }
 }

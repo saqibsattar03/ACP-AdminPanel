@@ -4,13 +4,14 @@
       title="Change Password"
       method="patch"
       :data="sendID"
-      endpoint="/persons/changepassword"
+      endpoint="/persons/admin-changepassword"
       return
     >
       <div class="span-2">
         <v-text-field
           v-model="settings.old"
           label="Old Password"
+          :rules="[(v) => !!v || 'Old Password is required']"
           type="password"
           outlined
           dense
@@ -18,6 +19,7 @@
         <v-text-field
           v-model="settings.new"
           label="New Password"
+          :rules="[(v) => !!v || 'New Password is required']"
           type="password"
           outlined
           dense
