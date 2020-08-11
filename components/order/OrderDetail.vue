@@ -64,6 +64,9 @@
         </div>
         <div>
           <v-data-table :headers="headers" :items="orders[0].items">
+            <template v-slot:item.product.description="{ item }">
+              {{ item.product.description.substring(0, 100) }}
+            </template>
             <template v-slot:item.actions="{ item }">
               <v-icon small @click="editItem(item)">mdi-pencil</v-icon>
             </template>
