@@ -8,7 +8,7 @@
       method="patch"
       endpoint="persons/changepassword"
       :data="parseData"
-      @response="window.location.reload()"
+      @response="window.location.close()"
     >
       <v-text-field
         v-model="newPassword"
@@ -26,11 +26,12 @@
         v-model="confirmPassword"
         type="password"
         label="Confirm Password"
+        class="span-2"
         :rules="[
+          matchPasswordRule,
           (v) => !!v || 'Fill it out..',
           (v) => !!v || 'It does not match the new password'
         ]"
-        class="span-2"
         outlined
         dense
       />
@@ -61,6 +62,12 @@ export default {
     newPassword: '',
     confirmPassword: ''
   }),
+  computed: {
+    matchPasswordRule() {
+      return () =>
+        this.newPassword === this.confirmPassword || 'Password Must Match'
+    }
+  },
 
   mounted() {
     this.hash = this.$route.params.hash

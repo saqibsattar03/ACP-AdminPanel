@@ -3,7 +3,7 @@
     <v-card>
       <div style="background-color: #eff0f5;height: 30px">
         <div>
-          <p>Order # {{ orders[0].orderNo }}</p>
+          <p>ORDER# {{ orderNo }}</p>
         </div>
       </div>
       <div>
@@ -68,7 +68,9 @@
               {{ item.product.description.substring(0, 100) }}
             </template>
             <template v-slot:item.actions="{ item }">
-              <v-icon small @click="editItem(item)">mdi-pencil</v-icon>
+              <v-icon small color="green" @click="editItem(item)"
+                >mdi-eye</v-icon
+              >
             </template>
           </v-data-table>
         </div>
@@ -90,6 +92,7 @@ export default {
     return {
       desserts: [],
       headers: [
+        { text: 'ORDER #', value: 'orderNo' },
         { text: 'NAME', value: 'product.name' },
         { text: 'ADMIN COM', value: 'product.adminCommission' },
         { text: 'DESCRIPTION', value: 'product.description' },

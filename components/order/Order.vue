@@ -55,6 +55,7 @@ export default {
       remarks: '',
       headers: [
         { text: 'USER', value: 'person.name' },
+        { text: 'PROVIDER', value: 'person.provider' },
         { text: 'MOBILE', value: 'contact' },
         { text: 'TOTAL AMOUNT', value: 'orderAmount' },
         { text: 'PRODUCT', value: 'items[0].product.name' },

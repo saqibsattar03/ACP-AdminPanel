@@ -153,7 +153,7 @@ export default defineComponent({
             break
           case 'patch':
             if (data instanceof FormData) {
-              data.forEach((item) => window.console.log(item))
+              // data.forEach((item) => window.console.log(item))
               res = await context.root.$axios.patch(props.endpoint, data, {
                 headers: {
                   'content-type': `multipart/form-data;`

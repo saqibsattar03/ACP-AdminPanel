@@ -1,5 +1,9 @@
 <template>
-  <ad-form :sub-categories="subCategories" :main-categories="mainCategories" />
+  <ad-form
+    :sub-categories="subCategories"
+    :main-categories="mainCategories"
+    :master-categories="masterCategories"
+  />
 </template>
 
 <script>
@@ -9,6 +13,7 @@ export default {
   async asyncData({ $axios }) {
     console.log('here')
     return {
+      masterCategories: await $axios.$get('/master-categories'),
       mainCategories: await $axios.$get('/main-categories'),
       subCategories: await $axios.$get('/sub-categories')
     }

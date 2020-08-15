@@ -2,6 +2,9 @@ export class Product {
   /** @type {string[]|Supplier[]} */
   supplierId = undefined
 
+  /** @type {string[]|MasterCategory[]} */
+  masterCategoryId = undefined
+
   /** @type {string[]|MainCategory[]} */
   mainCategoryId = undefined
 
@@ -15,7 +18,7 @@ export class Product {
   isKillerDeal = undefined
 
   /** @type {boolean} */
-  approved = undefined
+  // approved = undefined
 
   /** @type {boolean} */
   status = true
@@ -41,20 +44,21 @@ export class Product {
   /** @type {string} */
   name = undefined
 
-  /** @type {string} */
-  color = undefined
+  // /** @type {string} */
+  // color = undefined
+  //
+  // /** @type {string} */
+  // ram = undefined
+  //
+  // /** @type {string} */
+  // storage = undefined
+  //
+  // /** @type {string} */
+  // version = undefined
+  //
+  // /** @type {int} */
+  // price = undefined
 
-  /** @type {string} */
-  ram = undefined
-
-  /** @type {string} */
-  storage = undefined
-
-  /** @type {string} */
-  version = undefined
-
-  /** @type {int} */
-  price = undefined
-
-  variants = [{}]
+  variants = []
+  options = []
 }

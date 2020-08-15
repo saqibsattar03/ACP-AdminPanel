@@ -9,29 +9,37 @@
     >
       <div class="span-2">
         <v-select
-          v-model="product.mainCategoryId"
-          :items="mainCategories"
+          v-model="product.masterCategoryId"
+          :items="masterCategories"
+          item-text="name"
           item-value="_id"
+          label="-- Master Category --"
           outlined
+          :rules="[(v) => !!v || 'Select a Master Category']"
           dense
-          :rules="[(_) => !!product.mainCategoryId || 'Select a Main Category']"
-          label="-- Category --"
-        >
-          <template #item="{ item }">{{ item.name }}</template>
-          <template #selection="{ item }">{{ item.name }}</template>
-        </v-select>
+          @change="masterChanged"
+        />
+        <v-select
+          v-model="product.mainCategoryId"
+          :items="items1"
+          label="-- Main Category --"
+          :disabled="!product.masterCategoryId"
+          outlined
+          item-value="_id"
+          item-text="name"
+          dense
+          @change="mainChanged"
+        />
         <v-select
           v-model="product.subCategoryId"
-          :items="subCategories"
+          :items="items2"
+          label="-- Sub Category --"
+          :disabled="!product.mainCategoryId"
           outlined
           item-value="_id"
+          item-text="name"
           dense
-          :rules="[(_) => !!product.subCategoryId || 'Select a Sub Category']"
-          label="-- Sub Category --"
-        >
-          <template #item="{ item }">{{ item.name }}</template>
-          <template #selection="{ item }">{{ item.name }}</template>
-        </v-select>
+        />
         <v-text-field
           v-model="product.name"
           outlined
@@ -44,97 +52,9 @@
           label="Description"
         />
         <v-text-field
-          v-model="product.price"
-          :rules="[(_) => !!product.price || 'Please Enter Price']"
-          type="number"
-          outlined
-          dense
-          label="Price"
-        />
-        <v-card style="padding: 20px;margin-bottom: 20px">
-          <v-card-title style="color: #313F53">Add Variants</v-card-title>
-          <v-divider></v-divider>
-          <v-row>
-            <v-col cols="12" md="9" sm="9">
-              <v-card-title style="color: #313F53">Variants</v-card-title>
-            </v-col>
-            <v-col
-              cols="12"
-              md="3"
-              sm="3"
-              style="display: flex; align-items: center"
-            >
-              <v-btn
-                color="#FF974D"
-                style="color:#ffffff"
-                @click="product.variants.push({})"
-                >Add Variant
-              </v-btn>
-            </v-col>
-          </v-row>
-          <v-row
-            v-for="(_variant, i) of product.variants"
-            :key="i"
-            style="display: grid;grid-template-columns: auto auto auto auto auto 50px"
-          >
-            <v-col>
-              <v-text-field
-                v-model="_variant.color"
-                color="#313F53"
-                outlined
-                label="Color"
-                dense
-              />
-            </v-col>
-            <v-col>
-              <v-text-field
-                v-model="_variant.ram"
-                color="#313F53"
-                outlined
-                label="Ram"
-                dense
-              />
-            </v-col>
-            <v-col>
-              <v-text-field
-                v-model="_variant.storage"
-                color="#313F53"
-                outlined
-                label="Storage"
-                dense
-              />
-            </v-col>
-            <v-col>
-              <v-text-field
-                v-model="_variant.version"
-                color="#313F53"
-                outlined
-                label="Version"
-                dense
-              />
-            </v-col>
-            <v-col>
-              <v-text-field
-                v-model="_variant.price"
-                color="#313F53"
-                :rules="[(_) => !!_variant.price || 'Please Enter Price']"
-                outlined
-                type="number"
-                label="Price"
-                dense
-              />
-            </v-col>
-            <v-col cols="12" md="1" sm="1">
-              <v-btn icon @click="removeVariant(i)">
-                <v-icon color="red">mdi-delete</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-card>
-        <v-text-field
           v-model="product.adminCommission"
+          :rules="[(_) => !!product.adminCommission || 'Please Enter Price']"
           type="number"
-          :rules="[(_) => !!product.price || 'Please Enter Admin Commission']"
           outlined
           dense
           label="Admin Commission"
@@ -142,6 +62,9 @@
 
         <v-text-field
           v-model="product.warrantyMonths"
+          :rules="[
+            (_) => !!product.warrantyMonths || 'Please Enter Warranty Month'
+          ]"
           type="number"
           outlined
           dense
@@ -183,6 +106,112 @@
           @before-remove="beforeRemove"
           @edit-image="editImage"
         />
+        <v-card style="padding:20px;margin-top:20px;margin-bottom:20px">
+          <v-card-title>Pricing</v-card-title>
+          <v-text-field
+            v-if="!allowVariants"
+            v-model="product.price"
+            :rules="[(_) => !!product.price || 'Please Enter Price']"
+            outlined
+            type="number"
+            label="Price"
+            dense
+            prepend-inner-icon="mdi-cash"
+          ></v-text-field>
+          <v-checkbox
+            v-model="allowVariants"
+            label="This product has multiple variants"
+          ></v-checkbox>
+          <v-card v-if="allowVariants" style="padding: 20px">
+            <v-card-title>Variations</v-card-title>
+            <v-divider></v-divider>
+            <v-row>
+              <v-col cols="12" md="9" sm="9">
+                <v-card-title>Options</v-card-title>
+              </v-col>
+              <v-col
+                v-if="options.length < 3"
+                cols="12"
+                md="3"
+                sm="3"
+                style="display: flex; align-items: center"
+              >
+                <v-btn
+                  color="#FF974D"
+                  style="color:#ffffff"
+                  @click="addOption()"
+                  >Add Option
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-row v-for="(option, i) of options" :key="i">
+              <v-col cols="12" md="3" sm="3">
+                <v-text-field
+                  v-model="option.optionName"
+                  :label="'Option ' + (i + 1)"
+                  outlined
+                  dense
+                />
+              </v-col>
+              <v-col
+                v-if="option.optionName === 'Color'"
+                cols="12"
+                md="8"
+                sm="8"
+              >
+                <div
+                  style="display: grid;grid-template-columns: auto auto;grid-column-gap: 10px"
+                >
+                  <v-text-field
+                    v-model="option.optionImages"
+                    dense
+                    outlined
+                    label="Option Images Indexes"
+                  />
+                  <v-text-field
+                    v-model="option.optionValues"
+                    dense
+                    outlined
+                    label="Separate options with comma."
+                    @focusout="generateVariants()"
+                  />
+                </div>
+              </v-col>
+              <v-col v-else cols="12" md="8" sm="8">
+                <v-text-field
+                  v-model="option.optionValues"
+                  dense
+                  outlined
+                  label="Separate options with comma."
+                  @focusout="generateVariants()"
+                />
+              </v-col>
+              <v-col cols="12" md="1" sm="1">
+                <v-btn icon @click="removeOption(i)">
+                  <v-icon color="red">mdi-delete</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-data-table
+              :headers="headers"
+              :items="variants"
+              class="elevation-1"
+              disable-pagination
+              hide-default-footer
+            >
+              <template v-slot:item.varientPrice="{ item }">
+                <v-text-field
+                  v-model="item.varientPrice"
+                  style="align-items: center !important;"
+                  outlined
+                  label="Price"
+                  dense
+                  hide-details
+                ></v-text-field>
+              </template>
+            </v-data-table>
+          </v-card>
+        </v-card>
       </div>
     </SimpleForm>
   </div>
@@ -193,11 +222,16 @@ import VueUploadMultipleImage from 'vue-upload-multiple-image'
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
 import { Product } from '~/models/product'
 import { required } from '~/common/lib/validator'
+import { Option } from '~/models/option'
 
 export default {
   name: 'AdForm',
   components: { SimpleForm, VueUploadMultipleImage },
   props: {
+    masterCategories: {
+      type: Array,
+      required: false
+    },
     mainCategories: {
       type: Array,
       required: true
@@ -214,10 +248,10 @@ export default {
       type: Array,
       default: () => [new Product()]
     },
-    deletedImages: {
-      type: Array,
-      default: () => []
-    },
+    // deletedImages: {
+    //   type: Array,
+    //   default: () => []
+    // },
     isUpdate: {
       type: Boolean,
       default: false
@@ -226,83 +260,188 @@ export default {
 
   data() {
     return {
+      deletedImages: [],
       date: null,
+      option: new Option(),
+      selectedMaster: null,
+      allowVariants: false,
+      options: [{}],
+      optionValues: [],
       items: [],
+      items1: [],
+      items2: [],
+      optionCount: 0,
       selectedMain: null,
       selectedSub: null,
       variants: [],
       images: [],
-      imagesData: []
+      imagesData: [],
+      headers: [
+        {
+          text: 'Variant',
+          align: 'start',
+          sortable: false,
+          value: 'varientName'
+        },
+        { text: 'Price', value: 'varientPrice', sortable: false }
+      ],
+      variantCheck: false
     }
   },
 
   mounted() {
-    window.console.log(this.product)
+    if (this.product.name) {
+      if (this.product.varient.length > 0 || this.product.options.length > 0) {
+        this.allowVariants = true
+        this.options = this._parseOptions(this.product.options)
+        this.variants = this._parseVariants(this.product.varient)
+      }
+      this.selectedMaster = this.product.masterCategoryId
+      this.selectedMain = this.product.mainCategoryId
+      this.selectedSub = this.product.subCategoryId
+
+      this.masterChanged()
+      this.mainChanged()
+    }
   },
   methods: {
     required,
     formData() {
       const formData = new FormData()
-      if (this.$auth.hasScope('supplier')) {
-        const supplierId = this.$auth.user._id
-        formData.append('supplierId', supplierId)
+      if (this.allowVariants) {
+        for (const key of Object.keys(this.product)) {
+          if (key === 'variants') {
+            for (const variant of this.variants) {
+              for (const key of Object.keys(variant)) {
+                formData.append(key, variant[key])
+              }
+            }
+          } else if (key === 'varient') {
+            for (const variant of this.variants) {
+              for (const key of Object.keys(variant)) {
+                formData.append(key, variant[key])
+              }
+            }
+          } else if (key === 'options') {
+            for (const option of this.options) {
+              for (const key of Object.keys(this.option)) {
+                console.log(key)
+                if (key === 'optionImages') {
+                  if (option[key]) {
+                    console.log('got images index')
+                    formData.append(key, option[key])
+                  } else {
+                    console.log('no images index')
+                    formData.append(key, null)
+                  }
+                } else {
+                  formData.append(key, option[key])
+                }
+              }
+            }
+          } else if (key === 'supplierId') {
+            if (this.$auth.hasScope('supplier')) {
+              const supplierId = this.$auth.user._id
+              formData.append('supplierId', supplierId)
+            }
+          } else if (key === 'price') {
+            continue
+          } else if (key === 'active') {
+            formData.append('active', (this.product.active || false).toString())
+          } else if (key === 'isFeatured') {
+            formData.append(
+              'isFeatured',
+              (this.product.isFeatured || false).toString()
+            )
+          } else if (key === 'hideWarranty') {
+            formData.append(
+              'hideWarranty',
+              (this.product.hideWarranty || false).toString()
+            )
+          } else if (key === 'isKillerDeal') {
+            formData.append(
+              'isKillerDeal',
+              (this.product.isKillerDeal || false).toString()
+            )
+          }
+          // } else if (key === 'deletedImages') {
+          //   for (const image of this.deletedImages) {
+          //     formData.append('deletedImages', image.path)
+          //   }}
+          else if (key === 'images') {
+            for (const image of this.images) {
+              formData.append('images', image)
+            }
+            // } else if (
+            //   key === 'uploadedImageNames' &&
+            //   key === 'uploadedImagePaths'
+            // ) {
+            //   for (const image of this.product.images) {
+            //     formData.append('uploadedImageNames', image.name)
+            //     formData.append('uploadedImagePaths', image.path)
+            //   }
+          } else if (key === 'status') {
+            if (this.$auth.hasScope('admin')) {
+              formData.append('status', 'approved')
+            }
+          } else {
+            formData.append(key, this.product[key])
+          }
+        }
+      } else {
+        for (const key of Object.keys(this.product)) {
+          if (key === 'variants') {
+            continue
+          } else if (key === 'price') {
+            formData.append(key, this.product.price)
+          } else if (key === 'supplierId') {
+            if (this.$auth.hasScope('supplier')) {
+              const supplierId = this.$auth.user._id
+              formData.append('supplierId', supplierId)
+            }
+          } else if (key === 'active') {
+            formData.append('active', (this.product.active || false).toString())
+          } else if (key === 'isFeatured') {
+            formData.append(
+              'isFeatured',
+              (this.product.isFeatured || false).toString()
+            )
+          } else if (key === 'hideWarranty') {
+            formData.append(
+              'hideWarranty',
+              (this.product.hideWarranty || false).toString()
+            )
+          } else if (key === 'isKillerDeal') {
+            formData.append(
+              'isKillerDeal',
+              (this.product.isKillerDeal || false).toString()
+            )
+          } else if (key === 'images') {
+            for (const image of this.images) {
+              formData.append('images', image)
+            }
+          } else if (key === 'status') {
+            if (this.$auth.hasScope('admin')) {
+              formData.append('status', 'approved')
+            }
+          } else {
+            formData.append(key, this.product[key])
+          }
+        }
       }
       if (this.isUpdate) {
-        formData.append('_id', this.product._id)
+        for (const item of this.deletedImages) {
+          formData.append('deletedImages', item)
+        }
+        for (const item of this.product.images) {
+          formData.append('uploadedImagePaths', item.path)
+        }
+        for (const item of this.product.images) {
+          formData.append('uploadedImageNames', item.name)
+        }
       }
-      formData.append('name', this.product.name)
-      formData.append('price', this.product.price)
-      formData.append('description', this.product.description)
-      formData.append('subCategoryId', this.product.subCategoryId)
-      formData.append('mainCategoryId', this.product.mainCategoryId)
-      formData.append('warrantyMonths', this.product.warrantyMonths)
-      formData.append('adminCommission', this.product.adminCommission)
-
-      formData.append('active', (this.product.active || false).toString())
-      formData.append(
-        'isFeatured',
-        (this.product.isFeatured || false).toString()
-      )
-      formData.append(
-        'hideWarranty',
-        (this.product.hideWarranty || false).toString()
-      )
-      formData.append(
-        'isKillerDeal',
-        (this.product.isKillerDeal || false).toString()
-      )
-
-      for (const image of this.deletedImages) {
-        formData.append('deletedImages', image.path)
-      }
-
-      for (const image of this.product.images) {
-        formData.append('uploadedImageNames', image.name)
-        formData.append('uploadedImagePaths', image.path)
-      }
-
-      for (const variant of this.product.variants) {
-        formData.append('ram', variant.ram)
-        formData.append('color', variant.color)
-        formData.append('_price', variant.price)
-        formData.append('storage', variant.storage)
-        formData.append('version', variant.version)
-      }
-
-      for (const image of this.images) {
-        formData.append('images', image)
-      }
-
-      if (this.$auth.hasScope('admin')) {
-        formData.append('status', 'approved')
-      }
-
+      formData.forEach((item) => console.log(item))
       return formData
-    },
-    removeVariant(i) {
-      if (this.product.variants.length > 0) {
-        this.product.variants.splice(i, 1)
-      }
     },
     uploadImageSuccess(formData) {
       formData.forEach((item) => this.images.push(item))
@@ -317,8 +456,89 @@ export default {
     editImage(fileList) {},
 
     deleteImage(index) {
-      this.deletedImages.push(this.product.images[index])
+      this.deletedImages.push(this.product.images[index].path)
+      console.log(this.deletedImages)
       this.product.images.splice(index, 1)
+    },
+    addOption() {
+      if (this.options.length > 0) {
+        this.optionCount++
+        this.options.push({})
+      }
+    },
+    removeOption(i) {
+      this.options.splice(i, 1)
+      if (this.options.length <= 0) {
+        this.allowVariants = false
+        this.options.push({})
+      }
+      if (this.options.length > 0) {
+        this.generateVariants()
+      }
+    },
+    generateVariants() {
+      this.variants = this._combine().map((item) => ({
+        varientName: item,
+        varientPrice: 0
+      }))
+      console.log(this.variants)
+    },
+    _combine(index = 0, prevData = []) {
+      const variant = []
+      if (!this.options[index].optionValues || !this.options[index].optionName)
+        return []
+      const values = this.options[index].optionValues.split(',')
+      for (const value of values) {
+        if (index === this.options.length - 1) {
+          variant.push([...prevData, value.trim()].join('/'))
+        } else {
+          variant.push(...this._combine(index + 1, [...prevData, value.trim()]))
+        }
+      }
+      return variant
+    },
+    _parseOptions(options) {
+      return options.map((option) => ({
+        optionName: option.optionName,
+        optionValues: option.optionValues,
+        optionImages: option.optionImages
+      }))
+    },
+
+    _parseVariants(variants) {
+      const _variants = []
+      for (const variant of variants) {
+        const obj = { varientName: [] }
+        for (const key of Object.keys(variant)) {
+          if (key === 'price') {
+            obj.varientPrice = variant[key]
+          } else {
+            obj.varientName.push(variant[key])
+          }
+        }
+        obj.varientName = obj.varientName.join('/')
+        _variants.push(obj)
+      }
+      return _variants
+    },
+    async masterChanged() {
+      console.log(this.product.masterCategoryId)
+      console.log(
+        await this.$axios.$get(
+          '/main-categories/getByParentId/' + this.product.masterCategoryId
+        )
+      )
+      this.items1 = await this.$axios.$get(
+        '/main-categories/getByParentId/' + this.product.masterCategoryId
+      )
+    },
+    async mainChanged() {
+      console.log('here')
+      this.items2 = await this.$axios.$get(
+        '/sub-categories/getbyparent/' + this.product.mainCategoryId
+      )
+      console.log(this.selectedMain)
+      console.log(this.items1)
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex;justify-content: center">
-    <SimpleForm>
+    <SimpleForm return>
       <template v-slot:header>
         <v-row>
           <v-col

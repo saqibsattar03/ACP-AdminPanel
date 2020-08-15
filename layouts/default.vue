@@ -3,7 +3,7 @@
     <v-navigation-drawer
       v-model="drawer"
       clipped
-      class="drawer"
+      class="drawer scrollbar"
       :mini-variant.sync="drawer"
       permanent
       app
@@ -130,6 +130,12 @@ export default {
           icon: 'menu-icon fa  fa-paper-plane',
           title: 'Compose',
           to: '/compose',
+          show: true
+        },
+        {
+          icon: 'menu-icon fa  fa-user',
+          title: 'Customers',
+          to: '/customer',
           show: true
         },
         {

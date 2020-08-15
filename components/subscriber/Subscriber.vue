@@ -1,8 +1,11 @@
 <template>
   <div style="background-color: #607d8b;margin: 25px">
-    <div>
-      <v-data-table :headers="header" :items="subscribers"></v-data-table>
-    </div>
+    <v-card>
+      <v-card-title>
+        Subscribers
+      </v-card-title>
+      <v-data-table :headers="header" :items="subscribers"> </v-data-table>
+    </v-card>
   </div>
 </template>
 

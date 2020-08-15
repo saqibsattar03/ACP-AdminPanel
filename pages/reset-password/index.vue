@@ -13,6 +13,27 @@
         >Reset Password</v-btn
       >
     </v-card>
+    <template>
+      <v-row justify="center">
+        <v-dialog v-model="dialog1" persistent max-width="400">
+          <v-card>
+            <v-card-text class="headline grey lighten-4"
+              >this email doesn't exist</v-card-text
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                color="green darken-1"
+                text
+                to="/login"
+                @click="dialog1 = false"
+                >Ok</v-btn
+              >
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </template>
 
     <template>
       <v-row justify="center">
@@ -48,17 +69,22 @@ export default {
   data() {
     return {
       email: '',
-      dialog: false
+      dialog: false,
+      dialog1: false
     }
   },
   methods: {
     async sendEmail() {
-      const res = await this.$axios.post('/persons/forgotpassword', {
-        email: this.email
-      })
-      this.dialog = true
-      // this.$router.push('/login')
-      return res
+      try {
+        const res = await this.$axios.post('/persons/forgotpassword', {
+          email: this.email
+        })
+        this.dialog = true
+        // this.$router.push('/login')
+        return res
+      } catch (e) {
+        this.dialog1 = true
+      }
     }
   }
 }

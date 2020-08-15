@@ -4,6 +4,7 @@
       title="Compose"
       endpoint="/subscribers/sendemail"
       :data="compose"
+      return
     >
       <div class="span-2" style="margin-bottom: 30px">
         <ckeditor
