@@ -154,7 +154,9 @@
                 />
               </v-col>
               <v-col
-                v-if="option.optionName === 'Color'"
+                v-if="
+                  option.optionName === 'Color' || option.optionName === 'color'
+                "
                 cols="12"
                 md="8"
                 sm="8"

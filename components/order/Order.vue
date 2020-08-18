@@ -54,12 +54,13 @@ export default {
       status: '',
       remarks: '',
       headers: [
+        { text: 'ORDER #', value: 'orderNo' },
         { text: 'USER', value: 'person.name' },
-        { text: 'PROVIDER', value: 'person.provider' },
         { text: 'MOBILE', value: 'contact' },
-        { text: 'TOTAL AMOUNT', value: 'orderAmount' },
         { text: 'PRODUCT', value: 'items[0].product.name' },
-        { text: 'ADDRESS', value: 'address' },
+        { text: 'ORDER AMOUNT', value: 'orderAmount' },
+        { text: 'TOTAL AMOUNT', value: 'total' },
+        { text: 'TYPE', value: 'orderType' },
         { text: 'STATUS', value: 'status' },
         { text: 'REMARKS', value: 'remarks' }
       ],

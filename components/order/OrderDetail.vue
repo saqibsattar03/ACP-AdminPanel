@@ -3,7 +3,7 @@
     <v-card>
       <div style="background-color: #eff0f5;height: 30px">
         <div>
-          <p>ORDER# {{ orderNo }}</p>
+          <p>ORDER# {{ orders[0].orderNo }}</p>
         </div>
       </div>
       <div>
@@ -47,7 +47,7 @@
             {{ orders[0].shipping.location }}
           </p>
           <p v-if="orders[0].shipping">
-            <v-icon color="black">fa fa-tag</v-icon>
+            <v-icon color="black">fa fa-money</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Shipping Charges:
             </strong>
@@ -61,11 +61,40 @@
             </strong>
             {{ orders[0].total }}
           </p>
+          <p v-if="orders[0].outletName">
+            <v-icon color="black">fa fa-money</v-icon>
+            <strong style="margin-right: 10px;margin-left: 10px">
+              Outlet Name:
+            </strong>
+            {{ orders[0].outletName }}
+          </p>
+          <p v-if="orders[0].coupon">
+            <v-icon color="black">fa fa-gift</v-icon>
+            <strong style="margin-right: 10px;margin-left: 10px">
+              Coupon:
+            </strong>
+            {{ orders[0].coupon.name }}
+            <span
+              ><strong
+                >Discount: {{ orders[0].coupon.discount }} %</strong
+              ></span
+            >
+          </p>
         </div>
         <div>
-          <v-data-table :headers="headers" :items="orders[0].items">
+          <v-data-table
+            :headers="headers"
+            :expanded.sync="expanded"
+            show-expand
+            :items="orders[0].items"
+          >
             <template v-slot:item.product.description="{ item }">
               {{ item.product.description.substring(0, 100) }}
+            </template>
+            <template v-slot:expanded-item="{ headers, item }">
+              <td :colspan="headers.length">
+                Selected Variants {{ item.varient }}
+              </td>
             </template>
             <template v-slot:item.actions="{ item }">
               <v-icon small color="green" @click="editItem(item)"
@@ -92,23 +121,16 @@ export default {
     return {
       desserts: [],
       headers: [
-        { text: 'ORDER #', value: 'orderNo' },
         { text: 'NAME', value: 'product.name' },
         { text: 'ADMIN COM', value: 'product.adminCommission' },
-        { text: 'DESCRIPTION', value: 'product.description' },
         { text: 'PRICE', value: 'product.price' },
-        { text: 'ADDRESS', value: 'product.address' },
-        { text: 'STATUS', value: 'product.status' },
+        { text: 'QUANTITY', value: 'count' },
         { text: 'ACTION', value: 'actions' }
       ]
     }
   },
-  mounted() {
-    console.log(this.orders)
-  },
   methods: {
     editItem(item) {
-      console.log(item)
       this.$router.push('/products/edit/' + item.product._id)
     }
   }
