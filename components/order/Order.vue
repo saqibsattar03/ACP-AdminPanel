@@ -67,6 +67,18 @@ export default {
       items: ['pending', 'on hold', 'processing', 'delivered', 'cancelled']
     }
   },
+  mounted() {
+    console.log('here')
+    if (this.$auth.hasScope('supplier')) {
+      this.headers = [
+        { text: 'USER', value: 'person.name' },
+        { text: 'PRODUCT', value: 'items[0].product.name' },
+        { text: 'ORDER AMOUNT', value: 'orderAmount' },
+        { text: 'TOTAL AMOUNT', value: 'total' },
+        { text: 'TYPE', value: 'orderType' }
+      ]
+    }
+  },
   methods: {
     sendStatus(item) {
       const res = this.$axios.patch('/orders/updatebystatus', {
