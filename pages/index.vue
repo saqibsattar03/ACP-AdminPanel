@@ -23,12 +23,15 @@ import SupplierHomeScreen from '../components/supplierhomescreen/SupplierHomeScr
 export default {
   components: { SupplierHomeScreen, AdminHomeScreen },
 
-  async asyncData({ $axios }) {
+  async asyncData({ $axios, route }) {
     return {
       orders: await $axios.$get('orders'),
       adsCount: await $axios.$get('products/count'),
       orderRevenue: await $axios.$get('orders/count'),
-      suppliersCount: await $axios.$get('suppliers/count')
+      suppliersCount: await $axios.$get('suppliers/count'),
+      supplierorders: await $axios.$get(
+        'orders/getbysupplier/' + route.params.id
+      )
     }
   }
 }

@@ -1,31 +1,38 @@
 <template>
-  <div style="margin: 25px">
-    <v-data-table :headers="headers" :items="supplierProducts">
-      <template v-slot:item.commission="{ item }">
-        <slot name="commission" :item="item" />
-        <v-text-field
-          v-model="item.adminCommission"
-          type="number"
-          label="commission"
-          outlined
-          dense
-          style="width: 40%;margin-top: 25px"
-        ></v-text-field>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <slot name="actions" :item="item" />
-        <v-btn small color="green" dark @click="onAccepted(item)">Accept</v-btn>
-        <v-btn small color="red" dark @click="onRejected(item)">Reject</v-btn>
-      </template>
-    </v-data-table>
-    <v-snackbar
-      v-model="snackbar"
-      bottom
-      :color="snackbarColor"
-      :timeout="1500"
-    >
-      {{ snackbarText }}
-    </v-snackbar>
+  <div style="margin: 25px;background-color: black">
+    <v-card>
+      <v-card-title>
+        Supplier Ads
+      </v-card-title>
+      <v-data-table :headers="headers" :items="supplierProducts">
+        <template v-slot:item.commission="{ item }">
+          <slot name="commission" :item="item" />
+          <v-text-field
+            v-model="item.adminCommission"
+            type="number"
+            label="commission"
+            outlined
+            dense
+            style="width: 40%;margin-top: 25px"
+          ></v-text-field>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <slot name="actions" :item="item" />
+          <v-btn small color="green" dark @click="onAccepted(item)"
+            >Accept</v-btn
+          >
+          <v-btn small color="red" dark @click="onRejected(item)">Reject</v-btn>
+        </template>
+      </v-data-table>
+      <v-snackbar
+        v-model="snackbar"
+        bottom
+        :color="snackbarColor"
+        :timeout="1500"
+      >
+        {{ snackbarText }}
+      </v-snackbar>
+    </v-card>
   </div>
 </template>
 

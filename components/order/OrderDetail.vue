@@ -10,6 +10,13 @@
         <div
           style="display: flex;align-items: center;flex-direction: column;justify-content: center;margin-top: 25px"
         >
+          <p v-if="orders[0].reason">
+            <v-icon color="red"> fa fa-times</v-icon
+            ><strong style="margin-right: 10px;margin-left: 10px;color: red"
+              >Cancellation Reason:</strong
+            >
+            {{ orders[0].reason }}
+          </p>
           <v-avatar size="100px"
             ><img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="john"
           /></v-avatar>

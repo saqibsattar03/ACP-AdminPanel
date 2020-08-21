@@ -9,7 +9,11 @@
       remove-route="/products/$id"
       change
       change-route="/products/edit/$id"
-      endpoint="products"
+      :endpoint="
+        $auth.hasScope('admin')
+          ? 'products'
+          : 'products/supplier-products/' + this.$auth.user._id
+      "
     >
     </data-viewer>
   </v-container>
@@ -38,6 +42,11 @@ export default {
         { text: 'ADMIN COM', value: 'adminCommission' }
       ]
     }
+  },
+  created() {
+    console.log('here')
+    const id = this.$auth.user._id
+    console.log(id)
   },
   methods: {
     getColor(status) {

@@ -7,7 +7,7 @@
           <v-data-table
             hide-default-footer
             :headers="headers"
-            :items="order"
+            :items="orders"
             height="100%"
           >
             <template v-slot:item.status="{ item }">

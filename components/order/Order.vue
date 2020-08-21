@@ -5,9 +5,13 @@
       :title="title"
       detail
       detail-route="order/detail/$id"
-      remove
+      :remove="$auth.hasScope('admin')"
       remove-route="orders/$id"
-      endpoint="/orders"
+      :endpoint="
+        $auth.hasScope('admin')
+          ? 'orders'
+          : 'orders/getbysupplier/' + this.$auth.user._id
+      "
     >
       <template #status="{ item }">
         <v-select
@@ -64,17 +68,22 @@ export default {
         { text: 'STATUS', value: 'status' },
         { text: 'REMARKS', value: 'remarks' }
       ],
-      items: ['pending', 'on hold', 'processing', 'delivered', 'cancelled']
+      items: [
+        'pending',
+        'on hold',
+        'processing',
+        'delivered',
+        'cancelled',
+        'cancelled by customer'
+      ]
     }
   },
   mounted() {
-    console.log('here')
     if (this.$auth.hasScope('supplier')) {
       this.headers = [
+        { text: 'ORDER #', value: 'orderNo' },
         { text: 'USER', value: 'person.name' },
         { text: 'PRODUCT', value: 'items[0].product.name' },
-        { text: 'ORDER AMOUNT', value: 'orderAmount' },
-        { text: 'TOTAL AMOUNT', value: 'total' },
         { text: 'TYPE', value: 'orderType' }
       ]
     }
