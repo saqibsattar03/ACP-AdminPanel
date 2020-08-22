@@ -39,7 +39,7 @@ export class Product {
   images = []
 
   /** @type { number} */
-  adminCommission = undefined
+  adminCommission = 0
 
   /** @type {string} */
   name = undefined

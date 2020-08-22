@@ -43,6 +43,16 @@ export default {
       ]
     }
   },
+  mounted() {
+    if (this.$auth.hasScope('supplier')) {
+      this.headers = [
+        { text: 'NAME', value: 'name' },
+        { text: 'DESCRIPTION', value: 'description' },
+        { text: 'STATUS', value: 'status' },
+        { text: 'PRICE', value: 'price' }
+      ]
+    }
+  },
   created() {
     console.log('here')
     const id = this.$auth.user._id

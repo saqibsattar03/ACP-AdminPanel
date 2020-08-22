@@ -52,6 +52,7 @@
           label="Description"
         />
         <v-text-field
+          v-if="$auth.hasScope('admin')"
           v-model="product.adminCommission"
           :rules="[(_) => !!product.adminCommission || 'Please Enter Price']"
           type="number"
