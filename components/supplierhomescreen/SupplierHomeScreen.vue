@@ -46,17 +46,28 @@ export default {
   name: 'SupplierHomeScreen',
   data() {
     return {
+      orders: [],
       headers: [
-        { text: '#', value: 'no' },
-        { text: 'NAME', value: 'name' },
-        { text: 'PRODUCT', value: 'product' },
-        { text: 'QUANTITY', value: 'quantity' },
-        { text: 'STATUS', value: 'status' }
+        { text: '#', value: 'orderNo' },
+        { text: 'Name', value: 'person.name' },
+        { text: 'Total', value: 'total' },
+        { text: 'Order Type', value: 'orderType' },
+        { text: 'Status', value: 'status' }
       ],
       date: moment(Date.now()).format('dddd MMM DD, YYYY')
     }
   },
+  mounted() {
+    this.getOrders()
+  },
   methods: {
+    async getOrders() {
+      this.orders = await this.$axios.$get(
+        this.$axios.defaults.baseURL +
+          '/orders/getbysupplier/' +
+          this.$auth.user._id
+      )
+    },
     getColor(status) {
       if (status === 'delivered') return 'green'
       else if (status === 'processing') return 'blue'
