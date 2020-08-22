@@ -87,7 +87,7 @@ export default {
   },
   /*
    ** vuetify module configuration
-   ** https://github.com/nuxt-community/vuetify-module
+   ** https://github.com/nuxt-community/vuetify-
    */
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
@@ -133,6 +133,10 @@ export default {
         // autoFetchUser: true
       }
     }
+  },
+  server: {
+    port: 80,
+    host: '0.0.0.0'
   },
   router: {
     middleware: ['auth']
