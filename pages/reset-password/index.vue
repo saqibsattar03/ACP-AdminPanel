@@ -39,10 +39,10 @@
       <v-row justify="center">
         <v-dialog v-model="dialog" persistent max-width="400">
           <v-card>
-            <v-card-title class="headline grey lighten-2">
+            <v-card-title class="headline">
               Reset Password
             </v-card-title>
-            <v-card-text class="headline grey lighten-4"
+            <v-card-text
               >Please check your email to reset your password</v-card-text
             >
             <v-card-actions>

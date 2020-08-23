@@ -8,11 +8,12 @@
       method="patch"
       endpoint="persons/changepassword"
       :data="parseData"
-      @response="window.location.close()"
+      @response="locationReplace"
     >
       <v-text-field
         v-model="newPassword"
-        type="password"
+        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="show1 ? 'text' : 'password'"
         label="New Password"
         :rules="[
           (v) => !!v || 'New password is required',
@@ -21,10 +22,12 @@
         class="span-2"
         outlined
         dense
+        @click:append="() => (show1 = !show1)"
       />
       <v-text-field
         v-model="confirmPassword"
-        type="password"
+        :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+        :type="show ? 'text' : 'password'"
         label="Confirm Password"
         class="span-2"
         :rules="[
@@ -34,7 +37,21 @@
         ]"
         outlined
         dense
+        @click:append="() => (show = !show)"
       />
+      <template>
+        <v-row justify="center">
+          <v-dialog v-model="dialog" persistent max-width="400">
+            <v-card>
+              <v-card-title class="headline">Reset Password</v-card-title>
+              <v-card-text>Your Password has been Reset</v-card-text>
+              <v-card-text
+                >Go to your app account to login into your account</v-card-text
+              >
+            </v-card>
+          </v-dialog>
+        </v-row>
+      </template>
     </SimpleForm>
     <p v-else>
       Your Request has been expired
@@ -60,7 +77,10 @@ export default {
     hash: '',
     oldPassword: '',
     newPassword: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    dialog: false,
+    show: false,
+    show1: false
   }),
   computed: {
     matchPasswordRule() {
@@ -80,6 +100,10 @@ export default {
         old: this.oldPassword,
         new: this.newPassword
       }
+    },
+    locationReplace() {
+      this.dialog = true
+      // this.$router.push('/login')
     }
   }
 }

@@ -53,9 +53,9 @@
             height="100%"
           >
             <template v-slot:item.status="{ item }">
-              <v-btn :color="getColor(item.status)" small depressed dark>{{
+              <v-chip :color="getColor(item.status)" small dark>{{
                 item.status
-              }}</v-btn>
+              }}</v-chip>
             </template>
           </v-data-table>
         </div>
