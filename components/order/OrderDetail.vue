@@ -40,6 +40,13 @@
             {{ orders[0].createdAt }}
           </p>
           <p>
+            <v-icon color="black">fa fa-money</v-icon>
+            <strong style="margin-right: 10px;margin-left: 10px">
+              Wallet Amount Used :
+            </strong>
+            {{ orders[0].walletAmountUsed }}
+          </p>
+          <p>
             <v-icon color="black"> fa fa-phone</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Contact:
@@ -47,7 +54,7 @@
             {{ orders[0].contact }}
           </p>
           <p v-if="orders[0].shipping">
-            <v-icon color="black">fa fa-tag</v-icon>
+            <v-icon color="black">fa fa-map-marker</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Shipping Location:
             </strong>
@@ -99,7 +106,7 @@
               {{ item.product.description.substring(0, 100) }}
             </template>
             <template v-slot:expanded-item="{ headers, item }">
-              <td :colspan="headers.length">
+              <td v-if="item.varient" :colspan="headers.length">
                 Selected Variants {{ item.varient }}
               </td>
             </template>
