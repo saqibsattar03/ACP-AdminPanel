@@ -9,7 +9,8 @@ export default {
   components: { SupplierAd },
   async asyncData({ $axios }) {
     return {
-      supplierProduct: await $axios.$get('/products/getpending')
+      // supplierProduct: await $axios.$get('/products/getpending')
+      supplierProduct: await $axios.$get('/products-unverified')
     }
   }
 }

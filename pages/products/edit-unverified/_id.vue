@@ -5,7 +5,7 @@
     :sub-categories="subCategory"
     :master-categories="masterCategories"
     :is-update="true"
-    endpoint="/products"
+    endpoint="/products-unverified"
   /> </template
 >masterCategories
 
@@ -16,7 +16,7 @@ export default {
   components: { AdForm },
   async asyncData({ $axios, route }) {
     return {
-      product: await $axios.$get('products/' + route.params.id),
+      product: await $axios.$get('products-unverified/' + route.params.id),
       mainCategory: await $axios.$get('/main-categories/'),
       subCategory: await $axios.$get('/sub-categories'),
       masterCategories: await $axios.$get('/master-categories')

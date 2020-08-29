@@ -21,7 +21,8 @@
           <v-btn small color="green" dark @click="onAccepted(item)"
             >Accept</v-btn
           >
-          <v-btn small color="red" dark @click="onRejected(item)">Reject</v-btn>
+          <!--          <v-btn small color="red" dark @click="onRejected(item)">Reject</v-btn>-->
+          <v-icon large color="green" @click="editItem(item)">mdi-eye</v-icon>
         </template>
       </v-data-table>
       <v-snackbar
@@ -48,13 +49,14 @@ export default {
       snackbarColor: 'green',
       snackbar: false,
       headers: [
-        { text: 'Supplier Name', value: 'name' },
+        { text: 'Ad Name', value: 'name' },
         { text: 'Ad Details', value: 'description' },
         { text: 'Admin Commission', value: 'commission' },
         { text: 'Actions', value: 'actions' }
       ]
     }
   },
+
   methods: {
     onAccepted(item) {
       this.$axios.patch('/products/approve', item)
@@ -63,10 +65,14 @@ export default {
       this.snackbar = true
     },
     onRejected(item) {
-      this.$axios.patch('/products/approve', item)
+      this.$axios.delete('/products-unverified', item)
       this.snackbarColor = 'red'
       this.snackbarText = 'Product Rejected Successfully!'
       this.snackbar = true
+    },
+    editItem(item) {
+      // this.$axios.$get('/products-unverified/' + item._id)
+      this.$router.push('/products/edit-unverified/' + item._id)
     }
   }
 }

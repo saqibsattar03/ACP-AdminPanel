@@ -235,27 +235,13 @@ export default {
   mounted() {
     console.log(this.suppliers)
 
-    this.expiryDate1 = moment(this.suppliers.documents[0].expiry).format(
-      'YYYY-MM-DD'
-    )
-    this.expiryDate2 = moment(this.suppliers.documents[1].expiry).format(
-      'YYYY-MM-DD'
-    )
-    this.expiryDate3 = moment(this.suppliers.documents[2].expiry).format(
-      'YYYY-MM-DD'
-    )
-    this.expiryDate4 = moment(this.suppliers.documents[3].expiry).format(
-      'YYYY-MM-DD'
-    )
-    this.expiryDate5 = moment(this.suppliers.documents[4].expiry).format(
-      'YYYY-MM-DD'
-    )
-    this.expiryDate6 = moment(this.suppliers.documents[5].expiry).format(
-      'YYYY-MM-DD'
-    )
-    this.expiryDate7 = moment(this.suppliers.documents[6].expiry).format(
-      'YYYY-MM-DD'
-    )
+    this.expiryDate1 = moment(this.suppliers.documents[0]).format('YYYY-MM-DD')
+    this.expiryDate2 = moment(this.suppliers.documents[1]).format('YYYY-MM-DD')
+    this.expiryDate3 = moment(this.suppliers.documents[2]).format('YYYY-MM-DD')
+    this.expiryDate4 = moment(this.suppliers.documents[3]).format('YYYY-MM-DD')
+    this.expiryDate5 = moment(this.suppliers.documents[4]).format('YYYY-MM-DD')
+    this.expiryDate6 = moment(this.suppliers.documents[5]).format('YYYY-MM-DD')
+    this.expiryDate7 = moment(this.suppliers.documents[6]).format('YYYY-MM-DD')
 
     this.document1 = this.suppliers.documents[0]
     this.document2 = this.suppliers.documents[1]

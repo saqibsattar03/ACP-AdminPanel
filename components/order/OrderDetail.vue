@@ -10,7 +10,7 @@
         <div
           style="display: flex;align-items: center;flex-direction: column;justify-content: center;margin-top: 25px"
         >
-          <p v-if="orders[0].reason">
+          <p v-if="orders[0].reason && $auth.hasScope('admin')">
             <v-icon color="red"> fa fa-times</v-icon
             ><strong style="margin-right: 10px;margin-left: 10px;color: red"
               >Cancellation Reason:</strong
@@ -20,12 +20,12 @@
           <v-avatar size="100px"
             ><img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="john"
           /></v-avatar>
-          <p>
+          <p v-if="$auth.hasScope('admin')">
             <v-icon color="black"> fa fa-user</v-icon
             ><strong style="margin-right: 10px;margin-left: 10px">Name:</strong>
             {{ orders[0].person.name }}
           </p>
-          <p v-if="orders[0].address">
+          <p v-if="orders[0].address && $auth.hasScope('admin')">
             <v-icon color="black"> fa fa-tag</v-icon
             ><strong style="margin-right: 10px;margin-left: 10px"
               >Address:</strong
@@ -39,28 +39,28 @@
             </strong>
             {{ orders[0].createdAt }}
           </p>
-          <p>
+          <p v-if="$auth.hasScope('admin')">
             <v-icon color="black">fa fa-money</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Wallet Amount Used :
             </strong>
             {{ orders[0].walletAmountUsed }}
           </p>
-          <p>
+          <p v-if="$auth.hasScope('admin')">
             <v-icon color="black"> fa fa-phone</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Contact:
             </strong>
             {{ orders[0].contact }}
           </p>
-          <p v-if="orders[0].shipping">
+          <p v-if="orders[0].shipping && $auth.hasScope('admin')">
             <v-icon color="black">fa fa-map-marker</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Shipping Location:
             </strong>
             {{ orders[0].shipping.location }}
           </p>
-          <p v-if="orders[0].shipping">
+          <p v-if="orders[0].shipping && $auth.hasScope('admin')">
             <v-icon color="black">fa fa-money</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Shipping Charges:
@@ -68,14 +68,14 @@
 
             {{ orders[0].shipping.charges }}
           </p>
-          <p>
+          <p v-if="$auth.hasScope('admin')">
             <v-icon color="black">fa fa-money</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Total Amount:
             </strong>
             {{ orders[0].total }}
           </p>
-          <p v-if="orders[0].outletName">
+          <p v-if="orders[0].outletName && $auth.hasScope('admin')">
             <v-icon color="black">fa fa-money</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Outlet Name:
@@ -143,8 +143,18 @@ export default {
       ]
     }
   },
+  created() {
+    if (this.$auth.hasScope('supplier')) {
+      this.headers = [
+        { text: 'PRODUCT', value: 'product.name' },
+        { text: 'QUANTITY', value: 'count' },
+        { text: 'ACTION', value: 'actions' }
+      ]
+    }
+  },
   methods: {
     editItem(item) {
+      console.log(item)
       this.$router.push('/products/edit/' + item.product._id)
     }
   }

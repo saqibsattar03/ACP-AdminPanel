@@ -2,7 +2,7 @@
   <v-container>
     <data-viewer
       :columns="headers"
-      :title="title"
+      title="Order"
       detail
       detail-route="order/detail/$id"
       :remove="$auth.hasScope('admin')"
@@ -13,6 +13,15 @@
           : 'orders/getbysupplier/' + this.$auth.user._id
       "
     >
+      <template #actions="{ item }">
+        <v-icon
+          v-if="item.hasOwnProperty('showToSupplier') && !item.showToSupplier"
+          small
+          color="green"
+          @click="approveProduct(item)"
+          >fa fa-check</v-icon
+        >
+      </template>
       <template #status="{ item }">
         <v-select
           v-model="item.status"
@@ -32,7 +41,11 @@
           outlined
           dense
           ><template slot="append-outer"
-            ><v-icon color="red" small @click="sendRemarks(item)"
+            ><v-icon
+              v-if="item.remarks"
+              color="red"
+              small
+              @click="sendRemarks(item)"
               >fa fa-paper-plane remarks-button</v-icon
             >
           </template>
@@ -47,12 +60,7 @@ import DataViewer from '../../common/ui/widgets/DataViewer'
 export default {
   name: 'Order',
   components: { DataViewer },
-  props: {
-    title: {
-      type: String,
-      default: 'title'
-    }
-  },
+
   data() {
     return {
       status: '',
@@ -69,22 +77,20 @@ export default {
         { text: 'REMARKS', value: 'remarks' }
       ],
       items: [
-        'pending',
-        'on hold',
-        'processing',
-        'delivered',
-        'cancelled',
-        'cancelled by customer'
+        'Pending',
+        'On Hold',
+        'Processing',
+        'Delivered',
+        'Cancelled',
+        'Cancelled by Customer'
       ]
     }
   },
-  mounted() {
+  created() {
     if (this.$auth.hasScope('supplier')) {
       this.headers = [
         { text: 'ORDER #', value: 'orderNo' },
-        { text: 'USER', value: 'person.name' },
-        { text: 'PRODUCT', value: 'items[0].product.name' },
-        { text: 'TYPE', value: 'orderType' }
+        { text: 'PRODUCT', value: 'items[0].product.name' }
       ]
     }
   },
@@ -102,6 +108,13 @@ export default {
         id: item._id
       })
       return res
+    },
+
+    approveProduct(item) {
+      item.showToSupplier = true
+
+      console.log(item)
+      this.$axios.$patch('orders', item)
     }
   }
 }

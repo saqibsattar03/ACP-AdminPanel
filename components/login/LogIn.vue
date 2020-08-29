@@ -18,7 +18,7 @@
 
           <div class="my-2">
             <v-btn text color="error" @click="resetPassword"
-              >Forgotten Password?</v-btn
+              >Forgot Password?</v-btn
             >
           </div>
         </div>

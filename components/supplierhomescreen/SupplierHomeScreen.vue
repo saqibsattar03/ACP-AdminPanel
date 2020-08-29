@@ -50,7 +50,6 @@ export default {
       headers: [
         { text: '#', value: 'orderNo' },
         { text: 'Name', value: 'person.name' },
-        { text: 'Total', value: 'total' },
         { text: 'Order Type', value: 'orderType' },
         { text: 'Status', value: 'status' }
       ],

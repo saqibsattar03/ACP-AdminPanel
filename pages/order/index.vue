@@ -1,17 +1,12 @@
 <template>
-  <order title="Order" :orders="orders" />
+  <order />
 </template>
 
 <script>
 import Order from '../../components/order/Order'
 export default {
   name: 'Index',
-  components: { Order },
-  async asyncData({ $axios }) {
-    return {
-      orders: await $axios.$get('/orders')
-    }
-  }
+  components: { Order }
 }
 </script>
 

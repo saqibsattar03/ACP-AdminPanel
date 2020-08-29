@@ -3,8 +3,8 @@
     <SimpleForm
       :title="isUpdate ? 'Edit Product' : 'Add New Product'"
       :method="isUpdate ? 'patch' : 'post'"
-      endpoint="products"
       :data="formData"
+      :endpoint="endpoint"
       return
     >
       <div class="span-2">
@@ -251,6 +251,10 @@ export default {
       type: Array,
       default: () => [new Product()]
     },
+    endpoint: {
+      type: String,
+      default: 'none'
+    },
     // deletedImages: {
     //   type: Array,
     //   default: () => []
@@ -260,7 +264,6 @@ export default {
       default: false
     }
   },
-
   data() {
     return {
       deletedImages: [],

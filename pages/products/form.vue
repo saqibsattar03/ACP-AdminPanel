@@ -3,6 +3,7 @@
     :sub-categories="subCategories"
     :main-categories="mainCategories"
     :master-categories="masterCategories"
+    :endpoint="$auth.hasScope('admin') ? '/products' : '/products-unverified'"
   />
 </template>
 
