@@ -1,10 +1,21 @@
 <template>
   <div style="margin: 25px;background-color: black">
     <v-card>
-      <v-card-title>
-        Supplier Ads
-      </v-card-title>
-      <v-data-table :headers="headers" :items="supplierProducts">
+      <v-row>
+        <v-col>
+          <v-card-title class="md-col-8">
+            Supplier Ads
+          </v-card-title>
+        </v-col>
+        <v-col
+          style="display: flex;align-items: center;justify-content: flex-end"
+        >
+          <v-btn style="margin-right: 10px" icon @click="getItems">
+            <v-icon>mdi-reload</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
+      <v-data-table :headers="headers" :items="supplierProductsLocal">
         <template v-slot:item.commission="{ item }">
           <slot name="commission" :item="item" />
           <v-text-field
@@ -45,6 +56,7 @@ export default {
   },
   data() {
     return {
+      supplierProductsLocal: [],
       snackbarText: 'Success!',
       snackbarColor: 'green',
       snackbar: false,
@@ -56,13 +68,16 @@ export default {
       ]
     }
   },
-
+  mounted() {
+    this.supplierProductsLocal = this.supplierProducts
+  },
   methods: {
-    onAccepted(item) {
-      this.$axios.patch('/products/approve', item)
+    async onAccepted(item) {
+      await this.$axios.patch('/products/approve', item)
       this.snackbarColor = 'green'
       this.snackbarText = 'Product Accepted Successfully!'
       this.snackbar = true
+      await this.getItems()
     },
     onRejected(item) {
       this.$axios.delete('/products-unverified', item)
@@ -71,8 +86,13 @@ export default {
       this.snackbar = true
     },
     editItem(item) {
-      // this.$axios.$get('/products-unverified/' + item._id)
       this.$router.push('/products/edit-unverified/' + item._id)
+    },
+    async getItems() {
+      this.supplierProductsLocal = await this.$axios.$get(
+        '/products-unverified'
+      )
+      console.log(this.supplierProductsLocal)
     }
   }
 }

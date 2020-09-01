@@ -100,7 +100,7 @@
             :headers="headers"
             :expanded.sync="expanded"
             show-expand
-            :items="orders[0].items"
+            :items="$auth.hasScope('supplier') ? orderItems : orders[0].items"
           >
             <template v-slot:item.product.description="{ item }">
               {{ item.product.description.substring(0, 100) }}
@@ -114,6 +114,28 @@
               <v-icon small color="green" @click="editItem(item)"
                 >mdi-eye</v-icon
               >
+            </template>
+            <template v-slot:item.saqibprice="{ item }">
+              <p
+                v-if="item.varient && item.varient.price"
+                style="margin-bottom: 0"
+              >
+                {{ Number(item.varient.price.toFixed(1)) }}
+              </p>
+              <p v-else style="margin-bottom: 0">
+                {{ Number(item.product.price.toFixed(1)) }}
+              </p>
+              <!--        <div v-for="(orderItem, i) of item.items" :key="i">-->
+              <!--          <p-->
+              <!--            style="margin-bottom: 0"-->
+              <!--            v-if="-->
+              <!--              $auth.hasScope('supplier') &&-->
+              <!--                $auth.user._id === orderItem.product.supplierId-->
+              <!--            "-->
+              <!--          >-->
+              <!--            {{ orderItem.product.name }}-->
+              <!--          </p>-->
+              <!--        </div>-->
             </template>
           </v-data-table>
         </div>
@@ -134,10 +156,11 @@ export default {
   data() {
     return {
       desserts: [],
+      orderItems: [],
       headers: [
         { text: 'NAME', value: 'product.name' },
         { text: 'ADMIN COM', value: 'product.adminCommission' },
-        { text: 'PRICE', value: 'product.price' },
+        { text: 'PRICE', value: 'saqibprice' },
         { text: 'QUANTITY', value: 'count' },
         { text: 'ACTION', value: 'actions' }
       ]
@@ -145,9 +168,22 @@ export default {
   },
   created() {
     if (this.$auth.hasScope('supplier')) {
+      for (const order of this.orders) {
+        for (const item of order.items) {
+          if (item.product.supplierId === this.$auth.user._id) {
+            this.orderItems.push(item)
+            console.log('matched')
+          } else {
+            console.log('not matched')
+            continue
+          }
+        }
+      }
+      console.log(this.orderItems)
       this.headers = [
         { text: 'PRODUCT', value: 'product.name' },
         { text: 'QUANTITY', value: 'count' },
+        { text: 'Cost Price', value: 'saqibprice' },
         { text: 'ACTION', value: 'actions' }
       ]
     }

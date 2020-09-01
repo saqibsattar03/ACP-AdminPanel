@@ -97,6 +97,19 @@
           </v-col>
         </v-row>
       </template>
+      <template v-slot:item.items="{ item }">
+        <div v-for="(orderItem, i) of item.items" :key="i">
+          <p
+            v-if="
+              $auth.hasScope('supplier') &&
+                $auth.user._id === orderItem.product.supplierId
+            "
+            style="margin-bottom: 0"
+          >
+            {{ orderItem.product.name }}
+          </p>
+        </div>
+      </template>
       <template v-slot:item.action="{ item }">
         <slot name="actions" :item="item" />
         <v-icon v-if="detail" small color="green" @click="detailItem(item)"

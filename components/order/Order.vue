@@ -90,7 +90,7 @@ export default {
     if (this.$auth.hasScope('supplier')) {
       this.headers = [
         { text: 'ORDER #', value: 'orderNo' },
-        { text: 'PRODUCT', value: 'items[0].product.name' }
+        { text: 'PRODUCT', value: 'items' }
       ]
     }
   },

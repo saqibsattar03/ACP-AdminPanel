@@ -83,7 +83,7 @@
             <div
               v-for="(image, i) of product.images"
               :key="i"
-              style="width: 180px; height: 180px"
+              style="width: 180px; height: 180px;cursor: pointer"
             >
               <img
                 width="180"
@@ -93,8 +93,22 @@
                 alt=""
               />
               <div class="image-overlay">
-                <v-btn icon outlined color="white" @click="deleteImage(i)">
+                <v-btn
+                  icon
+                  outlined
+                  color="white"
+                  style="margin-right: 10px"
+                  @click="deleteImage(i)"
+                >
                   <v-icon>mdi-delete</v-icon>
+                </v-btn>
+                <v-btn
+                  icon
+                  outlined
+                  color="white"
+                  @click="openImage(image.name)"
+                >
+                  <v-icon>mdi-magnify</v-icon>
                 </v-btn>
               </div>
             </div>
@@ -217,6 +231,15 @@
         </v-card>
       </div>
     </SimpleForm>
+    <v-dialog v-model="imagePreview" width="50%">
+      <img :src="$axios.defaults.baseURL + '/uploads/' + src" />
+      <v-icon
+        style="position: absolute;right: -22%;top:6%"
+        large
+        @click="closePreview"
+        >mdi-close</v-icon
+      >
+    </v-dialog>
   </div>
 </template>
 
@@ -276,6 +299,8 @@ export default {
       items: [],
       items1: [],
       items2: [],
+      src: '',
+      imagePreview: false,
       optionCount: 0,
       selectedMain: null,
       selectedSub: null,
@@ -312,6 +337,15 @@ export default {
   },
   methods: {
     required,
+    openImage(i) {
+      if (i) {
+        this.src = i
+        this.imagePreview = true
+      }
+    },
+    closePreview() {
+      this.imagePreview = false
+    },
     formData() {
       const formData = new FormData()
       if (this.allowVariants) {
@@ -346,7 +380,9 @@ export default {
               }
             }
           } else if (key === 'supplierId') {
-            if (this.$auth.hasScope('supplier')) {
+            if (this.product.supplierId) {
+              formData.append('supplierId', this.product.supplierId)
+            } else if (this.$auth.hasScope('supplier')) {
               const supplierId = this.$auth.user._id
               formData.append('supplierId', supplierId)
             }
@@ -401,7 +437,10 @@ export default {
           } else if (key === 'price') {
             formData.append(key, this.product.price)
           } else if (key === 'supplierId') {
-            if (this.$auth.hasScope('supplier')) {
+            console.log(this.product.supplierId)
+            if (this.product.supplierId) {
+              formData.append('supplierId', this.product.supplierId)
+            } else if (this.$auth.hasScope('supplier')) {
               const supplierId = this.$auth.user._id
               formData.append('supplierId', supplierId)
             }
@@ -446,7 +485,7 @@ export default {
           formData.append('uploadedImageNames', item.name)
         }
       }
-      formData.forEach((item) => console.log(item))
+      // formData.forEach((item) => console.log(item))
       return formData
     },
     uploadImageSuccess(formData) {
@@ -463,7 +502,6 @@ export default {
 
     deleteImage(index) {
       this.deletedImages.push(this.product.images[index].path)
-      console.log(this.deletedImages)
       this.product.images.splice(index, 1)
     },
     addOption() {
