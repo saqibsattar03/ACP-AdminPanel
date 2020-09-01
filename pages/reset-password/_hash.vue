@@ -1,8 +1,6 @@
 <template>
-  <div
-    style="display: flex; align-items: center; justify-content: center; height: 100%"
-  >
-    <SimpleForm
+  <div class="form">
+    <SimpleFormReset
       v-if="isValid"
       title="Reset Your Password"
       method="patch"
@@ -44,15 +42,15 @@
           <v-dialog v-model="dialog" persistent max-width="400">
             <v-card>
               <v-card-title class="headline">Reset Password</v-card-title>
-              <v-card-text>Your Password has been Reset</v-card-text>
               <v-card-text
-                >Go to your app account to login into your account</v-card-text
+                >Your password has been changed successfully.Visit the
+                application to log into your account.</v-card-text
               >
             </v-card>
           </v-dialog>
         </v-row>
       </template>
-    </SimpleForm>
+    </SimpleFormReset>
     <p v-else>
       Your Request has been expired
     </p>
@@ -60,12 +58,12 @@
 </template>
 
 <script>
-import SimpleForm from '@/common/ui/widgets/SimpleForm'
+import SimpleFormReset from '@/common/ui/widgets/SimpleFormReset'
 
 export default {
   layout: 'none',
   auth: false,
-  components: { SimpleForm },
+  components: { SimpleFormReset },
 
   async asyncData({ $axios, route }) {
     return {
@@ -111,6 +109,11 @@ export default {
 
 <style scoped>
 .form {
-  width: 400px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  /*width: 400px !important;*/
 }
 </style>
