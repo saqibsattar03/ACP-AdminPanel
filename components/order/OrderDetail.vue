@@ -3,19 +3,19 @@
     <v-card>
       <div style="background-color: #eff0f5;height: 30px">
         <div>
-          <p>ORDER# {{ orders[0].orderNo }}</p>
+          <p>ORDER# {{ orders.orderNo }}</p>
         </div>
       </div>
       <div>
         <div
           style="display: flex;align-items: center;flex-direction: column;justify-content: center;margin-top: 25px"
         >
-          <p v-if="orders[0].reason && $auth.hasScope('admin')">
+          <p v-if="orders.reason && $auth.hasScope('admin')">
             <v-icon color="red"> fa fa-times</v-icon
             ><strong style="margin-right: 10px;margin-left: 10px;color: red"
               >Cancellation Reason:</strong
             >
-            {{ orders[0].reason }}
+            {{ orders.reason }}
           </p>
           <v-avatar size="100px"
             ><img src="https://cdn.vuetifyjs.com/images/john.jpg" alt="john"
@@ -23,75 +23,73 @@
           <p v-if="$auth.hasScope('admin')">
             <v-icon color="black"> fa fa-user</v-icon
             ><strong style="margin-right: 10px;margin-left: 10px">Name:</strong>
-            {{ orders[0].person.name }}
+            {{ orders.person.name }}
           </p>
-          <p v-if="orders[0].address && $auth.hasScope('admin')">
+          <p v-if="orders.address && $auth.hasScope('admin')">
             <v-icon color="black"> fa fa-tag</v-icon
             ><strong style="margin-right: 10px;margin-left: 10px"
               >Address:</strong
             >
-            {{ orders[0].address }}
+            {{ orders.address }}
           </p>
           <p>
             <v-icon color="black">fa fa-calendar</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Order Date :
             </strong>
-            {{ orders[0].createdAt }}
+            {{ orders.createdAt }}
           </p>
           <p v-if="$auth.hasScope('admin')">
             <v-icon color="black">fa fa-money</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Wallet Amount Used :
             </strong>
-            {{ orders[0].walletAmountUsed }}
+            {{ orders.walletAmountUsed }}
           </p>
           <p v-if="$auth.hasScope('admin')">
             <v-icon color="black"> fa fa-phone</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Contact:
             </strong>
-            {{ orders[0].contact }}
+            {{ orders.contact }}
           </p>
-          <p v-if="orders[0].shipping && $auth.hasScope('admin')">
+          <p v-if="orders.shipping && $auth.hasScope('admin')">
             <v-icon color="black">fa fa-map-marker</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Shipping Location:
             </strong>
-            {{ orders[0].shipping.location }}
+            {{ orders.shipping.location }}
           </p>
-          <p v-if="orders[0].shipping && $auth.hasScope('admin')">
+          <p v-if="orders.shipping && $auth.hasScope('admin')">
             <v-icon color="black">fa fa-money</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Shipping Charges:
             </strong>
 
-            {{ orders[0].shipping.charges }}
+            {{ orders.shipping.charges }}
           </p>
           <p v-if="$auth.hasScope('admin')">
             <v-icon color="black">fa fa-money</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Total Amount:
             </strong>
-            {{ orders[0].total }}
+            {{ orders.total }}
           </p>
-          <p v-if="orders[0].outletName && $auth.hasScope('admin')">
+          <p v-if="orders.outletName && $auth.hasScope('admin')">
             <v-icon color="black">fa fa-money</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Outlet Name:
             </strong>
-            {{ orders[0].outletName }}
+            {{ orders.outletName }}
           </p>
-          <p v-if="orders[0].coupon">
+          <p v-if="orders.coupon">
             <v-icon color="black">fa fa-gift</v-icon>
             <strong style="margin-right: 10px;margin-left: 10px">
               Coupon:
             </strong>
-            {{ orders[0].coupon.name }}
+            {{ orders.coupon.name }}
             <span
-              ><strong
-                >Discount: {{ orders[0].coupon.discount }} %</strong
-              ></span
+              ><strong>Discount: {{ orders.coupon.discount }} %</strong></span
             >
           </p>
         </div>
@@ -100,7 +98,7 @@
             :headers="headers"
             :expanded.sync="expanded"
             show-expand
-            :items="$auth.hasScope('supplier') ? orderItems : orders[0].items"
+            :items="$auth.hasScope('supplier') ? orderItems : orders.items"
           >
             <template v-slot:item.product.description="{ item }">
               {{ item.product.description.substring(0, 100) }}
@@ -114,6 +112,14 @@
               <v-icon small color="green" @click="editItem(item)"
                 >mdi-eye</v-icon
               >
+            </template>
+            <template v-slot:item.supplier="{ item }">
+              <div v-if="$auth.hasScope('supplier')">
+                {{ names[orderItems.indexOf(item)] }}
+              </div>
+              <div v-else>
+                {{ names[orders.items.indexOf(item)] }}
+              </div>
             </template>
             <template v-slot:item.saqibprice="{ item }">
               <p
@@ -149,6 +155,10 @@ export default {
   name: 'OrderDetail',
   props: {
     orders: {
+      type: Object,
+      default: null
+    },
+    names: {
       type: Array,
       default: () => []
     }
@@ -158,13 +168,17 @@ export default {
       desserts: [],
       orderItems: [],
       headers: [
-        { text: 'NAME', value: 'product.name' },
-        { text: 'ADMIN COM', value: 'product.adminCommission' },
-        { text: 'PRICE', value: 'saqibprice' },
-        { text: 'QUANTITY', value: 'count' },
-        { text: 'ACTION', value: 'actions' }
+        { text: 'Name', value: 'product.name' },
+        { text: 'Admin com', value: 'product.adminCommission' },
+        { text: 'Price', value: 'saqibprice' },
+        { text: 'Supplier', value: 'supplier' },
+        { text: 'Quantity', value: 'count' },
+        { text: 'Action', value: 'actions' }
       ]
     }
+  },
+  mounted() {
+    console.log(this.orders)
   },
   created() {
     if (this.$auth.hasScope('supplier')) {
@@ -181,10 +195,10 @@ export default {
       }
       console.log(this.orderItems)
       this.headers = [
-        { text: 'PRODUCT', value: 'product.name' },
-        { text: 'QUANTITY', value: 'count' },
+        { text: 'Product', value: 'product.name' },
+        { text: 'Quantity', value: 'count' },
         { text: 'Cost Price', value: 'saqibprice' },
-        { text: 'ACTION', value: 'actions' }
+        { text: 'Action', value: 'actions' }
       ]
     }
   },
@@ -192,6 +206,11 @@ export default {
     editItem(item) {
       console.log(item)
       this.$router.push('/products/edit/' + item.product._id)
+    },
+    async getSupplierName(id) {
+      const supplier = await this.$axios.$get('/persons/' + id)
+      console.log(supplier.name)
+      return supplier.name
     }
   }
 }

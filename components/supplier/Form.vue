@@ -234,22 +234,48 @@ export default {
   },
   mounted() {
     console.log(this.suppliers)
-
-    this.expiryDate1 = moment(this.suppliers.documents[0]).format('YYYY-MM-DD')
-    this.expiryDate2 = moment(this.suppliers.documents[1]).format('YYYY-MM-DD')
-    this.expiryDate3 = moment(this.suppliers.documents[2]).format('YYYY-MM-DD')
-    this.expiryDate4 = moment(this.suppliers.documents[3]).format('YYYY-MM-DD')
-    this.expiryDate5 = moment(this.suppliers.documents[4]).format('YYYY-MM-DD')
-    this.expiryDate6 = moment(this.suppliers.documents[5]).format('YYYY-MM-DD')
-    this.expiryDate7 = moment(this.suppliers.documents[6]).format('YYYY-MM-DD')
-
-    this.document1 = this.suppliers.documents[0]
-    this.document2 = this.suppliers.documents[1]
-    this.document3 = this.suppliers.documents[2]
-    this.document4 = this.suppliers.documents[3]
-    this.document5 = this.suppliers.documents[4]
-    this.document6 = this.suppliers.documents[5]
-    this.document7 = this.suppliers.documents[6]
+    if (this.suppliers.documents.length >= 1) {
+      this.expiryDate1 = moment(this.suppliers.documents[0].expiry).format(
+        'YYYY-MM-DD'
+      )
+      this.document1 = this.suppliers.documents[0]
+    }
+    if (this.suppliers.documents.length >= 2) {
+      this.expiryDate2 = moment(this.suppliers.documents[1].expiry).format(
+        'YYYY-MM-DD'
+      )
+      this.document2 = this.suppliers.documents[1]
+    }
+    if (this.suppliers.documents.length >= 3) {
+      this.expiryDate3 = moment(this.suppliers.documents[2].expiry).format(
+        'YYYY-MM-DD'
+      )
+      this.document3 = this.suppliers.documents[2]
+    }
+    if (this.suppliers.documents.length >= 4) {
+      this.expiryDate4 = moment(this.suppliers.documents[3].expiry).format(
+        'YYYY-MM-DD'
+      )
+      this.document4 = this.suppliers.documents[3]
+    }
+    if (this.suppliers.documents.length >= 5) {
+      this.expiryDate5 = moment(this.suppliers.documents[4].expiry).format(
+        'YYYY-MM-DD'
+      )
+      this.document5 = this.suppliers.documents[4]
+    }
+    if (this.suppliers.documents.length >= 6) {
+      this.expiryDate6 = moment(this.suppliers.documents[5].expiry).format(
+        'YYYY-MM-DD'
+      )
+      this.document6 = this.suppliers.documents[5]
+    }
+    if (this.suppliers.documents.length >= 7) {
+      this.expiryDate7 = moment(this.suppliers.documents[6].expiry).format(
+        'YYYY-MM-DD'
+      )
+      this.document7 = this.suppliers.documents[6]
+    }
   },
   methods: {
     formData() {

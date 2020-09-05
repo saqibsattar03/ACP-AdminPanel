@@ -86,8 +86,7 @@ export default {
     }
   },
   created() {
-    const id = this.$auth.user._id
-    console.log(id)
+    // const id = this.$auth.user._id
     if (this.$auth.hasScope('supplier')) {
       this.headers = [
         { text: 'NAME', value: 'name' },

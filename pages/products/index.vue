@@ -8,8 +8,6 @@ export default {
   name: 'Index',
   components: { Ad },
   async asyncData({ $axios }) {
-    console.log('here')
-    console.log(await $axios.$get('/products'))
     return {
       product: await $axios.$get('/products')
     }

@@ -26,7 +26,16 @@
         </footer>
       </slot>
       <error-dialog :error="error" />
-      <loading-dialog v-model="loading" />
+      <v-dialog v-model="loading" width="400" persistent>
+        <v-card width="400" style="padding: 20px" class="loading-dialog">
+          <v-progress-circular
+            style="margin-right: 20px"
+            indeterminate
+            color="primary"
+          />
+          <span class="loading-dialog__message">Loading...</span>
+        </v-card>
+      </v-dialog>
     </v-form>
   </div>
 </template>

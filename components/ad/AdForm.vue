@@ -7,6 +7,19 @@
       :endpoint="endpoint"
       return
     >
+      <div
+        v-if="supplierName && $auth.hasScope('admin')"
+        style="text-align: center;"
+        class="span-2"
+      >
+        <v-text-field
+          v-model="supplierName.username"
+          readonly
+          label="Supplier Name"
+          dense
+          outlined
+        />
+      </div>
       <div class="span-2">
         <v-select
           v-model="product.masterCategoryId"
@@ -54,7 +67,6 @@
         <v-text-field
           v-if="$auth.hasScope('admin')"
           v-model="product.adminCommission"
-          :rules="[(_) => !!product.adminCommission || 'Please Enter Price']"
           type="number"
           outlined
           dense
@@ -222,6 +234,8 @@
                   style="align-items: center !important;"
                   outlined
                   label="Price"
+                  type="number"
+                  :rules="[(_) => !!item.varientPrice || 'Please Enter Price']"
                   dense
                   hide-details
                 ></v-text-field>
@@ -289,6 +303,7 @@ export default {
   },
   data() {
     return {
+      supplierName: null,
       deletedImages: [],
       date: null,
       option: new Option(),
@@ -321,6 +336,9 @@ export default {
   },
 
   mounted() {
+    if (this.isUpdate) {
+      this.getSupplier()
+    }
     if (this.product.name) {
       if (this.product.varient.length > 0 || this.product.options.length > 0) {
         this.allowVariants = true
@@ -337,6 +355,13 @@ export default {
   },
   methods: {
     required,
+    async getSupplier() {
+      if (this.product && this.product.supplierId) {
+        this.supplierName = await this.$axios.$get(
+          'persons/' + this.product.supplierId
+        )
+      }
+    },
     openImage(i) {
       if (i) {
         this.src = i
@@ -365,13 +390,10 @@ export default {
           } else if (key === 'options') {
             for (const option of this.options) {
               for (const key of Object.keys(this.option)) {
-                console.log(key)
                 if (key === 'optionImages') {
                   if (option[key]) {
-                    console.log('got images index')
                     formData.append(key, option[key])
                   } else {
-                    console.log('no images index')
                     formData.append(key, null)
                   }
                 } else {
@@ -437,7 +459,6 @@ export default {
           } else if (key === 'price') {
             formData.append(key, this.product.price)
           } else if (key === 'supplierId') {
-            console.log(this.product.supplierId)
             if (this.product.supplierId) {
               formData.append('supplierId', this.product.supplierId)
             } else if (this.$auth.hasScope('supplier')) {
@@ -525,7 +546,6 @@ export default {
         varientName: item,
         varientPrice: 0
       }))
-      console.log(this.variants)
     },
     _combine(index = 0, prevData = []) {
       const variant = []
@@ -566,23 +586,14 @@ export default {
       return _variants
     },
     async masterChanged() {
-      console.log(this.product.masterCategoryId)
-      console.log(
-        await this.$axios.$get(
-          '/main-categories/getByParentId/' + this.product.masterCategoryId
-        )
-      )
       this.items1 = await this.$axios.$get(
         '/main-categories/getByParentId/' + this.product.masterCategoryId
       )
     },
     async mainChanged() {
-      console.log('here')
       this.items2 = await this.$axios.$get(
         '/sub-categories/getbyparent/' + this.product.mainCategoryId
       )
-      console.log(this.selectedMain)
-      console.log(this.items1)
     }
   }
 }

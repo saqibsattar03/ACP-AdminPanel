@@ -11,6 +11,7 @@
 
 <script>
 import AdForm from '@/components/ad/AdForm'
+
 export default {
   name: 'Id',
   components: { AdForm },

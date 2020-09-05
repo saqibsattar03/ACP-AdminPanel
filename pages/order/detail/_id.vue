@@ -1,5 +1,6 @@
 <template>
-  <order-detail :orders="detail" />
+  <!--  <h1>Detail</h1>-->
+  <order-detail :orders="detail" :names="names" />
 </template>
 
 <script>
@@ -8,8 +9,20 @@ export default {
   name: 'Index',
   components: { OrderDetail },
   async asyncData({ $axios, route }) {
+    const names = []
+    const detail = await $axios.$get('orders/' + route.params.id)
+    for (const item of detail.items) {
+      console.log(item)
+      if (item.product.supplierId) {
+        const supplier = await $axios.$get('persons/' + item.product.supplierId)
+        names.push(supplier.name)
+      } else {
+        names.push('No Supplier')
+      }
+    }
     return {
-      detail: [await $axios.$get('orders/' + route.params.id)]
+      names,
+      detail
     }
   }
 }
