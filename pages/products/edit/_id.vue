@@ -16,6 +16,7 @@ export default {
   name: 'Id',
   components: { AdForm },
   async asyncData({ $axios, route }) {
+    console.log(await $axios.$get('products/' + route.params.id))
     return {
       product: await $axios.$get('products/' + route.params.id),
       mainCategory: await $axios.$get('/main-categories/'),

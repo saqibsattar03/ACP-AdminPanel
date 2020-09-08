@@ -54,6 +54,7 @@
             outlined
             dense
             label="CR Paper"
+            @change="deleteDoc(0)"
             ><template slot="append-outer"
               ><v-icon @click="downloadImage">mdi-download</v-icon>
             </template></v-file-input
@@ -70,7 +71,12 @@
         <div
           style="display: flex;flex-direction: row;justify-content: space-between"
         >
-          <v-file-input v-model="document2" outlined dense label="Chamber Card"
+          <v-file-input
+            v-model="document2"
+            outlined
+            dense
+            label="Chamber Card"
+            @change="deleteDoc(1)"
             ><template slot="append-outer"
               ><v-icon @click="downloadImage">mdi-download</v-icon>
             </template></v-file-input
@@ -92,6 +98,7 @@
             outlined
             dense
             label="Tharkees Baladi"
+            @change="deleteDoc(2)"
             ><template slot="append-outer"
               ><v-icon @click="downloadImage">mdi-download</v-icon>
             </template></v-file-input
@@ -113,6 +120,7 @@
             outlined
             dense
             label="ID Card of Sponsor"
+            @change="deleteDoc(3)"
             ><template slot="append-outer"
               ><v-icon @click="downloadImage">mdi-download</v-icon>
             </template></v-file-input
@@ -134,6 +142,7 @@
             outlined
             dense
             label="ID/Passport of Salesman"
+            @change="deleteDoc(4)"
             ><template slot="append-outer"
               ><v-icon @click="downloadImage">mdi-download</v-icon>
             </template></v-file-input
@@ -155,6 +164,7 @@
             outlined
             dense
             label="Any Other legal Document"
+            @change="deleteDoc(5)"
             ><template slot="append-outer"
               ><v-icon @click="downloadImage">mdi-download</v-icon>
             </template></v-file-input
@@ -176,6 +186,7 @@
             outlined
             dense
             label="Any other legal document"
+            @change="deleteDoc(6)"
             ><template slot="append-outer"
               ><v-icon @click="downloadImage">mdi-download</v-icon>
             </template></v-file-input
@@ -195,7 +206,7 @@
 </template>
 
 <script>
-import * as moment from 'moment'
+// import * as moment from 'moment'
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
 import { Supplier } from '@/models/supplier'
 export default {
@@ -213,101 +224,198 @@ export default {
   },
   data() {
     return {
+      deletedData: [],
       date: null,
-      document1: '',
-      document2: '',
-      document3: '',
-      document4: '',
-      document5: '',
-      document6: '',
-      document7: '',
-      expiryDate1: '',
-      expiryDate2: '',
-      expiryDate3: '',
-      expiryDate4: '',
-      expiryDate5: '',
-      expiryDate6: '',
-      expiryDate7: ''
+      document1: null,
+      document2: null,
+      document3: null,
+      document4: null,
+      document5: null,
+      document6: null,
+      document7: null,
+      expiryDate1: null,
+      expiryDate2: null,
+      expiryDate3: null,
+      expiryDate4: null,
+      expiryDate5: null,
+      expiryDate6: null,
+      expiryDate7: null
       // documents: ['', '', '', '', '', '', ''],
       // expiryDates: ['', '', '', '', '', '', '']
     }
   },
   mounted() {
-    console.log(this.suppliers)
-    if (this.suppliers.documents.length >= 1) {
-      this.expiryDate1 = moment(this.suppliers.documents[0].expiry).format(
-        'YYYY-MM-DD'
-      )
-      this.document1 = this.suppliers.documents[0]
-    }
-    if (this.suppliers.documents.length >= 2) {
-      this.expiryDate2 = moment(this.suppliers.documents[1].expiry).format(
-        'YYYY-MM-DD'
-      )
-      this.document2 = this.suppliers.documents[1]
-    }
-    if (this.suppliers.documents.length >= 3) {
-      this.expiryDate3 = moment(this.suppliers.documents[2].expiry).format(
-        'YYYY-MM-DD'
-      )
-      this.document3 = this.suppliers.documents[2]
-    }
-    if (this.suppliers.documents.length >= 4) {
-      this.expiryDate4 = moment(this.suppliers.documents[3].expiry).format(
-        'YYYY-MM-DD'
-      )
-      this.document4 = this.suppliers.documents[3]
-    }
-    if (this.suppliers.documents.length >= 5) {
-      this.expiryDate5 = moment(this.suppliers.documents[4].expiry).format(
-        'YYYY-MM-DD'
-      )
-      this.document5 = this.suppliers.documents[4]
-    }
-    if (this.suppliers.documents.length >= 6) {
-      this.expiryDate6 = moment(this.suppliers.documents[5].expiry).format(
-        'YYYY-MM-DD'
-      )
-      this.document6 = this.suppliers.documents[5]
-    }
-    if (this.suppliers.documents.length >= 7) {
-      this.expiryDate7 = moment(this.suppliers.documents[6].expiry).format(
-        'YYYY-MM-DD'
-      )
-      this.document7 = this.suppliers.documents[6]
+    if (this.isUpdate) {
+      for (const doc of this.suppliers.documents) {
+        switch (parseInt(doc.index)) {
+          case 0:
+            this.expiryDate1 = doc.expiryDate
+            this.document1 = doc
+            continue
+          case 1:
+            this.expiryDate2 = doc.expiryDate
+            this.document2 = doc
+            continue
+          case 2:
+            this.expiryDate3 = doc.expiryDate
+            this.document3 = doc
+            continue
+          case 3:
+            this.expiryDate4 = doc.expiryDate
+            this.document4 = doc
+            continue
+          case 4:
+            this.expiryDate5 = doc.expiryDate
+            this.document5 = doc
+            continue
+          case 5:
+            this.expiryDate6 = doc.expiryDate
+            this.document6 = doc
+            continue
+          case 6:
+            this.expiryDate7 = doc.expiryDate
+            this.document7 = doc
+            continue
+        }
+      }
     }
   },
   methods: {
     formData() {
       const formData = new FormData()
-
-      // for (let i = 0; i < this.documents.length; ++i) {
-      //   if (this.documents[i]) {
-      //     formData.append('documents', this.documents[i])
-      //     formData.append('expiryDate', this.expiryDates[i])
-      //   }
+      if (this.isUpdate) {
+        formData.append('_id', this.suppliers._id)
+      }
+      // if (!this.document1 || !this.document1._id) {
+      //   formData.append('crPaper', this.document1)
+      //   formData.append('expiryDate', this.expiryDate1)
+      // } else if (!this.document2 || !this.document2._id) {
+      //   formData.append('chamberCard', this.document2)
+      //   formData.append('expiryDate', this.expiryDate2)
+      // } else if (!this.document3 || !this.document3._id) {
+      //   formData.append('tharkeesBaladi', this.document3)
+      //   formData.append('expiryDate', this.expiryDate3)
+      // } else if (!this.document4 || !this.document4._id) {
+      //   formData.append('idCardOfSponsor', this.document4)
+      //   formData.append('expiryDate', this.expiryDate4)
+      // } else if (!this.document4 || !this.document4._id) {
+      //   // formData.append('salesmanId', this.document5)
+      //   // formData.append('expiryDate', this.expiryDate5)
+      // } else if (!this.document4 || !this.document4._id) {
+      //   // formData.append('legal1', this.document6)
+      //   // formData.append('expiryDate', this.expiryDate6)
+      // } else if (!this.document4 || !this.document4._id) {
+      //   formData.append('idCardOfSponsor', this.document4)
+      //   formData.append('expiryDate', this.expiryDate4)
       // }
-      formData.append('crPaper', this.document1)
-      formData.append('expiryDate', this.expiryDate1)
-      formData.append('chamberCard', this.document2)
-      formData.append('expiryDate', this.expiryDate2)
-      formData.append('tharkeesBaladi', this.document3)
-      formData.append('expiryDate', this.expiryDate3)
-      formData.append('idCardOfSponsor', this.document4)
-      formData.append('expiryDate', this.expiryDate4)
-      formData.append('salesmanId', this.document5)
-      formData.append('expiryDate', this.expiryDate5)
-      formData.append('legal1', this.document6)
-      formData.append('expiryDate', this.expiryDate6)
-      formData.append('legal2', this.document7)
-      formData.append('expiryDate', this.expiryDate7)
+
+      // patch documets
+      if (this.isUpdate) {
+        if (this.document1 && !this.document1._id) {
+          // crpaper
+          formData.append('files', this.document1)
+          formData.append('expiryDate', this.expiryDate1)
+          formData.append('index', 0)
+        }
+        if (this.document2 && !this.document2._id) {
+          // chambercard
+          formData.append('files', this.document2)
+          formData.append('expiryDate', this.expiryDate2)
+          formData.append('index', 1)
+        }
+        if (this.document3 && !this.document3._id) {
+          // tharkeesbaladi
+          formData.append('files', this.document3)
+          formData.append('expiryDate', this.expiryDate3)
+          formData.append('index', 2)
+        }
+        if (this.document4 && !this.document4._id) {
+          // idcardsponser
+          formData.append('files', this.document4)
+          formData.append('expiryDate', this.expiryDate4)
+          formData.append('index', 3)
+        }
+        if (this.document5 && !this.document5._id) {
+          // salesid
+          formData.append('files', this.document5)
+          formData.append('expiryDate', this.expiryDate5)
+          formData.append('index', 4)
+        }
+        if (this.document6 && !this.document6._id) {
+          // legal1
+          formData.append('files', this.document6)
+          formData.append('expiryDate', this.expiryDate6)
+          formData.append('index', 5)
+        }
+        if (this.document7 && !this.document7._id) {
+          // legal2
+          formData.append('files', this.document7)
+          formData.append('expiryDate', this.expiryDate7)
+          formData.append('index', 6)
+        }
+        if (this.deletedData) {
+          for (const item of this.deletedData) {
+            console.log(item)
+            formData.append('deletedIndex', item)
+          }
+        }
+      }
+
+      // post documents
+      if (!this.isUpdate) {
+        if (this.document1) {
+          // crpaper
+          formData.append('files', this.document1)
+          formData.append('expiryDate', this.expiryDate1)
+          formData.append('index', 0)
+        }
+        if (this.document2) {
+          // chambercard
+          formData.append('files', this.document2)
+          formData.append('expiryDate', this.expiryDate2)
+          formData.append('index', 1)
+        }
+        if (this.document3) {
+          // tharkeesbaladi
+          formData.append('files', this.document3)
+          formData.append('expiryDate', this.expiryDate3)
+          formData.append('index', 2)
+        }
+        if (this.document4) {
+          // idcardsponser
+          formData.append('files', this.document4)
+          formData.append('expiryDate', this.expiryDate4)
+          formData.append('index', 3)
+        }
+        if (this.document5) {
+          // salesid
+          formData.append('files', this.document5)
+          formData.append('expiryDate', this.expiryDate5)
+          formData.append('index', 4)
+        }
+        if (this.document6) {
+          // legal1
+          formData.append('files', this.document6)
+          formData.append('expiryDate', this.expiryDate6)
+          formData.append('index', 5)
+        }
+        if (this.document7) {
+          // legal2
+          formData.append('files', this.document7)
+          formData.append('expiryDate', this.expiryDate7)
+          formData.append('index', 6)
+        }
+      }
+
+      // supplier info
       formData.append('name', this.suppliers.person.name)
       formData.append('companyName', this.suppliers.companyName)
       formData.append('phone', this.suppliers.person.phone)
       formData.append('username', this.suppliers.person.username)
       formData.append('password', this.suppliers.password)
       formData.append('status', this.suppliers.status)
-
+      // formData.append('name', 'nabeel')
+      formData.forEach((item) => console.log(item))
       return formData
     },
     downloadImage() {
@@ -316,6 +424,16 @@ export default {
           '/uploads/' +
           this.suppliers.documents[0].name
       )
+    },
+    deleteDoc(i) {
+      for (const item of this.suppliers.documents) {
+        if (parseInt(item.index) === i) {
+          this.deletedData.push(item.index)
+          break
+        } else {
+          continue
+        }
+      }
     }
   }
 }

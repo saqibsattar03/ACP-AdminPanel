@@ -6,7 +6,15 @@ export class Supplier {
   status = true
 
   /** @type {string[]|SupplierDocuments[]} */
-  documents = ['', '', '', '', '', '', '']
+  documents = [
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined
+  ]
 
   /** @type {string}| user[] */
   // phone = undefined

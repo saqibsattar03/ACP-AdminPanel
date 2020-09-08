@@ -175,6 +175,7 @@
               <v-col cols="12" md="3" sm="3">
                 <v-text-field
                   v-model="option.optionName"
+                  :rules="[required]"
                   :label="'Option ' + (i + 1)"
                   outlined
                   dense
@@ -195,12 +196,14 @@
                     v-model="option.optionImages"
                     dense
                     outlined
+                    :rules="[required]"
                     label="Option Images Indexes"
                   />
                   <v-text-field
                     v-model="option.optionValues"
                     dense
                     outlined
+                    :rules="[required]"
                     label="Separate options with comma."
                     @focusout="generateVariants()"
                   />
@@ -234,9 +237,9 @@
                   style="align-items: center !important;"
                   outlined
                   label="Price"
-                  type="number"
-                  :rules="[(_) => !!item.varientPrice || 'Please Enter Price']"
                   dense
+                  type="number"
+                  :rules="[(v) => v !== '' || 'Enter price']"
                   hide-details
                 ></v-text-field>
               </template>
@@ -544,7 +547,7 @@ export default {
     generateVariants() {
       this.variants = this._combine().map((item) => ({
         varientName: item,
-        varientPrice: 0
+        varientPrice: '0'
       }))
     },
     _combine(index = 0, prevData = []) {
