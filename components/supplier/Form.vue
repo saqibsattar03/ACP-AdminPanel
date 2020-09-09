@@ -10,18 +10,21 @@
       <div class="span-2">
         <v-text-field
           v-model="suppliers.companyName"
+          :rules="[required]"
           outlined
           dense
           label="Company Name"
         ></v-text-field>
         <v-text-field
           v-model="suppliers.person.name"
+          :rules="[required]"
           outlined
           dense
           label="Supplier Name"
         ></v-text-field>
         <v-text-field
           v-model="suppliers.person.phone"
+          :rules="[required]"
           outlined
           dense
           label="Mobile"
@@ -29,6 +32,7 @@
         ></v-text-field>
         <v-text-field
           v-model="suppliers.person.username"
+          :rules="[required]"
           outlined
           dense
           label="Email"
@@ -37,6 +41,7 @@
         <v-checkbox v-model="suppliers.status" label="Active"></v-checkbox>
         <v-text-field
           v-model="suppliers.password"
+          :rules="[required]"
           outlined
           dense
           label="Password"
@@ -209,6 +214,7 @@
 // import * as moment from 'moment'
 import SimpleForm from '../../common/ui/widgets/SimpleForm'
 import { Supplier } from '@/models/supplier'
+import { required } from '@/common/lib/validator'
 export default {
   name: 'SupplierForm',
   components: { SimpleForm },
@@ -275,12 +281,12 @@ export default {
           case 6:
             this.expiryDate7 = doc.expiryDate
             this.document7 = doc
-            continue
         }
       }
     }
   },
   methods: {
+    required,
     formData() {
       const formData = new FormData()
       if (this.isUpdate) {
@@ -355,7 +361,6 @@ export default {
         }
         if (this.deletedData) {
           for (const item of this.deletedData) {
-            console.log(item)
             formData.append('deletedIndex', item)
           }
         }
@@ -415,7 +420,7 @@ export default {
       formData.append('password', this.suppliers.password)
       formData.append('status', this.suppliers.status)
       // formData.append('name', 'nabeel')
-      formData.forEach((item) => console.log(item))
+      // formData.forEach((item) => console.log(item))
       return formData
     },
     downloadImage() {
@@ -430,8 +435,6 @@ export default {
         if (parseInt(item.index) === i) {
           this.deletedData.push(item.index)
           break
-        } else {
-          continue
         }
       }
     }
