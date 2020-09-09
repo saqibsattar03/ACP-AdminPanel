@@ -41,7 +41,7 @@
         <v-checkbox v-model="suppliers.status" label="Active"></v-checkbox>
         <v-text-field
           v-model="suppliers.password"
-          :rules="[required]"
+          :rules="[!isUpdate ? required : true]"
           outlined
           dense
           label="Password"
