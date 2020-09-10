@@ -13,7 +13,7 @@ export default {
   components: { ProductDetail },
   async asyncData({ $axios, route }) {
     return {
-      product: await $axios.$get('products/' + route.params.id)
+      product: await $axios.$get('products/shared-product/' + route.params.id)
     }
   }
 }
