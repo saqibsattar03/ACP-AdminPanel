@@ -16,10 +16,12 @@
     </div>
     <v-dialog v-model="imageView" width="700px">
       <div
+        class="prod-dialog"
         style="display: flex;justify-content: center;align-items: center;width:700px;background-color: white"
       >
-        <div v-if="name">
+        <div style="width: 100%" v-if="name">
           <img
+            class="prod-img"
             style="object-fit: cover;width: 700px"
             :src="$axios.defaults.baseURL + '/uploads/' + name"
           />
@@ -56,4 +58,13 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+@media only screen and (max-width: 600px) {
+  .prod-dialog {
+    width: 100% !important;
+  }
+  .prod-img {
+    width: 100% !important;
+  }
+}
+</style>
