@@ -612,7 +612,7 @@ export default {
   height: 100%;
   display: flex;
   border-right: 4px;
-  position: absolute;
+  position: absolute !important;
   transition: all 0.2s;
   align-items: center;
   margin: 0 !important;
@@ -625,10 +625,33 @@ export default {
   height: 200px;
   display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
   border-radius: 4px;
   background: rgba(0, 0, 0, 0.05);
 }
+.image-carosel::-webkit-scrollbar {
+  display: block !important;
+}
+.image-carosel::-webkit-scrollbar {
+  background-color: #fff;
+  width: 16px;
+}
+.image-carosel::-webkit-scrollbar-track {
+  background-color: #fff;
+}
 
+.image-carosel::-webkit-scrollbar-track:hover {
+  background-color: #f4f4f4;
+}
+.image-carosel::-webkit-scrollbar-thumb {
+  background-color: #babac0;
+  border-radius: 16px;
+  border: 5px solid #fff;
+}
+.image-carosel::-webkit-scrollbar-thumb:hover {
+  background-color: #a0a0a5;
+  border: 4px solid #f4f4f4;
+}
 .image-carosel div {
   margin: 0 5px;
   position: relative;
@@ -636,7 +659,7 @@ export default {
 
 .image-carosel div img {
   top: 0;
-  position: absolute;
+  /*position: absolute;*/
 }
 
 .image-carosel div:hover .image-overlay {
