@@ -1,3 +1,5 @@
+import { join } from 'path'
+import { readFileSync } from 'fs'
 import colors from 'vuetify/es5/util/colors'
 
 export default {
@@ -107,15 +109,6 @@ export default {
       }
     }
   },
-  /*
-   ** Build configuration
-   */
-  build: {
-    /*
-     ** You can extend webpack config here
-     */
-    extend(config, ctx) {}
-  },
   auth: {
     strategies: {
       local: {
@@ -128,14 +121,20 @@ export default {
           logout: { url: '/auth/sign-out', method: 'post' },
           user: { url: '/auth/profile', method: 'get', propertyName: 'user' }
         }
-        // tokenRequired: true,
-        // tokenType: 'bearer',
-        // globalToken: true,
-        // autoFetchUser: true
       }
     }
   },
   router: {
     middleware: ['auth']
-  }
+  },
+  server: {
+    host: 'admin.acpshopping.com',
+    port: 4000,
+
+    https: {
+      key: readFileSync(join(__dirname, 'secrets', 'key.pem')),
+      cert: readFileSync(join(__dirname, 'secrets', 'cert.pem'))
+    }
+  },
+  serverMiddleware: ['redirect-ssl'],
 }
