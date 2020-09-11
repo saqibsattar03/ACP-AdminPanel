@@ -84,9 +84,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    // baseURL: 'http://139.59.73.151:3000'
-    // baseURL: 'http://192.168.100.100:3000'
-    baseURL: 'https://api.acpshopping.com'
+    baseURL: 'https://api.acpshopping.com:4000'
   },
   /*
    ** vuetify module configuration
@@ -136,5 +134,5 @@ export default {
       cert: readFileSync(join(__dirname, 'secrets', 'cert.pem'))
     }
   },
-  serverMiddleware: ['redirect-ssl'],
+  serverMiddleware: ['redirect-ssl']
 }
