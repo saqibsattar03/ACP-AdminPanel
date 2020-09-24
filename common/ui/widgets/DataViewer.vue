@@ -240,7 +240,7 @@ export default defineComponent({
 
     pagination: {
       type: Boolean,
-      default: false
+      default: true
     },
 
     createRoute: {
