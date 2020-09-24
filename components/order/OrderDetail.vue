@@ -178,19 +178,18 @@ export default {
     }
   },
   mounted() {
-    console.log(this.orders)
+    // console.log(this.orders)
   },
   created() {
+    console.log(this.orders.items)
     if (this.$auth.hasScope('supplier')) {
-      for (const order of this.orders) {
-        for (const item of order.items) {
-          if (item.product.supplierId === this.$auth.user._id) {
-            this.orderItems.push(item)
-            console.log('matched')
-          } else {
-            console.log('not matched')
-            continue
-          }
+      for (const item of this.orders.items) {
+        if (item.product.supplierId === this.$auth.user._id) {
+          this.orderItems.push(item)
+          console.log('matched')
+        } else {
+          console.log('not matched')
+          continue
         }
       }
       console.log(this.orderItems)

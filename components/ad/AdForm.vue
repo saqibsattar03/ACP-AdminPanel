@@ -86,8 +86,16 @@
 
         <v-checkbox v-model="product.active" label="Active" />
         <v-checkbox v-model="product.hideWarranty" label="Hide Warranty" />
-        <v-checkbox v-model="product.isFeatured" label="Featured" />
-        <v-checkbox v-model="product.isKillerDeal" label="Killer Deals" />
+        <v-checkbox
+          v-if="$auth.hasScope('admin')"
+          v-model="product.isFeatured"
+          label="Featured"
+        />
+        <v-checkbox
+          v-if="$auth.hasScope('admin')"
+          v-model="product.isKillerDeal"
+          label="Killer Deals"
+        />
 
         <div v-if="isUpdate">
           <p>Uploaded Images</p>

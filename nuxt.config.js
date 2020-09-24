@@ -126,7 +126,6 @@ export default {
     middleware: ['auth']
   },
   server: {
-    host: 'admin.acpshopping.com',
     port: 4000,
 
     https: {
