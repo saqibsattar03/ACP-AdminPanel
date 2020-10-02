@@ -8,6 +8,6 @@ import 'quill/dist/quill.core.css' // import styles
 import 'quill/dist/quill.snow.css' // for snow theme
 import 'quill/dist/quill.bubble.css' // for bubble theme
 
-Vue.use(VueQuillEditor /* { default global options } */)
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
+Vue.use(VueQuillEditor /* { default global options } */)
