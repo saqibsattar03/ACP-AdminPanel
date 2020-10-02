@@ -1,5 +1,3 @@
-import { join } from 'path'
-import { readFileSync } from 'fs'
 import colors from 'vuetify/es5/util/colors'
 
 export default {
@@ -84,6 +82,7 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
+    // baseURL: 'http://192.168.100.100:3000'
     baseURL: 'https://api.acpshopping.com'
   },
   /*
@@ -126,12 +125,7 @@ export default {
     middleware: ['auth']
   },
   server: {
-    port: 4000,
-
-    https: {
-      key: readFileSync(join(__dirname, 'secrets', 'key.pem')),
-      cert: readFileSync(join(__dirname, 'secrets', 'cert.pem'))
-    }
-  },
-  serverMiddleware: ['redirect-ssl']
+    port: 4000
+  }
+  // serverMiddleware: ['redirect-ssl']
 }
