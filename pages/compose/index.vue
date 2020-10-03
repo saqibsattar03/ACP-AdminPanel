@@ -6,6 +6,22 @@
       :data="compose"
       return
     >
+      <div class="span-2">
+        <v-text-field
+          v-model="compose.title"
+          outlined
+          dense
+          :rules="[(_) => !!compose.title || 'Please Enter Title']"
+          label="Title"
+        ></v-text-field>
+        <v-text-field
+          v-model="compose.subject"
+          outlined
+          dense
+          :rules="[(_) => !!compose.subject || 'Please Enter Subject']"
+          label="Subject"
+        ></v-text-field>
+      </div>
       <div class="span-2" style="margin-bottom: 30px">
         <client-only>
           <input id="file" type="file" hidden @change="uploadFunction" />
