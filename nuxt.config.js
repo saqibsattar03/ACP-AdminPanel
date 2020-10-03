@@ -82,8 +82,8 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://192.168.100.100:3000'
-    // baseURL: 'https://api.acpshopping.com'
+    // baseURL: 'http://192.168.100.100:3000'
+    baseURL: 'https://api.acpshopping.com'
   },
   /*
    ** vuetify module configuration
